@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../../src/api-config';
 
 interface ImageUploadProps {
   label: string;
@@ -49,7 +50,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 
     try {
       const token = localStorage.getItem('admin_token');
-      const response = await axios.post('http://localhost:3001/api/upload/image', formData, {
+      const response = await axios.post(`${API_BASE_URL}/upload/image`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`,
@@ -57,7 +58,15 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
       });
 
       if (response.data.success) {
-        const fullUrl = `http://localhost:3001${response.data.url}`;
+        // Backend'den gelen URL'i frontend'de kullanılacak şekilde ayarla
+        // Eğer backend tam URL dönüyorsa onu kullan, yoksa API_BASE_URL üzerinden oluştur
+        const imgUrl = response.data.url;
+        // API_BASE_URL içinde /api var, onu kaldırmamız lazım ki uploads klasörüne erişelim
+        // Veya daha güvenlisi, backend'in tam URL dönmesini bekleyelim
+        // Şimdilik backend'in /uploads/... döndüğünü varsayıyoruz
+        const baseUrl = API_BASE_URL.replace('/api', '');
+        const fullUrl = imgUrl.startsWith('http') ? imgUrl : `${baseUrl}${imgUrl}`;
+        
         onImageUploaded(fullUrl);
         setPreview(fullUrl);
       } else {
