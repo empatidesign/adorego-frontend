@@ -18,8 +18,13 @@ const Login: React.FC = () => {
     try {
       const response = await authAPI.login(username, password);
       if (response && response.access_token) {
-        localStorage.setItem('admin_token', response.access_token);
-        navigate('/admin/dashboard');
+        if (response.user && response.user.role === 'admin') {
+          localStorage.setItem('admin_token', response.access_token);
+          localStorage.setItem('user_role', response.user.role);
+          navigate('/admin/dashboard');
+        } else {
+          setError('Bu panele erişim yetkiniz bulunmamaktadır.');
+        }
       } else {
         setError('Giriş başarısız. Token alınamadı.');
       }
@@ -56,7 +61,7 @@ const Login: React.FC = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4DB848] focus:border-transparent"
-              placeholder="admin"
+              placeholder="Kullanıcı Adı"
               required
             />
           </div>

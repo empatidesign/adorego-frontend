@@ -7,8 +7,13 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const token = localStorage.getItem('admin_token');
+  const role = localStorage.getItem('user_role');
 
-  if (!token) {
+  if (!token || role !== 'admin') {
+    if (token && role !== 'admin') {
+      localStorage.removeItem('admin_token');
+      localStorage.removeItem('user_role');
+    }
     return <Navigate to="/admin" replace />;
   }
 
