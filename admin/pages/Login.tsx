@@ -96,7 +96,7 @@ const Login: React.FC = () => {
         </form>
 
         <div className="mt-6 text-center text-sm text-gray-500">
-          <p>Varsayılan giriş: admin / admin123</p>
+          <p>Güvenli Giriş Paneli</p>
         </div>
       </div>
     </div>
