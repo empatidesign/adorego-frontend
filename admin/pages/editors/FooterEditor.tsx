@@ -51,7 +51,8 @@ const FooterEditor: React.FC = () => {
             { name: 'Gizlilik Politikası', url: '#' },
             { name: 'Kullanım Şartları', url: '#' },
             { name: 'KVKK Aydınlatma', url: '#' }
-          ]
+          ],
+          copyrightText: '© 2024 adoreGo. Site kargo firması vitrini değil, teknoloji lojistik platformudur.'
         },
         sections: [
           {
@@ -127,7 +128,8 @@ const FooterEditor: React.FC = () => {
             { name: 'Privacy Policy', url: '#' },
             { name: 'Terms of Use', url: '#' },
             { name: 'GDPR Notice', url: '#' }
-          ]
+          ],
+          copyrightText: '© 2024 adoreGo. This site is not a cargo company showcase, but a technology logistics platform.'
         },
         sections: [
           {
@@ -758,6 +760,21 @@ const FooterEditor: React.FC = () => {
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Telif Hakkı Metni */}
+          <div className="mt-4 border-t pt-4">
+            <Input
+              label={currentLang === 'tr' ? 'Telif Hakkı Metni (Copyright)' : 'Copyright Text'}
+              value={currentData.bottomSection?.copyrightText || ''}
+              onChange={(val) => updateBottomSection('copyrightText', val)}
+              placeholder={currentLang === 'tr' ? '© 2024 adoreGo. Site kargo firması vitrini değil, teknoloji lojistik platformudur.' : '© 2024 adoreGo. This site is not a cargo company showcase, but a technology logistics platform.'}
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              {currentLang === 'tr' 
+                ? 'Footer\'ın en altında görünecek telif hakkı metni.' 
+                : 'Copyright text that will appear at the bottom of the footer.'}
+            </p>
           </div>
         </div>
 

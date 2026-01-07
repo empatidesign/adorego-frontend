@@ -57,7 +57,8 @@ const Footer: React.FC = () => {
           { name: 'Gizlilik Politikası', url: '#' },
           { name: 'Kullanım Şartları', url: '#' },
           { name: 'KVKK Aydınlatma', url: '#' }
-        ]
+        ],
+        copyrightText: '© 2024 adoreGo. Site kargo firması vitrini değil, teknoloji lojistik platformudur.'
       };
     } else {
       return {
@@ -75,7 +76,8 @@ const Footer: React.FC = () => {
           { name: 'Privacy Policy', url: '#' },
           { name: 'Terms of Use', url: '#' },
           { name: 'GDPR Notice', url: '#' }
-        ]
+        ],
+        copyrightText: '© 2024 adoreGo. This site is not a cargo company showcase, but a technology logistics platform.'
       };
     }
   };
@@ -310,7 +312,7 @@ const Footer: React.FC = () => {
           </div>
           
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-slate-300 text-[10px] font-bold uppercase tracking-widest">© 2024 adoreGo. Site kargo firması vitrini değil, teknoloji lojistik platformudur.</p>
+            <p className="text-slate-300 text-[10px] font-bold uppercase tracking-widest">{bottomSection.copyrightText || '© 2024 adoreGo. Site kargo firması vitrini değil, teknoloji lojistik platformudur.'}</p>
             <div className="flex items-center gap-6 opacity-20">
               <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" className="h-3" alt="Güvenli Ödeme - Visa" />
               <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-5" alt="Güvenli Ödeme - Mastercard" />
