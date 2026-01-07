@@ -12,6 +12,8 @@ const FeaturesEditor: React.FC = () => {
   const [message, setMessage] = useState({ type: '', text: '' });
   const [featuresTR, setFeaturesTR] = useState<any[]>([]);
   const [featuresEN, setFeaturesEN] = useState<any[]>([]);
+  const [headerTR, setHeaderTR] = useState({ badge: '', title: '', subtitle: '' });
+  const [headerEN, setHeaderEN] = useState({ badge: '', title: '', subtitle: '' });
 
   useEffect(() => {
     loadData();
@@ -21,8 +23,78 @@ const FeaturesEditor: React.FC = () => {
     try {
       const dataTR = await contentAPI.getFeatures('tr');
       const dataEN = await contentAPI.getFeatures('en');
-      setFeaturesTR(dataTR);
-      setFeaturesEN(dataEN);
+      const headerDataTR = await contentAPI.getFeaturesHeader('tr');
+      const headerDataEN = await contentAPI.getFeaturesHeader('en');
+      
+      // Default features
+      const defaultFeaturesTR = [
+        {
+          icon: "fa-rocket",
+          color: "bg-gradient-to-br from-blue-500 to-blue-600",
+          title: "Hızlı Entegrasyon",
+          description: "Pazaryeri mağazalarınızı dakikalar içinde bağlayın, gönderilerinizi otomatik yönetin."
+        },
+        {
+          icon: "fa-shield-halved",
+          color: "bg-gradient-to-br from-green-500 to-green-600",
+          title: "Tam Güvence",
+          description: "adoreGo ile tüm paketleriniz sigortalı ve uçtan uca takip sistemimizle koruma altında."
+        },
+        {
+          icon: "fa-map-location-dot",
+          color: "bg-gradient-to-br from-purple-500 to-purple-600",
+          title: "Global Takip",
+          description: "Dünyanın neresinde olursa olsun kargonuzu canlı harita üzerinden takip edin."
+        },
+        {
+          icon: "fa-hand-holding-dollar",
+          color: "bg-gradient-to-br from-orange-500 to-orange-600",
+          title: "Rekabetçi Fiyat",
+          description: "Hacminiz ne olursa olsun, en uygun birim fiyat garantisi ile lojistik maliyetlerinizi düşürün."
+        }
+      ];
+
+      const defaultFeaturesEN = [
+        {
+          icon: "fa-rocket",
+          color: "bg-gradient-to-br from-blue-500 to-blue-600",
+          title: "Fast Integration",
+          description: "Connect your marketplace stores in minutes and manage your shipments automatically."
+        },
+        {
+          icon: "fa-shield-halved",
+          color: "bg-gradient-to-br from-green-500 to-green-600",
+          title: "Full Protection",
+          description: "All your packages are insured with adoreGo and protected by our end-to-end tracking system."
+        },
+        {
+          icon: "fa-map-location-dot",
+          color: "bg-gradient-to-br from-purple-500 to-purple-600",
+          title: "Global Tracking",
+          description: "Track your shipment on a live map, wherever it is in the world."
+        },
+        {
+          icon: "fa-hand-holding-dollar",
+          color: "bg-gradient-to-br from-orange-500 to-orange-600",
+          title: "Competitive Pricing",
+          description: "Reduce your logistics costs with the best unit price guarantee, regardless of your volume."
+        }
+      ];
+
+      setFeaturesTR((dataTR && Array.isArray(dataTR) && dataTR.length > 0) ? dataTR : defaultFeaturesTR);
+      setFeaturesEN((dataEN && Array.isArray(dataEN) && dataEN.length > 0) ? dataEN : defaultFeaturesEN);
+      
+      setHeaderTR(headerDataTR && Object.keys(headerDataTR).length > 0 ? headerDataTR : {
+        badge: 'ADOREGO TEKNOLOJİ',
+        title: 'Lojistiği Akıllı Teknolojiyle Birleştirdik.',
+        subtitle: 'Gönderi sürecini basitleştiriyor, hızlandırıyor ve daha ekonomik hale getiriyoruz.'
+      });
+      
+      setHeaderEN(headerDataEN && Object.keys(headerDataEN).length > 0 ? headerDataEN : {
+        badge: 'ADOREGO TECHNOLOGY',
+        title: 'We Combined Logistics with Smart Technology.',
+        subtitle: 'We simplify, accelerate and make the shipping process more economical.'
+      });
     } catch (error) {
       setMessage({ type: 'error', text: 'Veri yüklenemedi' });
     } finally {
@@ -37,7 +109,9 @@ const FeaturesEditor: React.FC = () => {
     try {
       await contentAPI.updateFeatures(featuresTR, 'tr');
       await contentAPI.updateFeatures(featuresEN, 'en');
-      setMessage({ type: 'success', text: 'Özellikler her iki dil için başarıyla güncellendi!' });
+      await contentAPI.updateFeaturesHeader(headerTR, 'tr');
+      await contentAPI.updateFeaturesHeader(headerEN, 'en');
+      setMessage({ type: 'success', text: 'Özellikler ve başlık her iki dil için başarıyla güncellendi!' });
     } catch (error: any) {
       setMessage({ type: 'error', text: error.response?.data?.message || 'Güncelleme başarısız' });
     } finally {
@@ -52,11 +126,17 @@ const FeaturesEditor: React.FC = () => {
 
   const currentFeatures = currentLang === 'tr' ? featuresTR : featuresEN;
   const setCurrentFeatures = currentLang === 'tr' ? setFeaturesTR : setFeaturesEN;
+  const currentHeader = currentLang === 'tr' ? headerTR : headerEN;
+  const setCurrentHeader = currentLang === 'tr' ? setHeaderTR : setHeaderEN;
 
   const updateFeature = (index: number, field: string, value: string) => {
     const newFeatures = [...currentFeatures];
     newFeatures[index][field] = value;
     setCurrentFeatures(newFeatures);
+  };
+
+  const updateHeader = (field: string, value: string) => {
+    setCurrentHeader({ ...currentHeader, [field]: value });
   };
 
   if (loading) {
@@ -106,6 +186,37 @@ const FeaturesEditor: React.FC = () => {
             {message.text}
           </div>
         )}
+
+        {/* Başlık Bölümü */}
+        <div className="bg-white rounded-xl shadow-md p-6 mb-6">
+          <h3 className="font-bold text-gray-800 mb-4">{currentLang === 'tr' ? 'Bölüm Başlığı' : 'Section Header'}</h3>
+          
+          <div className="space-y-4">
+            <Input
+              label={currentLang === 'tr' ? 'Üst Etiket (Badge)' : 'Top Badge'}
+              value={currentHeader.badge}
+              onChange={(val) => updateHeader('badge', val)}
+              placeholder={currentLang === 'tr' ? 'ADOREGO TEKNOLOJİ' : 'ADOREGO TECHNOLOGY'}
+            />
+
+            <Input
+              label={currentLang === 'tr' ? 'Ana Başlık' : 'Main Title'}
+              value={currentHeader.title}
+              onChange={(val) => updateHeader('title', val)}
+              placeholder={currentLang === 'tr' ? 'Lojistiği Akıllı Teknolojiyle Birleştirdik.' : 'We Combined Logistics with Smart Technology.'}
+            />
+
+            <TextArea
+              label={currentLang === 'tr' ? 'Alt Başlık / Açıklama' : 'Subtitle / Description'}
+              value={currentHeader.subtitle}
+              onChange={(val) => updateHeader('subtitle', val)}
+              placeholder={currentLang === 'tr' ? 'Gönderi sürecini basitleştiriyor...' : 'We simplify, accelerate...'}
+              rows={2}
+            />
+          </div>
+        </div>
+
+        <h3 className="font-bold text-gray-800 mb-4 text-lg">{currentLang === 'tr' ? 'Özellik Kartları' : 'Feature Cards'}</h3>
 
         <div className="space-y-6">
           {currentFeatures.map((feature, index) => (

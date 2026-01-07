@@ -14,6 +14,10 @@ const Solutions: React.FC = () => {
     highlightedTitle: currentLang === 'tr' ? 'Akıllı Gönderim.' : 'Based on Your Needs.',
     buttonText: currentLang === 'tr' ? 'HEMEN BAŞLA' : 'GET STARTED',
     buttonLink: '#kayit',
+    cardTitle: currentLang === 'tr' ? 'Hangi Gönderim Bana Uygun?' : 'Which Shipping is Right for Me?',
+    cardDescription: currentLang === 'tr' 
+      ? 'Kararsızsan sorun değil. Sistem, gönderinin aciliyet ve önceliğine göre en uygun gönderimi seçer.'
+      : "No problem if you're undecided. The system selects the most suitable shipping based on urgency and priority.",
     services: [
       {
         id: '1',
@@ -109,19 +113,26 @@ const Solutions: React.FC = () => {
   const [content, setContent] = useState<any>(getDefaultContent());
 
   useEffect(() => {
-    // Önce default content'i güncelle (dil değişiminde)
-    setContent(getDefaultContent());
-    
-    // Sonra API'den yükle
+    // API'den yükle
     axios.get(`${API_BASE_URL}/content/solutions?lang=${currentLang}`)
       .then(res => {
         if (res.data && Object.keys(res.data).length > 0) {
-          setContent(res.data);
+          // API'den gelen veriyi default ile merge et
+          const defaultData = getDefaultContent();
+          const mergedData = {
+            ...defaultData,
+            ...res.data,
+            services: (res.data.services && res.data.services.length > 0) ? res.data.services : defaultData.services,
+            shippingOptions: (res.data.shippingOptions && res.data.shippingOptions.length > 0) ? res.data.shippingOptions : defaultData.shippingOptions
+          };
+          setContent(mergedData);
+        } else {
+          setContent(getDefaultContent());
         }
       })
       .catch(err => {
         console.error('Solutions content yüklenemedi:', err);
-        // Default zaten ayarlandı
+        setContent(getDefaultContent());
       });
   }, [currentLang]);
 
@@ -167,9 +178,9 @@ const Solutions: React.FC = () => {
               <div className="absolute bottom-0 left-0 w-40 h-40 bg-blue-400/20 rounded-full blur-3xl"></div>
               
               <div className="relative z-10">
-                <h3 className="text-2xl font-bold mb-4 tracking-tight">Hangi Gönderim Bana Uygun?</h3>
+                <h3 className="text-2xl font-bold mb-4 tracking-tight">{content.cardTitle || 'Hangi Gönderim Bana Uygun?'}</h3>
                 <p className="text-white/70 text-sm mb-8 font-medium leading-relaxed">
-                  Kararsızsan sorun değil. Sistem, gönderinin aciliyet ve önceliğine göre en uygun gönderimi seçer.
+                  {content.cardDescription || 'Kararsızsan sorun değil. Sistem, gönderinin aciliyet ve önceliğine göre en uygun gönderimi seçer.'}
                 </p>
                 
                 <div className="space-y-3 mb-10">

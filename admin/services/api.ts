@@ -47,12 +47,20 @@ export const contentAPI = {
     const response = await api.get(`/content/features?lang=${lang}`);
     return response.data;
   },
+  getFeaturesHeader: async (lang: string = 'tr') => {
+    const response = await api.get(`/content/features-header?lang=${lang}`);
+    return response.data;
+  },
   getPartners: async (lang: string = 'tr') => {
     const response = await api.get(`/content/partners?lang=${lang}`);
     return response.data;
   },
   getFaq: async (lang: string = 'tr') => {
     const response = await api.get(`/content/faq?lang=${lang}`);
+    return response.data;
+  },
+  getFaqHeader: async (lang: string = 'tr') => {
+    const response = await api.get(`/content/faq-header?lang=${lang}`);
     return response.data;
   },
   getHowItWorks: async (lang: string = 'tr') => {
@@ -81,12 +89,20 @@ export const contentAPI = {
     const response = await api.put('/content/features', { data, lang });
     return response.data;
   },
+  updateFeaturesHeader: async (data: any, lang: string = 'tr') => {
+    const response = await api.put('/content/features-header', { data, lang });
+    return response.data;
+  },
   updatePartners: async (data: any[], lang: string = 'tr') => {
     const response = await api.put('/content/partners', { data, lang });
     return response.data;
   },
   updateFaq: async (data: any[], lang: string = 'tr') => {
     const response = await api.put('/content/faq', { data, lang });
+    return response.data;
+  },
+  updateFaqHeader: async (data: any, lang: string = 'tr') => {
+    const response = await api.put('/content/faq-header', { data, lang });
     return response.data;
   },
   updateHowItWorks: async (data: any, lang: string = 'tr') => {
@@ -103,6 +119,30 @@ export const contentAPI = {
   },
   updateSolutions: async (data: any, lang: string = 'tr') => {
     const response = await api.put('/content/solutions', { data, lang });
+    return response.data;
+  },
+  getTargetAudience: async (lang: string = 'tr') => {
+    const response = await api.get(`/content/target-audience?lang=${lang}`);
+    return response.data;
+  },
+  updateTargetAudience: async (data: any, lang: string = 'tr') => {
+    const response = await api.put('/content/target-audience', { data, lang });
+    return response.data;
+  },
+  getPopularDestinations: async (lang: string = 'tr') => {
+    const response = await api.get(`/content/popular-destinations?lang=${lang}`);
+    return response.data;
+  },
+  updatePopularDestinations: async (data: any, lang: string = 'tr') => {
+    const response = await api.put('/content/popular-destinations', { data, lang });
+    return response.data;
+  },
+  getFooter: async (lang: string = 'tr') => {
+    const response = await api.get(`/content/footer?lang=${lang}`);
+    return response.data;
+  },
+  updateFooter: async (data: any, lang: string = 'tr') => {
+    const response = await api.put('/content/footer', { data, lang });
     return response.data;
   },
   getSeo: async (page: string = 'home', lang: string = 'tr') => {

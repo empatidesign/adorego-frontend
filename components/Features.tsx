@@ -7,6 +7,24 @@ import { API_BASE_URL } from '../src/api-config';
 const Features: React.FC = () => {
   const { currentLang } = useLanguage();
   
+  const getDefaultHeader = (lang: string) => {
+    if (lang === 'tr') {
+      return {
+        badge: 'ADOREGO TEKNOLOJİ',
+        title: 'Lojistiği Akıllı Teknolojiyle Birleştirdik.',
+        subtitle: 'Gönderi sürecini basitleştiriyor, hızlandırıyor ve daha ekonomik hale getiriyoruz.'
+      };
+    } else {
+      return {
+        badge: 'ADOREGO TECHNOLOGY',
+        title: 'We Combined Logistics with Smart Technology.',
+        subtitle: 'We simplify, accelerate and make the shipping process more economical.'
+      };
+    }
+  };
+
+  const [header, setHeader] = useState(getDefaultHeader(currentLang));
+  
   const getDefaultCta = (lang: string) => {
     if (lang === 'tr') {
       return {
@@ -90,10 +108,24 @@ const Features: React.FC = () => {
   const [features, setFeatures] = useState<any[]>(getDefaultFeatures(currentLang));
 
   useEffect(() => {
+    // Features Header yükle
+    axios.get(`${API_BASE_URL}/content/features-header?lang=${currentLang}`)
+      .then(res => {
+        if (res.data && Object.keys(res.data).length > 0) {
+          setHeader(res.data);
+        } else {
+          setHeader(getDefaultHeader(currentLang));
+        }
+      })
+      .catch(err => {
+        console.error('Features header yüklenemedi:', err);
+        setHeader(getDefaultHeader(currentLang));
+      });
+
     // Features yükle
     axios.get(`${API_BASE_URL}/content/features?lang=${currentLang}`)
       .then(res => {
-        if (res.data && res.data.length > 0) {
+        if (res.data && Array.isArray(res.data) && res.data.length > 0) {
           setFeatures(res.data);
         } else {
           setFeatures(getDefaultFeatures(currentLang));
@@ -127,12 +159,12 @@ const Features: React.FC = () => {
       
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="mb-16 text-center">
-          <span className="text-[#4DB848] font-bold text-[9px] uppercase tracking-[0.2em] mb-3 block">ADOREGO TEKNOLOJİ</span>
+          <span className="text-[#4DB848] font-bold text-[9px] uppercase tracking-[0.2em] mb-3 block">{header.badge}</span>
           <h2 className="text-3xl lg:text-[40px] font-bold text-[#102477] mb-5 tracking-tight leading-tight">
-            Lojistiği Akıllı <span className="text-[#4DB848]">Teknolojiyle</span> Birleştirdik.
+            {header.title}
           </h2>
           <p className="text-md text-slate-500 font-medium max-w-xl mx-auto">
-            Gönderi sürecini basitleştiriyor, hızlandırıyor ve daha ekonomik hale getiriyoruz.
+            {header.subtitle}
           </p>
         </div>
         

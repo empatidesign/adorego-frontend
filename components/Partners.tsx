@@ -64,9 +64,7 @@ const Partners: React.FC = () => {
 
       {/* Marketplace Section (Page 5 PDF) */}
       <div className="py-12 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 mb-8 text-center">
-          <p className="text-[10px] font-black text-gray-300 uppercase tracking-[0.4em]">E-Ticaret Entegrasyonları</p>
-        </div>
+  Yeni Nesil Akıllı Lojistik Teknolojileri Platformu
         <div className="relative flex overflow-x-hidden">
           <div className="flex animate-marquee whitespace-nowrap items-center">
             {marketplaceLogos.map((p, i) => (

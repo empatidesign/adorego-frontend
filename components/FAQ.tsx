@@ -8,6 +8,22 @@ const FAQ: React.FC = () => {
   const { currentLang } = useLanguage();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   
+  const getDefaultHeader = (lang: string) => {
+    if (lang === 'tr') {
+      return {
+        badge: 'BİLGİ MERKEZİ',
+        title: 'Sıkça Sorulan Sorular'
+      };
+    } else {
+      return {
+        badge: 'INFORMATION CENTER',
+        title: 'Frequently Asked Questions'
+      };
+    }
+  };
+
+  const [header, setHeader] = useState(getDefaultHeader(currentLang));
+  
   const getDefaultFaqs = () => {
     if (currentLang === 'tr') {
       return [
@@ -61,9 +77,24 @@ const FAQ: React.FC = () => {
   const [faqs, setFaqs] = useState<any[]>(getDefaultFaqs());
 
   useEffect(() => {
+    // FAQ Header yükle
+    axios.get(`${API_BASE_URL}/content/faq-header?lang=${currentLang}`)
+      .then(res => {
+        if (res.data && Object.keys(res.data).length > 0) {
+          setHeader(res.data);
+        } else {
+          setHeader(getDefaultHeader(currentLang));
+        }
+      })
+      .catch(err => {
+        console.error('FAQ header yüklenemedi:', err);
+        setHeader(getDefaultHeader(currentLang));
+      });
+
+    // FAQ items yükle
     axios.get(`${API_BASE_URL}/content/faq?lang=${currentLang}`)
       .then(res => {
-        if (res.data && res.data.length > 0) {
+        if (res.data && Array.isArray(res.data) && res.data.length > 0) {
           setFaqs(res.data);
         } else {
           setFaqs(getDefaultFaqs());
@@ -96,8 +127,8 @@ const FAQ: React.FC = () => {
       </script>
       <div className="max-w-3xl mx-auto px-6">
         <header className="text-center mb-12">
-          <span className="text-[#4DB848] font-bold text-[9px] uppercase tracking-[0.2em] mb-3 block">BİLGİ MERKEZİ</span>
-          <h2 className="text-3xl font-bold text-[#102477] tracking-tight">Sıkça Sorulan Sorular</h2>
+          <span className="text-[#4DB848] font-bold text-[9px] uppercase tracking-[0.2em] mb-3 block">{header.badge}</span>
+          <h2 className="text-3xl font-bold text-[#102477] tracking-tight">{header.title}</h2>
         </header>
         <div className="space-y-3">
           {faqs.map((faq, idx) => (

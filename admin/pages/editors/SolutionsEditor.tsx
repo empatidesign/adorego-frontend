@@ -17,6 +17,8 @@ const SolutionsEditor: React.FC = () => {
     highlightedTitle: '',
     buttonText: '',
     buttonLink: '',
+    cardTitle: '',
+    cardDescription: '',
     services: [],
     shippingOptions: []
   });
@@ -27,6 +29,8 @@ const SolutionsEditor: React.FC = () => {
     highlightedTitle: '',
     buttonText: '',
     buttonLink: '',
+    cardTitle: '',
+    cardDescription: '',
     services: [],
     shippingOptions: []
   });
@@ -376,6 +380,29 @@ const SolutionsEditor: React.FC = () => {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Gönderim Seçenekleri (Sağ Taraf) */}
+        <div className="bg-white rounded-xl shadow-md p-6 mb-6">
+          <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <i className="fas fa-credit-card text-[#102477]"></i>
+            Sağ Kart Başlığı
+          </h3>
+          
+          <Input
+            label="Kart Başlığı"
+            value={currentData.cardTitle}
+            onChange={(val) => setCurrentData({ ...currentData, cardTitle: val })}
+            placeholder={currentLang === 'tr' ? "Hangi Gönderim Bana Uygun?" : "Which Shipping is Right for Me?"}
+          />
+
+          <TextArea
+            label="Kart Açıklaması"
+            value={currentData.cardDescription}
+            onChange={(val) => setCurrentData({ ...currentData, cardDescription: val })}
+            placeholder={currentLang === 'tr' ? "Kararsızsan sorun değil. Sistem, gönderinin aciliyet ve önceliğine göre en uygun gönderimi seçer." : "No problem if you're undecided. The system selects the most suitable shipping based on urgency and priority."}
+            rows={2}
+          />
         </div>
 
         {/* Gönderim Seçenekleri (Sağ Taraf) */}

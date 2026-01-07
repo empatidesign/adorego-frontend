@@ -48,6 +48,27 @@ const Dashboard: React.FC = () => {
       link: '/admin/solutions',
     },
     {
+      title: 'Gönderdiğe Kazan',
+      description: 'Yurtdışı gönder yurtiçi ucuzlasın ve güven noktalarını yönetin',
+      icon: 'fa-gift',
+      color: 'bg-emerald-500',
+      link: '/admin/target-audience',
+    },
+    {
+      title: 'Popüler Ülkeler',
+      description: 'Popüler destinasyonları ve fiyatları yönetin',
+      icon: 'fa-globe',
+      color: 'bg-sky-500',
+      link: '/admin/popular-destinations',
+    },
+    {
+      title: 'Footer Menüleri',
+      description: 'Footer\'daki 4 menü bölümünü ve linklerini yönetin',
+      icon: 'fa-bars',
+      color: 'bg-slate-500',
+      link: '/admin/footer',
+    },
+    {
       title: 'CTA Banner',
       description: 'Çağrı banner\'ını düzenleyin (Alt kısımdaki kayıt banner\'ı)',
       icon: 'fa-bullhorn',

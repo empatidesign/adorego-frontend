@@ -28,6 +28,9 @@ import FAQEditor from './admin/pages/editors/FAQEditor';
 import SEOEditor from './admin/pages/editors/SEOEditor';
 import SolutionsEditor from './admin/pages/editors/SolutionsEditor';
 import SettingsEditor from './admin/pages/editors/SettingsEditor';
+import TargetAudienceEditor from './admin/pages/editors/TargetAudienceEditor';
+import PopularDestinationsEditor from './admin/pages/editors/PopularDestinationsEditor';
+import FooterEditor from './admin/pages/editors/FooterEditor';
 import ProtectedRoute from './admin/components/ProtectedRoute';
 
 // Ana site sayfası
@@ -165,6 +168,30 @@ const App: React.FC = () => {
           element={
             <ProtectedRoute>
               <SettingsEditor />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/target-audience"
+          element={
+            <ProtectedRoute>
+              <TargetAudienceEditor />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/popular-destinations"
+          element={
+            <ProtectedRoute>
+              <PopularDestinationsEditor />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/footer"
+          element={
+            <ProtectedRoute>
+              <FooterEditor />
             </ProtectedRoute>
           }
         />
