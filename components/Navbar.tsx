@@ -43,7 +43,6 @@ const Navbar: React.FC = () => {
       { id: "4", label: "Gönderi Takibi", link: "#takip", type: "link" },
     ],
     ctaButtons: [
-      { id: "1", label: "PANEL", link: "/admin", icon: "fa-user-shield", style: "outline" },
       { id: "2", label: "ÜYE OL", link: "#", style: "primary" },
     ]
   });

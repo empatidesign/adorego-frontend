@@ -303,6 +303,23 @@ const FooterEditor: React.FC = () => {
     });
   };
 
+  const moveCorporateLink = (index: number, direction: 'up' | 'down') => {
+    setCurrentData((prev: any) => {
+      const newCorporateLinks = [...prev.bottomSection.corporateLinks];
+      const targetIndex = direction === 'up' ? index - 1 : index + 1;
+      
+      if (targetIndex < 0 || targetIndex >= newCorporateLinks.length) return prev;
+      
+      [newCorporateLinks[index], newCorporateLinks[targetIndex]] = 
+      [newCorporateLinks[targetIndex], newCorporateLinks[index]];
+      
+      return {
+        ...prev,
+        bottomSection: { ...prev.bottomSection, corporateLinks: newCorporateLinks }
+      };
+    });
+  };
+
   // Section yönetimi
   const addSection = () => {
     setCurrentData((prev: any) => ({
@@ -736,7 +753,33 @@ const FooterEditor: React.FC = () => {
 
             <div className="space-y-2">
               {currentData.bottomSection?.corporateLinks?.map((link: any, index: number) => (
-                <div key={index} className="flex gap-2">
+                <div key={index} className="flex gap-2 items-center">
+                  <div className="flex flex-col gap-1">
+                    <button
+                      onClick={() => moveCorporateLink(index, 'up')}
+                      disabled={index === 0}
+                      className={`text-xs px-1.5 py-0.5 rounded ${
+                        index === 0 
+                          ? 'text-gray-300 cursor-not-allowed' 
+                          : 'text-gray-600 hover:text-[#4DB848] hover:bg-gray-100'
+                      }`}
+                      title={currentLang === 'tr' ? 'Yukarı taşı' : 'Move up'}
+                    >
+                      <i className="fas fa-chevron-up"></i>
+                    </button>
+                    <button
+                      onClick={() => moveCorporateLink(index, 'down')}
+                      disabled={index === currentData.bottomSection?.corporateLinks?.length - 1}
+                      className={`text-xs px-1.5 py-0.5 rounded ${
+                        index === currentData.bottomSection?.corporateLinks?.length - 1
+                          ? 'text-gray-300 cursor-not-allowed' 
+                          : 'text-gray-600 hover:text-[#4DB848] hover:bg-gray-100'
+                      }`}
+                      title={currentLang === 'tr' ? 'Aşağı taşı' : 'Move down'}
+                    >
+                      <i className="fas fa-chevron-down"></i>
+                    </button>
+                  </div>
                   <input
                     type="text"
                     value={link.name}

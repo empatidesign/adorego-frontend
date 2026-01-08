@@ -8,56 +8,95 @@ type Language = 'tr' | 'en';
 
 const SEOEditor: React.FC = () => {
   const [currentLang, setCurrentLang] = useState<Language>('tr');
-  const [currentPage, setCurrentPage] = useState<string>('home');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
   
   const [seoDataTR, setSeoDataTR] = useState({
-    title: '',
-    description: '',
-    keywords: '',
-    ogTitle: '',
-    ogDescription: '',
+    title: 'adoreGo - Yurtdışı ve Yurtiçi Kargo | Akıllı Lojistik Platformu',
+    description: 'E-ticaret işletmeleri için yurtdışı kargo, yurtiçi kargo ve lojistik çözümleri. Ekonomik fiyatlar, hızlı teslimat, kolay entegrasyon. Shopify, Etsy, Amazon entegrasyonu.',
+    keywords: 'yurtdışı kargo, uluslararası kargo, yurtiçi kargo, mikro ihracat, e-ticaret lojistik, kargo entegrasyonu, shopify kargo, etsy kargo, amazon kargo, express kargo, ekonomik kargo',
+    ogTitle: 'adoreGo - E-Ticaret için Akıllı Lojistik Çözümleri',
+    ogDescription: 'Yurtdışı ve yurtiçi kargo gönderimlerinizi tek platformdan yönetin. E-ticaret sitenize kolayca entegre edin, avantajlı fiyatlarla gönderin.',
     ogImage: '',
     twitterCard: 'summary_large_image',
-    twitterTitle: '',
-    twitterDescription: '',
+    twitterTitle: 'adoreGo - E-Ticaret Lojistik Platformu',
+    twitterDescription: 'Yurtdışı ve yurtiçi kargo çözümleri. Shopify, Etsy, Amazon entegrasyonu. Hızlı, güvenli, ekonomik.',
     twitterImage: '',
-    canonical: '',
+    canonical: 'https://adorego.com',
     robots: 'index, follow',
     author: 'adoreGo',
     language: 'tr',
-    structuredData: {}
+    structuredData: {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "adoreGo",
+      "description": "E-ticaret işletmeleri için yurtdışı ve yurtiçi kargo lojistik platformu",
+      "url": "https://adorego.com",
+      "logo": "https://adorego.com/logo.png",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "availableLanguage": ["Turkish", "English"]
+      },
+      "sameAs": [
+        "https://www.instagram.com/adorego",
+        "https://www.linkedin.com/company/adorego"
+      ],
+      "offers": {
+        "@type": "AggregateOffer",
+        "description": "Yurtdışı ve yurtiçi kargo hizmetleri"
+      }
+    }
   });
 
   const [seoDataEN, setSeoDataEN] = useState({
-    title: '',
-    description: '',
-    keywords: '',
-    ogTitle: '',
-    ogDescription: '',
+    title: 'adoreGo - International & Domestic Shipping | Smart Logistics Platform',
+    description: 'International and domestic shipping solutions for e-commerce businesses. Affordable prices, fast delivery, easy integration. Shopify, Etsy, Amazon integration.',
+    keywords: 'international shipping, overseas cargo, domestic shipping, micro export, e-commerce logistics, shipping integration, shopify shipping, etsy shipping, amazon shipping, express shipping',
+    ogTitle: 'adoreGo - Smart Logistics Solutions for E-Commerce',
+    ogDescription: 'Manage your international and domestic shipments from a single platform. Easy integration with your e-commerce site, ship at competitive prices.',
     ogImage: '',
     twitterCard: 'summary_large_image',
-    twitterTitle: '',
-    twitterDescription: '',
+    twitterTitle: 'adoreGo - E-Commerce Logistics Platform',
+    twitterDescription: 'International and domestic shipping solutions. Shopify, Etsy, Amazon integration. Fast, secure, affordable.',
     twitterImage: '',
-    canonical: '',
+    canonical: 'https://adorego.com',
     robots: 'index, follow',
     author: 'adoreGo',
     language: 'en',
-    structuredData: {}
+    structuredData: {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "adoreGo",
+      "description": "International and domestic shipping logistics platform for e-commerce businesses",
+      "url": "https://adorego.com",
+      "logo": "https://adorego.com/logo.png",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "availableLanguage": ["Turkish", "English"]
+      },
+      "sameAs": [
+        "https://www.instagram.com/adorego",
+        "https://www.linkedin.com/company/adorego"
+      ],
+      "offers": {
+        "@type": "AggregateOffer",
+        "description": "International and domestic shipping services"
+      }
+    }
   });
 
   useEffect(() => {
     loadData();
-  }, [currentPage]);
+  }, []);
 
   const loadData = async () => {
     setLoading(true);
     try {
-      const dataTR = await contentAPI.getSeo(currentPage, 'tr');
-      const dataEN = await contentAPI.getSeo(currentPage, 'en');
+      const dataTR = await contentAPI.getSeo('home', 'tr');
+      const dataEN = await contentAPI.getSeo('home', 'en');
       
       if (Object.keys(dataTR).length > 0) setSeoDataTR(dataTR);
       if (Object.keys(dataEN).length > 0) setSeoDataEN(dataEN);
@@ -73,8 +112,8 @@ const SEOEditor: React.FC = () => {
     setMessage({ type: '', text: '' });
     
     try {
-      await contentAPI.updateSeo(currentPage, seoDataTR, 'tr');
-      await contentAPI.updateSeo(currentPage, seoDataEN, 'en');
+      await contentAPI.updateSeo('home', seoDataTR, 'tr');
+      await contentAPI.updateSeo('home', seoDataEN, 'en');
       setMessage({ type: 'success', text: 'SEO ayarları her iki dil için başarıyla güncellendi!' });
     } catch (error: any) {
       setMessage({ type: 'error', text: error.response?.data?.message || 'Güncelleme başarısız' });
@@ -115,22 +154,7 @@ const SEOEditor: React.FC = () => {
     <AdminLayout>
       <div className="max-w-5xl">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">SEO Yönetimi</h1>
-        <p className="text-gray-600 mb-8">Tüm meta tag'leri, Open Graph ve yapılandırılmış verileri yönetin</p>
-
-        {/* Sayfa Seçici */}
-        <div className="mb-6 bg-white rounded-xl shadow-md p-4">
-          <label className="block text-sm font-bold text-gray-700 mb-2">Sayfa Seçin</label>
-          <Select
-            value={currentPage}
-            onChange={setCurrentPage}
-            options={[
-              { label: '🏠 Ana Sayfa', value: 'home' },
-              { label: '📋 Hakkımızda', value: 'about' },
-              { label: '📞 İletişim', value: 'contact' },
-              { label: '💼 Hizmetler', value: 'services' },
-            ]}
-          />
-        </div>
+        <p className="text-gray-600 mb-8">Ana sayfa için tüm meta tag'leri, Open Graph ve yapılandırılmış verileri yönetin</p>
 
         {/* Dil Sekmeleri */}
         <div className="mb-6 flex gap-2">

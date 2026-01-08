@@ -19,21 +19,59 @@ const SEO: React.FC<SEOProps> = ({
 }) => {
   const { currentLang } = useLanguage();
   const [seoData, setSeoData] = useState<any>({
-    title: 'adoreGo - Yurtdışı Kargo ve Lojistik Çözümleri',
-    description: 'Global lojistik ve yurtdışı kargo çözümleri',
-    keywords: 'yurtdışı kargo, uluslararası kargo, lojistik',
-    ogTitle: 'adoreGo',
-    ogDescription: 'Global lojistik çözümleri',
+    title: currentLang === 'tr' 
+      ? 'adoreGo - Yurtdışı ve Yurtiçi Kargo | Akıllı Lojistik Platformu'
+      : 'adoreGo - International & Domestic Shipping | Smart Logistics Platform',
+    description: currentLang === 'tr'
+      ? 'E-ticaret işletmeleri için yurtdışı kargo, yurtiçi kargo ve lojistik çözümleri. Ekonomik fiyatlar, hızlı teslimat, kolay entegrasyon. Shopify, Etsy, Amazon entegrasyonu.'
+      : 'International and domestic shipping solutions for e-commerce businesses. Affordable prices, fast delivery, easy integration. Shopify, Etsy, Amazon integration.',
+    keywords: currentLang === 'tr'
+      ? 'yurtdışı kargo, uluslararası kargo, yurtiçi kargo, mikro ihracat, e-ticaret lojistik, kargo entegrasyonu, shopify kargo, etsy kargo, amazon kargo, express kargo, ekonomik kargo'
+      : 'international shipping, overseas cargo, domestic shipping, micro export, e-commerce logistics, shipping integration, shopify shipping, etsy shipping, amazon shipping, express shipping',
+    ogTitle: currentLang === 'tr'
+      ? 'adoreGo - E-Ticaret için Akıllı Lojistik Çözümleri'
+      : 'adoreGo - Smart Logistics Solutions for E-Commerce',
+    ogDescription: currentLang === 'tr'
+      ? 'Yurtdışı ve yurtiçi kargo gönderimlerinizi tek platformdan yönetin. E-ticaret sitenize kolayca entegre edin, avantajlı fiyatlarla gönderin.'
+      : 'Manage your international and domestic shipments from a single platform. Easy integration with your e-commerce site, ship at competitive prices.',
     ogImage: 'https://adorego.com/og-image.jpg',
     twitterCard: 'summary_large_image',
-    twitterTitle: 'adoreGo',
-    twitterDescription: 'Global lojistik çözümleri',
+    twitterTitle: currentLang === 'tr'
+      ? 'adoreGo - E-Ticaret Lojistik Platformu'
+      : 'adoreGo - E-Commerce Logistics Platform',
+    twitterDescription: currentLang === 'tr'
+      ? 'Yurtdışı ve yurtiçi kargo çözümleri. Shopify, Etsy, Amazon entegrasyonu. Hızlı, güvenli, ekonomik.'
+      : 'International and domestic shipping solutions. Shopify, Etsy, Amazon integration. Fast, secure, affordable.',
     twitterImage: 'https://adorego.com/og-image.jpg',
     canonical: 'https://adorego.com',
     robots: 'index, follow',
     author: 'adoreGo',
-    language: 'tr',
-    structuredData: {}
+    language: currentLang,
+    structuredData: {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "adoreGo",
+      "description": currentLang === 'tr'
+        ? "E-ticaret işletmeleri için yurtdışı ve yurtiçi kargo lojistik platformu"
+        : "International and domestic shipping logistics platform for e-commerce businesses",
+      "url": "https://adorego.com",
+      "logo": "https://adorego.com/logo.png",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "availableLanguage": ["Turkish", "English"]
+      },
+      "sameAs": [
+        "https://www.instagram.com/adorego",
+        "https://www.linkedin.com/company/adorego"
+      ],
+      "offers": {
+        "@type": "AggregateOffer",
+        "description": currentLang === 'tr'
+          ? "Yurtdışı ve yurtiçi kargo hizmetleri"
+          : "International and domestic shipping services"
+      }
+    }
   });
 
   useEffect(() => {
