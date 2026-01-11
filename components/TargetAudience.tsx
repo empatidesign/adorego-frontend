@@ -16,16 +16,16 @@ const TargetAudience: React.FC = () => {
           highlightedTitle: 'Yurtiçi Ucuzlasın.',
           description: 'Yurtdışı gönderi yaptığınızda sistem sizi aktif kullanıcı olarak tanır ve yurtiçi kargo fiyatlarınız otomatik olarak avantajlı hale gelir.',
           benefits: [
-            'Sistem sizi otomatik tanır, başvuru gerekmez.',
-            'Gönderi sayınız arttıkça fiyatlar kendiliğinden düşer.'
+            { number: '01', text: 'Sistem sizi otomatik tanır, başvuru gerekmez.' },
+            { number: '02', text: 'Gönderi sayınız arttıkça fiyatlar kendiliğinden düşer.' }
           ],
           card: {
-            topBadge: 'Akıllı Fiyatlandırma',
+            topBadge: 'AKILLI FİYATLANDIRMA',
             statusBadge: 'AKTİF',
             fromLabel: 'Standart',
             toLabel: 'Avantajlı Plus',
             discount: '-%40',
-            discountLabel: 'Yurtiçi Kargo İndirimi',
+            discountLabel: 'YURTİÇİ KARGO İNDİRİMİ',
             miniCards: [
               { icon: 'fa-shipping-fast', label: 'Hızlı Teslimat' },
               { icon: 'fa-chart-line', label: 'Otomatik İndirim' }
@@ -140,59 +140,73 @@ const TargetAudience: React.FC = () => {
                 {content.earnSection?.title} <br />
                 <span className="text-[#4DB848]">{content.earnSection?.highlightedTitle}</span>
               </h2>
-              <p className="text-slate-600 text-lg font-medium mb-10 max-w-lg leading-relaxed">
+              <p className="text-slate-600 text-base font-normal mb-10 max-w-lg leading-relaxed">
                 {content.earnSection?.description}
               </p>
               <div className="flex flex-col gap-4">
-                {content.earnSection?.benefits?.map((benefit: string, idx: number) => (
-                  <div key={idx} className="flex items-center gap-4 bg-white p-4 rounded-[10px] shadow-sm border border-slate-200">
-                    <div className="w-8 h-8 bg-[#4DB848] rounded-[5px] flex items-center justify-center font-bold text-xs text-white">
-                      {String(idx + 1).padStart(2, '0')}
+                {content.earnSection?.benefits?.map((benefit: any, idx: number) => {
+                  const benefitText = typeof benefit === 'string' ? benefit : benefit.text;
+                  const benefitNumber = typeof benefit === 'string' ? String(idx + 1).padStart(2, '0') : benefit.number || String(idx + 1).padStart(2, '0');
+                  return (
+                    <div key={idx} className="flex items-center gap-4 bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                      <div className="w-10 h-10 bg-[#4DB848] rounded-full flex items-center justify-center font-bold text-sm text-white shrink-0">
+                        {benefitNumber}
+                      </div>
+                      <p className="font-medium text-sm text-gray-700">{benefitText}</p>
                     </div>
-                    <p className="font-semibold text-[13px] text-slate-700 tracking-tight">{benefit}</p>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
             <div className="hidden lg:block lg:w-1/2 mt-12 lg:mt-0">
-              <div className="relative bg-gradient-to-br from-[#102477] via-[#1a3a9e] to-[#4DB848] rounded-[20px] shadow-2xl p-8">
+              <div className="relative bg-gradient-to-br from-[#102477] via-[#1a3a9e] to-[#102477] rounded-xl shadow-lg p-10 min-h-[600px] flex flex-col justify-between">
                 {/* Üst Badge */}
-                <div className="flex justify-between items-center mb-8">
-                  <span className="bg-white/20 backdrop-blur-md text-white text-[9px] font-bold px-4 py-2 rounded-full uppercase tracking-widest border border-white/30">
+                <div className="flex justify-between items-center mb-10">
+                  <span className="bg-white/10 backdrop-blur-sm text-white text-[9px] font-bold px-4 py-2 rounded-full uppercase tracking-widest border border-white/20">
                     {content.earnSection?.card?.topBadge}
                   </span>
-                  <span className="bg-[#4DB848] text-white text-[9px] font-bold px-4 py-2 rounded-full uppercase tracking-widest shadow-lg">
+                  <span className="bg-[#4DB848] text-white text-[9px] font-bold px-4 py-2 rounded-full uppercase tracking-widest">
                     {content.earnSection?.card?.statusBadge}
                   </span>
                 </div>
 
-                {/* Ana İçerik - Ortada */}
-                <div className="text-center my-12">
-                  <div className="bg-white/10 backdrop-blur-md rounded-[20px] px-10 py-12 border border-white/30">
-                    <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-4">{content.earnSection?.card?.fromLabel}</p>
-                    
-                    <div className="flex items-center justify-center gap-6 my-8">
-                      <div className="w-20 h-1.5 bg-white/40 rounded-full"></div>
-                      <i className="fas fa-arrow-right text-white text-3xl"></i>
-                      <div className="w-20 h-1.5 bg-[#4DB848] rounded-full shadow-lg shadow-green-500/50"></div>
+                {/* Orta Bölüm - Fiyatlandırma ve İndirim */}
+                <div className="flex-1 flex flex-col justify-center">
+                  {/* Fiyatlandırma Göstergesi */}
+                  <div className="mb-12">
+                    <div className="flex items-center justify-between mb-4">
+                      <p className="text-white text-sm font-medium">{content.earnSection?.card?.fromLabel}</p>
+                      <div className="flex-1 mx-4 relative h-2.5">
+                        <div className="h-full bg-gray-300/30 rounded-full overflow-hidden">
+                          <div className="h-full relative">
+                            <div className="absolute left-0 top-0 w-1/2 h-full bg-gray-400/50 rounded-l-full"></div>
+                            <div className="absolute left-1/2 top-0 w-1/2 h-full bg-[#4DB848] rounded-r-full"></div>
+                            <div className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-lg z-10">
+                              <i className="fas fa-arrow-right text-[#4DB848] text-xs"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-white text-sm font-medium">{content.earnSection?.card?.toLabel}</p>
                     </div>
-                    
-                    <p className="text-white text-sm font-bold uppercase tracking-widest mb-12">{content.earnSection?.card?.toLabel}</p>
-                    
-                    <div className="pt-8 border-t border-white/30">
-                      <p className="text-6xl font-black text-white mb-3 drop-shadow-lg">{content.earnSection?.card?.discount}</p>
-                      <p className="text-[#4DB848] text-xs font-bold uppercase tracking-widest">
-                        {content.earnSection?.card?.discountLabel}
-                      </p>
-                    </div>
+                  </div>
+                  
+                  {/* İndirim */}
+                  <div className="text-center mb-12">
+                    <p className="text-[120px] font-black mb-4 leading-none bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 bg-clip-text text-transparent">
+                      {content.earnSection?.card?.discount}
+                    </p>
+                    <p className="text-white text-[11px] font-bold uppercase tracking-[0.15em]">
+                      {content.earnSection?.card?.discountLabel}
+                    </p>
                   </div>
                 </div>
 
                 {/* Alt Mini Kartlar */}
                 <div className="grid grid-cols-2 gap-4 mt-8">
                   {content.earnSection?.card?.miniCards?.map((card: any, idx: number) => (
-                    <div key={idx} className="bg-white/10 backdrop-blur-md rounded-[16px] p-5 border border-white/30 text-center">
-                      <i className={`fas ${card.icon} text-[#4DB848] text-3xl mb-3`}></i>
+                    <div key={idx} className="bg-white/10 backdrop-blur-sm rounded-lg p-5 border border-white/20 text-center">
+                      <i className={`fas ${card.icon} text-[#4DB848] text-2xl mb-3 block`}></i>
                       <p className="text-white text-xs font-bold">{card.label}</p>
                     </div>
                   ))}

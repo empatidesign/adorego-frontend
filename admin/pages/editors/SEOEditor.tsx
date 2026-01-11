@@ -8,10 +8,11 @@ type Language = 'tr' | 'en';
 
 const SEOEditor: React.FC = () => {
   const [currentLang, setCurrentLang] = useState<Language>('tr');
+  const [currentPage, setCurrentPage] = useState('home');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
-  
+
   const [seoDataTR, setSeoDataTR] = useState({
     title: 'adoreGo - Yurtdışı ve Yurtiçi Kargo | Akıllı Lojistik Platformu',
     description: 'E-ticaret işletmeleri için yurtdışı kargo, yurtiçi kargo ve lojistik çözümleri. Ekonomik fiyatlar, hızlı teslimat, kolay entegrasyon. Shopify, Etsy, Amazon entegrasyonu.',
@@ -95,9 +96,9 @@ const SEOEditor: React.FC = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const dataTR = await contentAPI.getSeo('home', 'tr');
-      const dataEN = await contentAPI.getSeo('home', 'en');
-      
+      const dataTR = await contentAPI.getSeo(currentPage, 'tr');
+      const dataEN = await contentAPI.getSeo(currentPage, 'en');
+
       if (Object.keys(dataTR).length > 0) setSeoDataTR(dataTR);
       if (Object.keys(dataEN).length > 0) setSeoDataEN(dataEN);
     } catch (error) {
@@ -110,10 +111,10 @@ const SEOEditor: React.FC = () => {
   const handleSave = async () => {
     setSaving(true);
     setMessage({ type: '', text: '' });
-    
+
     try {
-      await contentAPI.updateSeo('home', seoDataTR, 'tr');
-      await contentAPI.updateSeo('home', seoDataEN, 'en');
+      await contentAPI.updateSeo(currentPage, seoDataTR, 'tr');
+      await contentAPI.updateSeo(currentPage, seoDataEN, 'en');
       setMessage({ type: 'success', text: 'SEO ayarları her iki dil için başarıyla güncellendi!' });
     } catch (error: any) {
       setMessage({ type: 'error', text: error.response?.data?.message || 'Güncelleme başarısız' });
@@ -154,36 +155,50 @@ const SEOEditor: React.FC = () => {
     <AdminLayout>
       <div className="max-w-5xl">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">SEO Yönetimi</h1>
-        <p className="text-gray-600 mb-8">Ana sayfa için tüm meta tag'leri, Open Graph ve yapılandırılmış verileri yönetin</p>
+        <p className="text-gray-600 mb-8">Tüm meta tag'leri, Open Graph ve yapılandırılmış verileri yönetin</p>
+
+        {/* Sayfa Seçici */}
+        <div className="mb-6 bg-white rounded-xl shadow-md p-4">
+          <label className="block text-sm font-bold text-gray-700 mb-2">Sayfa Seçin</label>
+          <Select
+            value={currentPage}
+            onChange={setCurrentPage}
+            options={[
+              { label: '🏠 Ana Sayfa', value: 'home' },
+              { label: '💰 Fiyatlar', value: 'pricing' },
+              { label: '📖 Nasıl Gönderirim?', value: 'how-to-send' },
+              { label: '📋 Hakkımızda', value: 'about' },
+              { label: '📞 İletişim', value: 'contact' },
+              { label: '💼 Hizmetler', value: 'services' },
+            ]}
+          />
+        </div>
 
         {/* Dil Sekmeleri */}
         <div className="mb-6 flex gap-2">
           <button
             onClick={() => setCurrentLang('tr')}
-            className={`px-6 py-2 rounded-lg font-bold transition-all ${
-              currentLang === 'tr'
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
+            className={`px-6 py-2 rounded-lg font-bold transition-all ${currentLang === 'tr'
+              ? 'bg-blue-600 text-white shadow-md'
+              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
           >
             🇹🇷 Türkçe
           </button>
           <button
             onClick={() => setCurrentLang('en')}
-            className={`px-6 py-2 rounded-lg font-bold transition-all ${
-              currentLang === 'en'
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
+            className={`px-6 py-2 rounded-lg font-bold transition-all ${currentLang === 'en'
+              ? 'bg-blue-600 text-white shadow-md'
+              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
           >
             🇬🇧 English
           </button>
         </div>
 
         {message.text && (
-          <div className={`mb-6 p-4 rounded-lg ${
-            message.type === 'success' ? 'bg-green-50 text-green-800 border border-green-200' : 'bg-red-50 text-red-800 border border-red-200'
-          }`}>
+          <div className={`mb-6 p-4 rounded-lg ${message.type === 'success' ? 'bg-green-50 text-green-800 border border-green-200' : 'bg-red-50 text-red-800 border border-red-200'
+            }`}>
             {message.text}
           </div>
         )}
@@ -331,7 +346,7 @@ const SEOEditor: React.FC = () => {
             <i className="fas fa-code text-purple-500"></i>
             Yapılandırılmış Veri (Schema.org)
           </h3>
-          
+
           <TextArea
             label="Structured Data (JSON-LD)"
             value={JSON.stringify(currentSeoData.structuredData, null, 2)}
@@ -346,7 +361,7 @@ const SEOEditor: React.FC = () => {
             rows={10}
           />
           <p className="text-xs text-gray-500 mt-2">
-            Schema.org formatında JSON-LD verisini buraya girin. 
+            Schema.org formatında JSON-LD verisini buraya girin.
             <a href="https://schema.org" target="_blank" rel="noopener noreferrer" className="text-blue-500 ml-1">
               Daha fazla bilgi →
             </a>
@@ -359,7 +374,7 @@ const SEOEditor: React.FC = () => {
             <i className="fas fa-eye text-green-500"></i>
             Google Arama Önizlemesi
           </h3>
-          
+
           <div className="border rounded-lg p-4 bg-gray-50">
             <div className="text-xs text-gray-500 mb-1">{currentSeoData.canonical || 'https://adorego.com'}</div>
             <div className="text-blue-600 text-xl mb-1 hover:underline cursor-pointer">

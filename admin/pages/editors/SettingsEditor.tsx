@@ -5,7 +5,7 @@ import ImageUpload from '../../components/forms/ImageUpload';
 import { contentAPI } from '../../services/api';
 
 type Language = 'tr' | 'en';
-type Tab = 'general' | 'contact' | 'social' | 'company';
+type Tab = 'general' | 'contact' | 'socialMedia' | 'company';
 
 const SettingsEditor: React.FC = () => {
   const [currentLang, setCurrentLang] = useState<Language>('tr');
@@ -13,7 +13,7 @@ const SettingsEditor: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
-  
+
   // Tüm ayarlar için state
   const [settingsTR, setSettingsTR] = useState<any>({
     general: {},
@@ -52,19 +52,19 @@ const SettingsEditor: React.FC = () => {
   const handleSave = async () => {
     setSaving(true);
     setMessage({ type: '', text: '' });
-    
+
     try {
       // Dil farkı kontrolü
       const trData = JSON.stringify(settingsTR[activeTab] || {});
       const enData = JSON.stringify(settingsEN[activeTab] || {});
       const hasDifference = trData !== enData;
-      
+
       // Eğer dil farkı yoksa, aynı veriyi her iki dile de kaydet
       if (!hasDifference) {
         const dataToSave = (currentLang === 'tr' ? settingsTR : settingsEN)[activeTab];
         await contentAPI.updateSiteSettings(activeTab, dataToSave, 'tr');
         await contentAPI.updateSiteSettings(activeTab, dataToSave, 'en');
-        
+
         if (activeTab === 'company') {
           await contentAPI.updateSiteSettings('schema', (currentLang === 'tr' ? settingsTR : settingsEN).schema, 'tr');
           await contentAPI.updateSiteSettings('schema', (currentLang === 'tr' ? settingsTR : settingsEN).schema, 'en');
@@ -73,13 +73,13 @@ const SettingsEditor: React.FC = () => {
         // Dil farkı varsa, her birini ayrı kaydet
         await contentAPI.updateSiteSettings(activeTab, settingsTR[activeTab], 'tr');
         await contentAPI.updateSiteSettings(activeTab, settingsEN[activeTab], 'en');
-        
+
         if (activeTab === 'company') {
           await contentAPI.updateSiteSettings('schema', settingsTR.schema, 'tr');
           await contentAPI.updateSiteSettings('schema', settingsEN.schema, 'en');
         }
       }
-      
+
       setMessage({ type: 'success', text: 'Ayarlar başarıyla güncellendi!' });
       // Verileri yeniden yükle
       await loadData();
@@ -98,7 +98,7 @@ const SettingsEditor: React.FC = () => {
   const tabs = [
     { id: 'general' as Tab, label: 'Genel Ayarlar', icon: 'fa-cog' },
     { id: 'contact' as Tab, label: 'İletişim', icon: 'fa-address-book' },
-    { id: 'social' as Tab, label: 'Sosyal Medya', icon: 'fa-share-nodes' },
+    { id: 'socialMedia' as Tab, label: 'Sosyal Medya', icon: 'fa-share-nodes' },
     { id: 'company' as Tab, label: 'Şirket', icon: 'fa-building' },
   ];
 
@@ -122,7 +122,7 @@ const SettingsEditor: React.FC = () => {
     }
   }, [activeTab, loading, currentLang, settingsTR, settingsEN]);
 
-  const currentSettings = currentLang === 'tr' ? settingsTR : settingsEN;
+  const currentSettings = (currentLang === 'tr' ? settingsTR : settingsEN) || {};
   const setCurrentSettings = currentLang === 'tr' ? setSettingsTR : setSettingsEN;
 
   if (loading) {
@@ -147,21 +147,13 @@ const SettingsEditor: React.FC = () => {
             <div className="flex gap-2 mb-2">
               <button
                 onClick={() => setCurrentLang('tr')}
-                className={`px-6 py-2 rounded-lg font-bold transition-all ${
-                  currentLang === 'tr'
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
+                className={`px-6 py-2 rounded-lg font-bold transition-all ${currentLang === 'tr' ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
               >
                 🇹🇷 Türkçe
               </button>
               <button
                 onClick={() => setCurrentLang('en')}
-                className={`px-6 py-2 rounded-lg font-bold transition-all ${
-                  currentLang === 'en'
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
+                className={`px-6 py-2 rounded-lg font-bold transition-all ${currentLang === 'en' ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
               >
                 🇬🇧 English
               </button>
@@ -183,9 +175,7 @@ const SettingsEditor: React.FC = () => {
         )}
 
         {message.text && (
-          <div className={`mb-6 p-4 rounded-lg ${
-            message.type === 'success' ? 'bg-green-50 text-green-800 border border-green-200' : 'bg-red-50 text-red-800 border border-red-200'
-          }`}>
+          <div className={`mb-6 p-4 rounded-lg ${message.type === 'success' ? 'bg-green-50 text-green-800 border border-green-200' : 'bg-red-50 text-red-800 border border-red-200'}`}>
             {message.text}
           </div>
         )}
@@ -198,11 +188,7 @@ const SettingsEditor: React.FC = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-6 py-4 text-sm font-medium border-b-2 transition-all whitespace-nowrap ${
-                    activeTab === tab.id
-                      ? 'border-[#4DB848] text-[#4DB848] bg-green-50'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                  className={`flex items-center gap-2 px-6 py-4 text-sm font-medium border-b-2 transition-all whitespace-nowrap ${activeTab === tab.id ? 'border-[#4DB848] text-[#4DB848] bg-green-50' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
                 >
                   <i className={`fas ${tab.icon}`}></i>
                   {tab.label}
@@ -274,6 +260,62 @@ const SettingsEditor: React.FC = () => {
                     type="email"
                   />
                 </div>
+
+                {/* Logo Yükleme Alanları */}
+                <div className="border-t pt-6 mt-6">
+                  <h4 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <i className="fas fa-image text-purple-500"></i>
+                    Logo Ayarları
+                  </h4>
+
+                  <div className="space-y-6">
+                    {/* Header Logo (Navbar/Header Logo) */}
+                    <div>
+                      <ImageUpload
+                        label="Header Logo (Navbar/Site Başlığında Kullanılan)"
+                        currentImage={currentSettings.general?.headerLogo || ''}
+                        onImageUploaded={(url) => setCurrentSettings({
+                          ...currentSettings,
+                          general: { ...currentSettings.general, headerLogo: url }
+                        })}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Site header ve navbar bölümünde görüntülenecek logo
+                      </p>
+                    </div>
+
+                    {/* Footer Logo */}
+                    <div>
+                      <ImageUpload
+                        label="Footer Logo (Footer'da Kullanılan)"
+                        currentImage={currentSettings.general?.footerLogo || ''}
+                        onImageUploaded={(url) => setCurrentSettings({
+                          ...currentSettings,
+                          general: { ...currentSettings.general, footerLogo: url }
+                        })}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Site footer bölümünde görüntülenecek logo
+                      </p>
+                    </div>
+
+                    {/* Favicon */}
+                    <div>
+                      <ImageUpload
+                        label="Favicon (Tarayıcı Sekmesi İkonu)"
+                        currentImage={currentSettings.general?.favicon || ''}
+                        onImageUploaded={(url) => setCurrentSettings({
+                          ...currentSettings,
+                          general: { ...currentSettings.general, favicon: url }
+                        })}
+                        acceptedFormats="image/png,image/x-icon,image/svg+xml"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Tarayıcı sekmesinde görüntülenecek favicon (16x16 veya 32x32 piksel, PNG, ICO veya SVG formatında önerilir)
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
 
@@ -338,11 +380,25 @@ const SettingsEditor: React.FC = () => {
                   })}
                   placeholder="Pazartesi - Cuma: 09:00 - 18:00"
                 />
+
+                <TextArea
+                  label="Google Harita Embed Kodu"
+                  value={currentSettings.contact?.googleMapsEmbed || ''}
+                  onChange={(val) => setCurrentSettings({
+                    ...currentSettings,
+                    contact: { ...currentSettings.contact, googleMapsEmbed: val }
+                  })}
+                  placeholder='<iframe src="https://www.google.com/maps/embed?pb=..." ...></iframe>'
+                  rows={4}
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Google Haritalar'dan aldığınız iframe embed kodunu buraya yapıştırın.
+                </p>
               </div>
             )}
 
             {/* Sosyal Medya */}
-            {activeTab === 'social' && (
+            {activeTab === 'socialMedia' && (
               <div className="space-y-6">
                 <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
                   <i className="fas fa-share-nodes text-rose-500"></i>

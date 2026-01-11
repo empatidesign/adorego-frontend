@@ -116,14 +116,23 @@ const Solutions: React.FC = () => {
     // API'den yükle
     axios.get(`${API_BASE_URL}/content/solutions?lang=${currentLang}`)
       .then(res => {
-        if (res.data && Object.keys(res.data).length > 0) {
-          // API'den gelen veriyi default ile merge et
+        if (res.data && Object.keys(res.data).length > 0 && (res.data.badge || res.data.title || res.data.services || res.data.shippingOptions)) {
+          // API'den gelen veriyi kullan, eksik olanları default ile doldur
           const defaultData = getDefaultContent();
           const mergedData = {
-            ...defaultData,
-            ...res.data,
-            services: (res.data.services && res.data.services.length > 0) ? res.data.services : defaultData.services,
-            shippingOptions: (res.data.shippingOptions && res.data.shippingOptions.length > 0) ? res.data.shippingOptions : defaultData.shippingOptions
+            badge: res.data.badge || defaultData.badge,
+            title: res.data.title || defaultData.title,
+            highlightedTitle: res.data.highlightedTitle || defaultData.highlightedTitle,
+            buttonText: res.data.buttonText || defaultData.buttonText,
+            buttonLink: res.data.buttonLink || defaultData.buttonLink,
+            cardTitle: res.data.cardTitle || defaultData.cardTitle,
+            cardDescription: res.data.cardDescription || defaultData.cardDescription,
+            services: (res.data.services && Array.isArray(res.data.services) && res.data.services.length > 0) 
+              ? res.data.services.sort((a: any, b: any) => (a.order || 0) - (b.order || 0))
+              : defaultData.services,
+            shippingOptions: (res.data.shippingOptions && Array.isArray(res.data.shippingOptions) && res.data.shippingOptions.length > 0)
+              ? res.data.shippingOptions.sort((a: any, b: any) => (a.order || 0) - (b.order || 0))
+              : defaultData.shippingOptions
           };
           setContent(mergedData);
         } else {
@@ -173,10 +182,6 @@ const Solutions: React.FC = () => {
           {/* Sağ Taraf - Kart Önerisi */}
           <div className="relative lg:sticky lg:top-24">
             <div className="bg-gradient-to-br from-[#102477] via-[#1a3a9e] to-[#102477] rounded-[20px] p-10 text-white relative overflow-hidden shadow-2xl">
-              {/* Dekoratif Elementler */}
-              <div className="absolute top-0 right-0 w-40 h-40 bg-[#4DB848]/20 rounded-full blur-3xl"></div>
-              <div className="absolute bottom-0 left-0 w-40 h-40 bg-blue-400/20 rounded-full blur-3xl"></div>
-              
               <div className="relative z-10">
                 <h3 className="text-2xl font-bold mb-4 tracking-tight">{content.cardTitle || 'Hangi Gönderim Bana Uygun?'}</h3>
                 <p className="text-white/70 text-sm mb-8 font-medium leading-relaxed">
@@ -207,14 +212,16 @@ const Solutions: React.FC = () => {
                       {selectedOption === option.id && (
                         <div className="px-5 pb-5 pt-2 border-t border-white/10">
                           <p className="text-sm text-white/80 mb-3 leading-relaxed">{option.description}</p>
-                          <ul className="space-y-2">
-                            {option.features?.map((feature: string, idx: number) => (
-                              <li key={idx} className="flex items-center gap-2 text-xs text-white/70">
-                                <i className="fas fa-check text-[#4DB848]"></i>
-                                {feature}
-                              </li>
-                            ))}
-                          </ul>
+                          {option.features && option.features.length > 0 && (
+                            <ul className="space-y-2">
+                              {option.features.map((feature: string, idx: number) => (
+                                <li key={idx} className="flex items-center gap-2 text-xs text-white/70">
+                                  <i className="fas fa-check text-[#4DB848]"></i>
+                                  {feature}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
                         </div>
                       )}
                     </button>

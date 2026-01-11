@@ -30,8 +30,27 @@ import SolutionsEditor from './admin/pages/editors/SolutionsEditor';
 import SettingsEditor from './admin/pages/editors/SettingsEditor';
 import TargetAudienceEditor from './admin/pages/editors/TargetAudienceEditor';
 import PopularDestinationsEditor from './admin/pages/editors/PopularDestinationsEditor';
-import FooterEditor from './admin/pages/editors/FooterEditor';
+import HowToSendEditor from './admin/pages/editors/HowToSendEditor';
+import PricingEditor from './admin/pages/editors/PricingEditor';
+import ContentPagesList from './admin/pages/ContentPagesList';
+import ContentPageEdit from './admin/pages/ContentPageEdit';
+import ContentPageNew from './admin/pages/ContentPageNew';
+import BlogList from './admin/pages/BlogList';
+import BlogNew from './admin/pages/BlogNew';
+import BlogEdit from './admin/pages/BlogEdit';
 import ProtectedRoute from './admin/components/ProtectedRoute';
+
+// Sayfalar
+import Pricing from './pages/Pricing';
+import HowToSend from './pages/HowToSend';
+import Tracking from './pages/Tracking';
+import ContentPage from './pages/ContentPage';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
+import Contact from './pages/Contact';
+import InternationalShipping from './pages/InternationalShipping';
+import DomesticShipping from './pages/DomesticShipping';
+import WhatsAppButton from './components/WhatsAppButton';
 
 // Ana site sayfası
 const MainSite: React.FC = () => {
@@ -41,7 +60,7 @@ const MainSite: React.FC = () => {
       <Navbar />
       <main className="flex-grow">
         <Hero />
-        
+
         {/* Yurtdışı Kargo Bölümü */}
         <div id="yurtdisi" className="bg-gradient-to-b from-white to-blue-50/30">
           <HowItWorks />
@@ -76,126 +95,199 @@ const App: React.FC = () => {
     <LanguageProvider>
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <Routes>
-        {/* Ana site */}
-        <Route path="/" element={<MainSite />} />
-        
-        {/* Admin - Login */}
-        <Route path="/admin" element={<Login />} />
-        
-        {/* Admin - Protected routes */}
-        <Route
-          path="/admin/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/navbar"
-          element={
-            <ProtectedRoute>
-              <NavbarEditor />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/hero"
-          element={
-            <ProtectedRoute>
-              <HeroEditor />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/howitworks"
-          element={
-            <ProtectedRoute>
-              <HowItWorksEditor />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/features"
-          element={
-            <ProtectedRoute>
-              <FeaturesEditor />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/partners"
-          element={
-            <ProtectedRoute>
-              <PartnersEditor />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/solutions"
-          element={
-            <ProtectedRoute>
-              <SolutionsEditor />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/cta"
-          element={
-            <ProtectedRoute>
-              <CTAEditor />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/faq"
-          element={
-            <ProtectedRoute>
-              <FAQEditor />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/seo"
-          element={
-            <ProtectedRoute>
-              <SEOEditor />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/settings"
-          element={
-            <ProtectedRoute>
-              <SettingsEditor />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/target-audience"
-          element={
-            <ProtectedRoute>
-              <TargetAudienceEditor />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/popular-destinations"
-          element={
-            <ProtectedRoute>
-              <PopularDestinationsEditor />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/footer"
-          element={
-            <ProtectedRoute>
-              <FooterEditor />
-            </ProtectedRoute>
-          }
-        />
+          {/* Ana site */}
+          <Route path="/" element={<MainSite />} />
+          <Route path="/yurtdisi-kargo" element={<InternationalShipping />} />
+          <Route path="/yurtici-kargo" element={<DomesticShipping />} />
+          <Route path="/fiyatlar" element={<Pricing />} />
+          <Route path="/nasil-gonderirim" element={<HowToSend />} />
+          <Route path="/gonderi-takibi" element={<Tracking />} />
+
+
+          {/* Blog */}
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+
+          {/* İletişim */}
+          <Route path="/iletisim" element={<Contact />} />
+
+          {/* Dynamic Content Pages (Last to avoid conflicts) */}
+          <Route path="/:slug" element={<ContentPage />} />
+
+          {/* Admin - Login */}
+          <Route path="/admin" element={<Login />} />
+
+          {/* Admin - Protected routes */}
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/navbar"
+            element={
+              <ProtectedRoute>
+                <NavbarEditor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/hero"
+            element={
+              <ProtectedRoute>
+                <HeroEditor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/howitworks"
+            element={
+              <ProtectedRoute>
+                <HowItWorksEditor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/howtosend"
+            element={
+              <ProtectedRoute>
+                <HowToSendEditor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/pricing"
+            element={
+              <ProtectedRoute>
+                <PricingEditor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/features"
+            element={
+              <ProtectedRoute>
+                <FeaturesEditor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/partners"
+            element={
+              <ProtectedRoute>
+                <PartnersEditor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/solutions"
+            element={
+              <ProtectedRoute>
+                <SolutionsEditor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/cta"
+            element={
+              <ProtectedRoute>
+                <CTAEditor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/faq"
+            element={
+              <ProtectedRoute>
+                <FAQEditor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/seo"
+            element={
+              <ProtectedRoute>
+                <SEOEditor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/settings"
+            element={
+              <ProtectedRoute>
+                <SettingsEditor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/target-audience"
+            element={
+              <ProtectedRoute>
+                <TargetAudienceEditor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/popular-destinations"
+            element={
+              <ProtectedRoute>
+                <PopularDestinationsEditor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/content-pages"
+            element={
+              <ProtectedRoute>
+                <ContentPagesList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/content-pages/new"
+            element={
+              <ProtectedRoute>
+                <ContentPageNew />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/content-pages/edit/:slug"
+            element={
+              <ProtectedRoute>
+                <ContentPageEdit />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/blog"
+            element={
+              <ProtectedRoute>
+                <BlogList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/blog/new"
+            element={
+              <ProtectedRoute>
+                <BlogNew />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/blog/edit/:id"
+            element={
+              <ProtectedRoute>
+                <BlogEdit />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
+        <WhatsAppButton />
       </BrowserRouter>
     </LanguageProvider>
   );

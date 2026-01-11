@@ -8,8 +8,8 @@ const Logo: React.FC<{ className?: string }> = ({ className = "h-8" }) => (
   <div className={`flex items-center ${className} select-none`}>
     <svg viewBox="0 0 240 60" className="h-full w-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
       <text x="0" y="45" fill="#102477" style={{ font: 'bold 44px Outfit, sans-serif', letterSpacing: '-2px' }}>adore</text>
-      <path d="M145 45.5C136.5 45.5 129.5 38.5 129.5 30C129.5 21.5 136.5 14.5 145 14.5C153.5 14.5 160.5 21.5 160.5 30C160.5 31.5 160.2 33 159.7 34.3" stroke="#4DB848" strokeWidth="8" strokeLinecap="round"/>
-      <path d="M152 45L162 45L162 35" stroke="#4DB848" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M145 45.5C136.5 45.5 129.5 38.5 129.5 30C129.5 21.5 136.5 14.5 145 14.5C153.5 14.5 160.5 21.5 160.5 30C160.5 31.5 160.2 33 159.7 34.3" stroke="#4DB848" strokeWidth="8" strokeLinecap="round" />
+      <path d="M152 45L162 45L162 35" stroke="#4DB848" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
       <text x="168" y="45" fill="#4DB848" style={{ font: 'bold 44px Outfit, sans-serif', letterSpacing: '-1px' }}>o</text>
     </svg>
   </div>
@@ -51,12 +51,12 @@ const Footer: React.FC = () => {
         ],
         corporateTitle: 'Kurumsal Bağlantılar',
         corporateLinks: [
-          { name: 'Hakkımızda', url: '#' },
-          { name: 'İletişim', url: '#' },
-          { name: 'Destek', url: '#' },
-          { name: 'Gizlilik Politikası', url: '#' },
-          { name: 'Kullanım Şartları', url: '#' },
-          { name: 'KVKK Aydınlatma', url: '#' }
+          { name: 'Hakkımızda', url: '/hakkimizda' },
+          { name: 'İletişim', url: '/iletisim' },
+          { name: 'Destek', url: '/destek' },
+          { name: 'Gizlilik Politikası', url: '/gizlilik-politikasi' },
+          { name: 'Kullanım Şartları', url: '/kullanim-sartlari' },
+          { name: 'KVKK Aydınlatma', url: '/kvkk-aydinlatma' }
         ],
         copyrightText: '© 2024 adoreGo. Site kargo firması vitrini değil, teknoloji lojistik platformudur.'
       };
@@ -70,12 +70,12 @@ const Footer: React.FC = () => {
         ],
         corporateTitle: 'Corporate Links',
         corporateLinks: [
-          { name: 'About Us', url: '#' },
-          { name: 'Contact', url: '#' },
-          { name: 'Support', url: '#' },
-          { name: 'Privacy Policy', url: '#' },
-          { name: 'Terms of Use', url: '#' },
-          { name: 'GDPR Notice', url: '#' }
+          { name: 'About Us', url: '/hakkimizda' },
+          { name: 'Contact', url: '/iletisim' },
+          { name: 'Support', url: '/destek' },
+          { name: 'Privacy Policy', url: '/gizlilik-politikasi' },
+          { name: 'Terms of Use', url: '/kullanim-sartlari' },
+          { name: 'GDPR Notice', url: '/kvkk-aydinlatma' }
         ],
         copyrightText: '© 2024 adoreGo. This site is not a cargo company showcase, but a technology logistics platform.'
       };
@@ -88,46 +88,46 @@ const Footer: React.FC = () => {
         {
           title: "1-Hizmetlerimiz",
           links: [
-            { n: "Yurtdışı Kargo", h: "#yurtdisi" },
-            { n: "Ekonomik Kargo", h: "#yurtdisi" },
-            { n: "Express Kargo", h: "#yurtdisi" },
-            { n: "Yurtdışından Türkiye'ye", h: "#yurtdisi" },
-            { n: "Yurtiçi Avantajlar", h: "#yurtici" },
-            { n: "Alıcı Ödemeli Kargo", h: "#yurtici" },
-            { n: "Kapıda Ödemeli Kargo", h: "#yurtici" },
-            { n: "Büyük Desi Gönderimler", h: "#yurtici" }
+            { n: "Yurtdışı Kargo", h: "/yurtdisi-kargo" },
+            { n: "Ekonomik Kargo", h: "/ekonomik-kargo" },
+            { n: "Express Kargo", h: "/express-kargo" },
+            { n: "Yurtdışından Türkiye'ye", h: "/yurtdisindan-turkiye-ye" },
+            { n: "Yurtiçi Avantajlar", h: "/yurtici-kargo" },
+            { n: "Alıcı Ödemeli Kargo", h: "/alici-odemeli-kargo" },
+            { n: "Kapıda Ödemeli Kargo", h: "/kapida-odemeli-kargo" },
+            { n: "Büyük Desi Gönderimler", h: "/buyuk-desi-gonderimler" }
           ]
         },
         {
           title: "2-Nasıl Çalışır?",
           links: [
-            { n: "Nasıl Gönderirim?", h: "#nasil-calisir" },
-            { n: "Kapıdan Alım – Teslim", h: "#nasil-calisir" },
-            { n: "İlk Kez Gönderenler", h: "#nasil-calisir" },
-            { n: "Gümrük & Evrak Rehberi", h: "#nasil-calisir" },
-            { n: "Yurtdışı İade & Geri", h: "#nasil-calisir" },
-            { n: "Hangi Gönderim Uygun?", h: "#nasil-calisir" }
+            { n: "Nasıl Gönderirim?", h: "/nasil-gonderirim" },
+            { n: "Kapıdan Alım – Teslim", h: "/kapidan-alim-teslim" },
+            { n: "İlk Kez Gönderenler", h: "/ilk-kez-gonderenler" },
+            { n: "Gümrük & Evrak Rehberi", h: "/gumruk-evrak-rehberi" },
+            { n: "Yurtdışı İade & Geri", h: "/yurtdisi-iade-geri" },
+            { n: "Hangi Gönderim Uygun?", h: "/hangi-gonderim-uygun" }
           ]
         },
         {
           title: "3-Bilgi & Kaynaklar",
           links: [
-            { n: "Lojistik Blog", h: "#" },
-            { n: "Sıkça Sorulan Sorular", h: "#sss" },
-            { n: "Yurtdışı Kargo Rehberi", h: "#" },
-            { n: "Mikro İhracat Rehberi", h: "#" },
-            { n: "Gümrük Rehberi", h: "#" },
-            { n: "Güncel Duyurular", h: "#" }
+            { n: "Blog", h: "/blog" },
+            { n: "Sıkça Sorulan Sorular", h: "/sikca-sorulan-sorular" },
+            { n: "Yurtdışı Kargo Rehberi", h: "/yurtdisi-kargo-rehberi" },
+            { n: "Mikro İhracat Rehberi", h: "/mikro-ihracat-rehberi" },
+            { n: "Gümrük Rehberi", h: "/gumruk-rehberi" },
+            { n: "Güncel Duyurular", h: "/duyurular" }
           ]
         },
         {
           title: "4-Entegrasyonlar",
           links: [
-            { n: "Shopify Entegrasyonu", h: "#" },
-            { n: "Etsy Entegrasyonu", h: "#" },
-            { n: "Amazon Entegrasyonu", h: "#" },
-            { n: "WooCommerce", h: "#" },
-            { n: "Özel Site Kargo API", h: "#" }
+            { n: "Shopify Entegrasyonu", h: "/shopify-entegrasyonu" },
+            { n: "Etsy Entegrasyonu", h: "/etsy-entegrasyonu" },
+            { n: "Amazon Entegrasyonu", h: "/amazon-entegrasyonu" },
+            { n: "WooCommerce", h: "/woocommerce-entegrasyonu" },
+            { n: "Özel Site Kargo API", h: "/kargo-api" }
           ]
         }
       ];
@@ -136,46 +136,46 @@ const Footer: React.FC = () => {
         {
           title: "1-Our Services",
           links: [
-            { n: "International Shipping", h: "#yurtdisi" },
-            { n: "Economy Shipping", h: "#yurtdisi" },
-            { n: "Express Shipping", h: "#yurtdisi" },
-            { n: "From Abroad to Turkey", h: "#yurtdisi" },
-            { n: "Domestic Advantages", h: "#yurtici" },
-            { n: "Receiver Payment", h: "#yurtici" },
-            { n: "Cash on Delivery", h: "#yurtici" },
-            { n: "Large Volume Shipments", h: "#yurtici" }
+            { n: "International Shipping", h: "/yurtdisi-kargo" },
+            { n: "Economy Shipping", h: "/economy-shipping" },
+            { n: "Express Shipping", h: "/express-shipping" },
+            { n: "From Abroad to Turkey", h: "/from-abroad-to-turkey" },
+            { n: "Domestic Advantages", h: "/yurtici-kargo" },
+            { n: "Receiver Payment", h: "/receiver-payment" },
+            { n: "Cash on Delivery", h: "/cash-on-delivery" },
+            { n: "Large Volume Shipments", h: "/large-volume-shipments" }
           ]
         },
         {
           title: "2-How It Works?",
           links: [
-            { n: "How to Ship?", h: "#nasil-calisir" },
-            { n: "Door to Door", h: "#nasil-calisir" },
-            { n: "First Time Shippers", h: "#nasil-calisir" },
-            { n: "Customs & Documents Guide", h: "#nasil-calisir" },
-            { n: "International Returns", h: "#nasil-calisir" },
-            { n: "Which Shipping is Right?", h: "#nasil-calisir" }
+            { n: "How to Ship?", h: "/nasil-gonderirim" },
+            { n: "Door to Door", h: "/door-to-door" },
+            { n: "First Time Shippers", h: "/first-time-shippers" },
+            { n: "Customs & Documents Guide", h: "/customs-documents-guide" },
+            { n: "International Returns", h: "/international-returns" },
+            { n: "Which Shipping is Right?", h: "/which-shipping-is-right" }
           ]
         },
         {
           title: "3-Info & Resources",
           links: [
-            { n: "Logistics Blog", h: "#" },
-            { n: "FAQ", h: "#sss" },
-            { n: "International Shipping Guide", h: "#" },
-            { n: "Micro Export Guide", h: "#" },
-            { n: "Customs Guide", h: "#" },
-            { n: "Latest Announcements", h: "#" }
+            { n: "Blog", h: "/blog" },
+            { n: "FAQ", h: "/faq" },
+            { n: "International Shipping Guide", h: "/international-shipping-guide" },
+            { n: "Micro Export Guide", h: "/micro-export-guide" },
+            { n: "Customs Guide", h: "/customs-guide" },
+            { n: "Latest Announcements", h: "/announcements" }
           ]
         },
         {
           title: "4-Integrations",
           links: [
-            { n: "Shopify Integration", h: "#" },
-            { n: "Etsy Integration", h: "#" },
-            { n: "Amazon Integration", h: "#" },
-            { n: "WooCommerce", h: "#" },
-            { n: "Custom Site Shipping API", h: "#" }
+            { n: "Shopify Integration", h: "/shopify-integration" },
+            { n: "Etsy Integration", h: "/etsy-integration" },
+            { n: "Amazon Integration", h: "/amazon-integration" },
+            { n: "WooCommerce", h: "/woocommerce-integration" },
+            { n: "Custom Site Shipping API", h: "/shipping-api" }
           ]
         }
       ];
@@ -185,47 +185,100 @@ const Footer: React.FC = () => {
   const [sections, setSections] = useState<any[]>(getDefaultSections(currentLang));
   const [cta, setCta] = useState<any>(getDefaultCta(currentLang));
   const [bottomSection, setBottomSection] = useState<any>(getDefaultBottomSection(currentLang));
+  const [siteSettings, setSiteSettings] = useState<any>(null);
+  const [navbarFooterLogo, setNavbarFooterLogo] = useState('');
+  const [footerLogoError, setFooterLogoError] = useState(false);
 
   useEffect(() => {
-    // API'den yükle
-    axios.get(`${API_BASE_URL}/content/footer?lang=${currentLang}`)
+    // Site ayarlarını yükle (footer logo için)
+    axios.get(`${API_BASE_URL}/content/settings/general?lang=${currentLang}`)
       .then(res => {
-        console.log('Footer API Response:', res.data); // DEBUG
         if (res.data && Object.keys(res.data).length > 0) {
-          // Sections
-          if (res.data.sections && res.data.sections.length > 0) {
-            setSections(res.data.sections);
-          } else {
-            setSections(getDefaultSections(currentLang));
-          }
-          // CTA
-          if (res.data.cta && Object.keys(res.data.cta).length > 0) {
-            setCta(res.data.cta);
-          } else {
-            setCta(getDefaultCta(currentLang));
-          }
-          // Bottom Section
-          if (res.data.bottomSection && Object.keys(res.data.bottomSection).length > 0) {
-            console.log('Bottom Section from API:', res.data.bottomSection); // DEBUG
-            console.log('Logo URL:', res.data.bottomSection.logoUrl); // DEBUG
-            setBottomSection(res.data.bottomSection);
-          } else {
-            console.log('Using default bottom section'); // DEBUG
-            setBottomSection(getDefaultBottomSection(currentLang));
-          }
-        } else {
-          setSections(getDefaultSections(currentLang));
-          setCta(getDefaultCta(currentLang));
-          setBottomSection(getDefaultBottomSection(currentLang));
+          setSiteSettings(res.data);
         }
       })
       .catch(err => {
+        console.error('Site settings yüklenemedi:', err);
+      });
+
+    // Menü ve Footer content'ini yükle
+    const fetchContent = async () => {
+      try {
+        const [navbarRes, footerRes] = await Promise.all([
+          axios.get(`${API_BASE_URL}/content/navbar?lang=${currentLang}`),
+          axios.get(`${API_BASE_URL}/content/footer?lang=${currentLang}`)
+        ]);
+
+        // Navbar'dan gelen footer linklerini işle
+        if (navbarRes.data) {
+          if (navbarRes.data.footerLogo) {
+            setNavbarFooterLogo(navbarRes.data.footerLogo);
+          }
+
+          if (navbarRes.data.menuItems) {
+            const footerItems = navbarRes.data.menuItems
+              .filter((item: any) => item.position === 'footer' && item.isActive !== false)
+              .sort((a: any, b: any) => (a.order || 0) - (b.order || 0));
+
+            // Kategorileri (parentId: null) bul
+            const categories = footerItems.filter((item: any) => !item.parentId);
+
+            // Bölümleri (sections) oluştur
+            const footerSections = categories.map((cat: any) => {
+              const links = footerItems
+                .filter((item: any) => item.parentId === cat.id)
+                .map((link: any) => ({
+                  n: link.label || link.labelTR || link.labelEN,
+                  h: link.link || link.href
+                }));
+
+              return {
+                title: cat.label || cat.labelTR || cat.labelEN,
+                links: links
+              };
+            });
+
+            if (footerSections.length > 0) {
+              setSections(footerSections);
+            } else {
+              setSections(getDefaultSections(currentLang));
+            }
+          }
+
+          // Footer CTA ve Bottom Section
+          if (footerRes.data && Object.keys(footerRes.data).length > 0) {
+            // CTA 
+            if (footerRes.data.cta && Object.keys(footerRes.data.cta).length > 0) {
+              setCta(footerRes.data.cta);
+            } else {
+              setCta(getDefaultCta(currentLang));
+            }
+            // Bottom Section
+            if (footerRes.data.bottomSection && Object.keys(footerRes.data.bottomSection).length > 0) {
+              setBottomSection(footerRes.data.bottomSection);
+            } else {
+              setBottomSection(getDefaultBottomSection(currentLang));
+            }
+          }
+        }
+      } catch (err) {
         console.error('Footer content yüklenemedi:', err);
         setSections(getDefaultSections(currentLang));
         setCta(getDefaultCta(currentLang));
         setBottomSection(getDefaultBottomSection(currentLang));
-      });
+      }
+    };
+
+    fetchContent();
   }, [currentLang]);
+
+  // Footer logo'yu belirle: Önce site ayarlarındaki footerLogo, sonra Navbar'daki eski veri (varsa), en son footer content'teki logoUrl
+  const footerLogoUrl = (siteSettings?.footerLogo || navbarFooterLogo || bottomSection?.logoUrl || '').trim();
+
+  // Footer logo URL değiştiğinde hata flag'ini sıfırla
+  useEffect(() => {
+    setFooterLogoError(false);
+  }, [footerLogoUrl]);
 
   return (
     <>
@@ -235,7 +288,7 @@ const Footer: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
             {sections.map((section, idx) => (
               <nav key={idx} aria-label={section.title}>
-                <h4 className="font-bold text-[#102477] text-xs mb-8 uppercase tracking-[0.1em] border-l-4 border-[#4DB848] pl-3">
+                <h4 className="font-bold text-[#102477] text-xs mb-8 tracking-[0.1em] border-l-4 border-[#4DB848] pl-3">
                   {section.title}
                 </h4>
                 <ul className="space-y-4 text-slate-500 font-bold text-[12px]">
@@ -261,13 +314,13 @@ const Footer: React.FC = () => {
               <p className="text-slate-500 text-sm font-medium">{cta.subtitle}</p>
             </div>
             <div className="flex items-center gap-4">
-              <button 
+              <button
                 onClick={() => window.location.href = cta.button1Link}
                 className="bg-[#102477] text-white px-8 py-3 rounded-[10px] font-bold text-sm flex items-center gap-2 hover:bg-black transition-colors"
               >
                 <i className="fas fa-comment-dots" aria-hidden="true"></i> {cta.button1Text}
               </button>
-              <button 
+              <button
                 onClick={() => window.location.href = cta.button2Link}
                 className="bg-[#4DB848] text-white px-8 py-3 rounded-[10px] font-bold text-sm hover:bg-[#3da339] transition-colors shadow-lg shadow-green-500/10"
               >
@@ -279,19 +332,27 @@ const Footer: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12 border-b border-slate-50 pb-12">
             <div className="lg:col-span-1">
               <div className="flex-shrink-0 flex items-center mb-6">
-                {bottomSection.logoUrl ? (
-                  <img src={bottomSection.logoUrl} alt="Logo" className="h-10" />
+                {footerLogoUrl && !footerLogoError ? (
+                  <img
+                    src={footerLogoUrl}
+                    alt="Logo"
+                    className="h-10 object-contain"
+                    onError={() => {
+                      // Resim yüklenemezse hata flag'ini set et
+                      setFooterLogoError(true);
+                    }}
+                  />
                 ) : (
                   <Logo className="h-10" />
                 )}
               </div>
-              <p className="text-slate-400 text-xs font-bold leading-relaxed mb-6 uppercase tracking-wider">{bottomSection.tagline}</p>
+              <p className="text-slate-400 text-xs font-bold leading-relaxed mb-6 tracking-wider">{bottomSection.tagline}</p>
               <div className="flex gap-3">
                 {bottomSection.socialLinks?.map((social: any, idx: number) => (
-                  <a 
+                  <a
                     key={idx}
-                    href={social.url} 
-                    className="w-8 h-8 rounded-[10px] bg-slate-100 flex items-center justify-center hover:bg-[#102477] hover:text-white transition-all" 
+                    href={social.url}
+                    className="w-8 h-8 rounded-[10px] bg-slate-100 flex items-center justify-center hover:bg-[#102477] hover:text-white transition-all"
                     aria-label={social.platform}
                   >
                     <i className={`fab ${social.icon} text-xs`}></i>
@@ -300,8 +361,8 @@ const Footer: React.FC = () => {
               </div>
             </div>
             <div className="lg:col-span-3">
-              <h4 className="font-bold text-[#102477] text-xs mb-8 uppercase tracking-[0.1em]">{bottomSection.corporateTitle}</h4>
-              <ul className="flex flex-wrap gap-x-8 gap-y-4 text-slate-400 font-bold text-[11px] uppercase tracking-widest">
+              <h4 className="font-bold text-[#102477] text-xs mb-8 tracking-[0.1em]">{bottomSection.corporateTitle}</h4>
+              <ul className="flex flex-wrap gap-x-8 gap-y-4 text-slate-400 font-bold text-[11px] tracking-widest">
                 {bottomSection.corporateLinks?.map((link: any, idx: number) => (
                   <li key={idx}>
                     <a href={link.url} className="hover:text-[#102477]" title={link.name}>{link.name}</a>
@@ -310,9 +371,9 @@ const Footer: React.FC = () => {
               </ul>
             </div>
           </div>
-          
+
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-slate-300 text-[10px] font-bold uppercase tracking-widest">{bottomSection.copyrightText || '© 2024 adoreGo. Site kargo firması vitrini değil, teknoloji lojistik platformudur.'}</p>
+            <p className="text-slate-300 text-[10px] font-bold tracking-widest">{bottomSection.copyrightText || '© 2024 adoreGo. Site kargo firması vitrini değil, teknoloji lojistik platformudur.'}</p>
             <div className="flex items-center gap-6 opacity-20">
               <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" className="h-3" alt="Güvenli Ödeme - Visa" />
               <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-5" alt="Güvenli Ödeme - Mastercard" />

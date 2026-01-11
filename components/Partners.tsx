@@ -37,48 +37,61 @@ const Partners: React.FC = () => {
   ];
 
   return (
-    <div>
+    <section className="py-16 bg-white">
       {/* Carrier Section - API'den gelen partnerler */}
-      <div className="py-16 border-y border-gray-100/50">
-        <div className="max-w-7xl mx-auto px-4">
+      <div className="border-y border-gray-100/50 py-12">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {carriers.map((carrier, i) => (
               <div key={i} className="flex flex-col items-center text-center group">
                 {carrier.logo ? (
-                  <img 
-                    src={carrier.logo} 
-                    alt={carrier.name}
-                    className="h-20 w-32 object-contain rounded-xl p-4 bg-white shadow-lg group-hover:shadow-2xl group-hover:scale-105 transition-all duration-300"
-                  />
+                  <div className="h-20 w-full flex items-center justify-center mb-3">
+                    <img 
+                      src={carrier.logo} 
+                      alt={carrier.name}
+                      className="max-h-16 w-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+                      onError={(e) => {
+                        // Logo yüklenemezse fallback göster
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const parent = target.parentElement;
+                        if (parent) {
+                          parent.innerHTML = `<div class="${carrier.color || 'bg-gradient-to-br from-blue-500 to-blue-600'} h-16 w-24 rounded flex items-center justify-center"><span class="text-white font-black text-lg">${carrier.name}</span></div>`;
+                        }
+                      }}
+                    />
+                  </div>
                 ) : (
-                  <div className={`${carrier.color || 'bg-gradient-to-br from-blue-500 to-blue-600'} h-20 w-32 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-2xl group-hover:scale-105 transition-all duration-300`}>
-                    <span className="text-white font-black text-2xl tracking-tight">{carrier.name}</span>
+                  <div className={`${carrier.color || 'bg-gradient-to-br from-blue-500 to-blue-600'} h-16 w-24 rounded flex items-center justify-center mb-3`}>
+                    <span className="text-white font-black text-lg">{carrier.name}</span>
                   </div>
                 )}
-                <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mt-3">Global Partner</p>
+                <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Global Partner</p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Marketplace Section (Page 5 PDF) */}
+      {/* Marketplace Section */}
       <div className="py-12 overflow-hidden">
-  Yeni Nesil Akıllı Lojistik Teknolojileri Platformu
-        <div className="relative flex overflow-x-hidden">
-          <div className="flex animate-marquee whitespace-nowrap items-center">
-            {marketplaceLogos.map((p, i) => (
-              <div key={i} className="mx-12 flex items-center gap-3 text-gray-300 hover:text-[#102477] transition-all cursor-default">
-                <i className={`${p.icon} text-2xl`}></i>
-                <span className="text-xl font-bold uppercase tracking-tighter">{p.name}</span>
-              </div>
-            ))}
-            {marketplaceLogos.map((p, i) => (
-              <div key={i + 10} className="mx-12 flex items-center gap-3 text-gray-300 hover:text-[#102477] transition-all cursor-default">
-                <i className={`${p.icon} text-2xl`}></i>
-                <span className="text-xl font-bold uppercase tracking-tighter">{p.name}</span>
-              </div>
-            ))}
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <p className="text-center text-sm text-gray-500 font-medium mb-8">E-Ticaret Entegrasyonları</p>
+          <div className="relative flex overflow-x-hidden">
+            <div className="flex animate-marquee whitespace-nowrap items-center">
+              {marketplaceLogos.map((p, i) => (
+                <div key={i} className="mx-12 flex items-center gap-3 text-gray-300 hover:text-[#102477] transition-all cursor-default">
+                  <i className={`${p.icon} text-2xl`}></i>
+                  <span className="text-xl font-bold uppercase tracking-tighter">{p.name}</span>
+                </div>
+              ))}
+              {marketplaceLogos.map((p, i) => (
+                <div key={i + 10} className="mx-12 flex items-center gap-3 text-gray-300 hover:text-[#102477] transition-all cursor-default">
+                  <i className={`${p.icon} text-2xl`}></i>
+                  <span className="text-xl font-bold uppercase tracking-tighter">{p.name}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -92,7 +105,7 @@ const Partners: React.FC = () => {
           animation: marquee 40s linear infinite;
         }
       `}</style>
-    </div>
+    </section>
   );
 };
 

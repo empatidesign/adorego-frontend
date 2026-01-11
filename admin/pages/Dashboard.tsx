@@ -6,9 +6,9 @@ import AdminLayout from '../components/Layout';
 const Dashboard: React.FC = () => {
   const sections = [
     {
-      title: 'Menü Yönetimi',
-      description: 'Üst menü, logo ve navigasyon linklerini düzenleyin',
-      icon: 'fa-bars',
+      title: 'Navigasyon ve Footer',
+      description: 'Üst/alt menü, footer CTA ve navigasyon linklerini düzenleyin',
+      icon: 'fa-layer-group',
       color: 'bg-indigo-500',
       link: '/admin/navbar',
     },
@@ -62,11 +62,32 @@ const Dashboard: React.FC = () => {
       link: '/admin/popular-destinations',
     },
     {
-      title: 'Footer Menüleri',
-      description: 'Footer\'daki 4 menü bölümünü ve linklerini yönetin',
-      icon: 'fa-bars',
-      color: 'bg-slate-500',
-      link: '/admin/footer',
+      title: 'Fiyat Listesi',
+      description: 'Ülkelere göre tüm kargo fiyatlarını yönetin',
+      icon: 'fa-tag',
+      color: 'bg-blue-600',
+      link: '/admin/pricing',
+    },
+    {
+      title: 'Nasıl Gönderirim?',
+      description: 'Kargo gönderim rehberi içeriğini düzenleyin',
+      icon: 'fa-circle-info',
+      color: 'bg-emerald-600',
+      link: '/admin/howtosend',
+    },
+    {
+      title: 'İçerik Sayfaları',
+      description: '25+ sayfa içeriğini yönetin (Hizmetler, Rehberler, Entegrasyonlar)',
+      icon: 'fa-file-alt',
+      color: 'bg-indigo-600',
+      link: '/admin/content-pages',
+    },
+    {
+      title: 'Blog Yazıları',
+      description: 'Kargo ve lojistik konulu blog yazılarını yönetin',
+      icon: 'fa-newspaper',
+      color: 'bg-purple-600',
+      link: '/admin/blog',
     },
     {
       title: 'CTA Banner',
@@ -135,7 +156,7 @@ const Dashboard: React.FC = () => {
             <div>
               <h4 className="font-bold text-blue-900 mb-2">Bilgilendirme</h4>
               <p className="text-blue-800 text-sm">
-                Yaptığınız değişiklikler kaydedildiğinde anında ana sitede görünecektir. 
+                Yaptığınız değişiklikler kaydedildiğinde anında ana sitede görünecektir.
                 Değişiklikleri kaydetmeden önce kontrol ettiğinizden emin olun.
               </p>
             </div>

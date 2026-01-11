@@ -10,15 +10,15 @@ const Features: React.FC = () => {
   const getDefaultHeader = (lang: string) => {
     if (lang === 'tr') {
       return {
-        badge: 'ADOREGO TEKNOLOJİ',
-        title: 'Lojistiği Akıllı Teknolojiyle Birleştirdik.',
-        subtitle: 'Gönderi sürecini basitleştiriyor, hızlandırıyor ve daha ekonomik hale getiriyoruz.'
+        badge: '',
+        title: 'Neden adoreGo?',
+        subtitle: 'Yurtdışı kargo gönderiminde en iyi deneyim için ihtiyacınız olan her şey'
       };
     } else {
       return {
-        badge: 'ADOREGO TECHNOLOGY',
-        title: 'We Combined Logistics with Smart Technology.',
-        subtitle: 'We simplify, accelerate and make the shipping process more economical.'
+        badge: '',
+        title: 'Why adoreGo?',
+        subtitle: 'Everything you need for the best experience in international shipping'
       };
     }
   };
@@ -111,7 +111,7 @@ const Features: React.FC = () => {
     // Features Header yükle
     axios.get(`${API_BASE_URL}/content/features-header?lang=${currentLang}`)
       .then(res => {
-        if (res.data && Object.keys(res.data).length > 0) {
+        if (res.data && Object.keys(res.data).length > 0 && res.data.title) {
           setHeader(res.data);
         } else {
           setHeader(getDefaultHeader(currentLang));
@@ -122,11 +122,19 @@ const Features: React.FC = () => {
         setHeader(getDefaultHeader(currentLang));
       });
 
-    // Features yükle
+    // Features yükle - API'den gelen veriyi kullan ama ikonları görseldeki gibi düzelt
     axios.get(`${API_BASE_URL}/content/features?lang=${currentLang}`)
       .then(res => {
         if (res.data && Array.isArray(res.data) && res.data.length > 0) {
-          setFeatures(res.data);
+          // API'den gelen veriyi kullan ama ikon renklerini görseldeki gibi ayarla
+          const updatedFeatures = res.data.map((feature: any, idx: number) => {
+            const colors = ['blue-500', 'green-500', 'purple-500', 'orange-500'];
+            return {
+              ...feature,
+              color: `bg-${colors[idx % colors.length]}`
+            };
+          });
+          setFeatures(updatedFeatures);
         } else {
           setFeatures(getDefaultFeatures(currentLang));
         }
@@ -152,45 +160,40 @@ const Features: React.FC = () => {
   }, [currentLang]);
 
   return (
-    <section className="py-24 relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      {/* Decorative Background Elements */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-200/20 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-200/20 rounded-full blur-3xl"></div>
-      
+    <section className="py-24 relative overflow-hidden bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="mb-16 text-center">
-          <span className="text-[#4DB848] font-bold text-[9px] uppercase tracking-[0.2em] mb-3 block">{header.badge}</span>
-          <h2 className="text-3xl lg:text-[40px] font-bold text-[#102477] mb-5 tracking-tight leading-tight">
+          <h2 className="text-4xl lg:text-5xl font-bold text-[#102477] mb-4 tracking-tight">
             {header.title}
           </h2>
-          <p className="text-md text-slate-500 font-medium max-w-xl mx-auto">
+          <p className="text-lg text-gray-700 max-w-3xl mx-auto font-normal">
             {header.subtitle}
           </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, idx) => {
-            // Daha canlı ve kontrast renk paleti
+            // Görseldeki renk paleti: mavi, yeşil, mor, turuncu
             const colors = [
-              { bg: 'bg-gradient-to-br from-blue-500 to-blue-600', shadow: 'shadow-blue-500/30' },
-              { bg: 'bg-gradient-to-br from-green-500 to-green-600', shadow: 'shadow-green-500/30' },
-              { bg: 'bg-gradient-to-br from-purple-500 to-purple-600', shadow: 'shadow-purple-500/30' },
-              { bg: 'bg-gradient-to-br from-orange-500 to-orange-600', shadow: 'shadow-orange-500/30' }
+              'bg-blue-500',
+              'bg-green-500',
+              'bg-purple-500',
+              'bg-orange-500'
             ];
-            const colorScheme = colors[idx % colors.length];
+            const iconBg = feature.color || colors[idx % colors.length];
             
             return (
               <div 
                 key={idx} 
-                className="group bg-white p-8 rounded-[16px] hover:shadow-2xl transition-all duration-300 border-2 border-slate-100 hover:border-slate-200 hover:-translate-y-2"
+                className="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300"
               >
-                <div className={`w-16 h-16 ${colorScheme.bg} rounded-[14px] flex items-center justify-center mb-6 text-white shadow-xl ${colorScheme.shadow} group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`w-16 h-16 ${iconBg} rounded-lg flex items-center justify-center mb-6 text-white`}>
                   <i className={`fas ${feature.icon} text-2xl`}></i>
                 </div>
-                <h3 className="text-lg font-bold text-[#102477] mb-3 tracking-tight group-hover:text-[#4DB848] transition-colors">
+                <h3 className="text-lg font-bold text-[#102477] mb-3 leading-snug">
                   {feature.title}
                 </h3>
-                <p className="text-slate-600 leading-relaxed font-medium text-sm">
+                <p className="text-gray-600 leading-relaxed text-sm">
                   {feature.description}
                 </p>
               </div>

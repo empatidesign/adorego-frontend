@@ -145,6 +145,22 @@ export const contentAPI = {
     const response = await api.put('/content/footer', { data, lang });
     return response.data;
   },
+  getPricing: async (lang: string = 'tr') => {
+    const response = await api.get(`/content/pricing?lang=${lang}`);
+    return response.data;
+  },
+  updatePricing: async (data: any, lang: string = 'tr') => {
+    const response = await api.put('/content/pricing', { data, lang });
+    return response.data;
+  },
+  getHowToSend: async (lang: string = 'tr') => {
+    const response = await api.get(`/content/howtosend?lang=${lang}`);
+    return response.data;
+  },
+  updateHowToSend: async (data: any, lang: string = 'tr') => {
+    const response = await api.put('/content/howtosend', { data, lang });
+    return response.data;
+  },
   getSeo: async (page: string = 'home', lang: string = 'tr') => {
     const response = await api.get(`/content/seo/${page}?lang=${lang}`);
     return response.data;
@@ -158,7 +174,7 @@ export const contentAPI = {
     return response.data;
   },
   getSiteSettings: async (category?: string, lang: string = 'tr') => {
-    const url = category 
+    const url = category
       ? `/content/settings/${category}?lang=${lang}`
       : `/content/settings?lang=${lang}`;
     const response = await api.get(url);
@@ -168,7 +184,39 @@ export const contentAPI = {
     const response = await api.put(`/content/settings/${category}`, { data, lang });
     return response.data;
   },
+  getContentPage: async (slug: string, lang: string = 'tr') => {
+    const response = await api.get(`/content/page/${slug}?lang=${lang}`);
+    return response.data;
+  },
+  updateContentPage: async (slug: string, data: any, lang: string = 'tr') => {
+    const response = await api.put(`/content/page/${slug}`, { data, lang });
+    return response.data;
+  },
 };
 
 export default api;
 
+
+// Blog API
+export const blogAPI = {
+  getBlogs: async (lang: string = 'tr') => {
+    const response = await api.get(`/content/blogs?lang=${lang}`);
+    return response.data;
+  },
+  getBlog: async (slug: string, lang: string = 'tr') => {
+    const response = await api.get(`/content/blog/${slug}?lang=${lang}`);
+    return response.data;
+  },
+  createBlog: async (data: any) => {
+    const response = await api.post('/content/blog', data);
+    return response.data;
+  },
+  updateBlog: async (id: string, data: any) => {
+    const response = await api.put(`/content/blog/${id}`, data);
+    return response.data;
+  },
+  deleteBlog: async (id: string) => {
+    const response = await api.delete(`/content/blog/${id}`);
+    return response.data;
+  },
+};
