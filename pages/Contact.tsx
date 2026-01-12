@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useLanguage } from '../contexts/LanguageContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 const Contact = () => {
-    const [language, setLanguage] = useState<'tr' | 'en'>('tr');
-    const [settings, setSettings] = useState<any>(null);
+    const { language } = useLanguage();
+    const [content, setContent] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -16,18 +18,24 @@ const Contact = () => {
     });
 
     useEffect(() => {
-        const savedLang = localStorage.getItem('language') as 'tr' | 'en';
-        if (savedLang) setLanguage(savedLang);
+        loadContent();
+    }, [language]);
 
-        axios.get('http://localhost:3000/api/settings')
-            .then(res => setSettings(res.data))
-            .catch(err => console.error(err));
-    }, []);
+    const loadContent = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3001/api/content/contact?lang=${language}`);
+            setContent(response.data);
+        } catch (error) {
+            console.error('İçerik yüklenemedi:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:3000/api/contact', formData);
+            await axios.post('http://localhost:3001/api/content/contact/submit', formData);
             alert(language === 'tr' ? 'Mesajınız gönderildi!' : 'Your message has been sent!');
             setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
         } catch (error) {
@@ -35,46 +43,20 @@ const Contact = () => {
         }
     };
 
-    const t = {
-        tr: {
-            title: 'İletişim',
-            home: 'Anasayfa',
-            breadcrumbCurrent: 'İletişim',
-            sendMessage: 'Bize mesaj gönderin',
-            contactInfo: 'İletişim bilgileri',
-            formName: 'Adınız soyadınız',
-            formEmail: 'E-posta adresiniz',
-            formPhone: 'Telefon numaranız',
-            formSubject: 'Konu',
-            formMessage: 'Mesajınız',
-            formBtn: 'Gönder',
-            phone: 'Telefon',
-            email: 'E-posta',
-            address: 'Adres',
-            workingHours: 'Çalışma saatleri',
-            quickSupport: 'Hızlı destek hattı'
-        },
-        en: {
-            title: 'Contact',
-            home: 'Home',
-            breadcrumbCurrent: 'Contact',
-            sendMessage: 'Send Us a Message',
-            contactInfo: 'Contact information',
-            formName: 'Your name',
-            formEmail: 'Your email',
-            formPhone: 'Your phone',
-            formSubject: 'Subject',
-            formMessage: 'Your message',
-            formBtn: 'Send',
-            phone: 'Phone',
-            email: 'Email',
-            address: 'Address',
-            workingHours: 'Working hours',
-            quickSupport: 'Quick support'
-        }
-    };
-
-    const currentT = t[language];
+    if (loading || !content) {
+        return (
+            <div className="min-h-screen bg-gray-50">
+                <Navbar />
+                <div className="flex items-center justify-center h-[60vh]">
+                    <div className="text-center">
+                        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                        <p className="text-gray-500">{language === 'tr' ? 'Yükleniyor...' : 'Loading...'}</p>
+                    </div>
+                </div>
+                <Footer />
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -91,11 +73,13 @@ const Contact = () => {
                 >
                     <div className="max-w-7xl mx-auto px-6 w-full">
                         <div className="flex flex-col gap-3">
-                            <h1 className="text-3xl font-bold">{currentT.title}</h1>
+                            <h1 className="text-3xl font-bold">{content.pageTitle}</h1>
                             <nav className="flex items-center gap-2 text-sm opacity-80">
-                                <Link to="/" className="hover:opacity-100">{currentT.home}</Link>
+                                <Link to="/" className="hover:opacity-100">
+                                    {language === 'tr' ? 'Anasayfa' : 'Home'}
+                                </Link>
                                 <span>/</span>
-                                <span>{currentT.breadcrumbCurrent}</span>
+                                <span>{content.breadcrumb}</span>
                             </nav>
                         </div>
                     </div>
@@ -106,7 +90,7 @@ const Contact = () => {
                     <div className="max-w-7xl mx-auto px-6">
                         <div className="w-full h-96 bg-gray-200 rounded-lg overflow-hidden shadow-sm">
                             <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3010.2266489!2d28.9784!3d41.0082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDAwJzI5LjUiTiAyOMKwNTgnNDIuMiJF!5e0!3m2!1str!2str!4v1234567890"
+                                src={content.mapUrl}
                                 width="100%"
                                 height="100%"
                                 style={{ border: 0 }}
@@ -125,15 +109,15 @@ const Contact = () => {
                             {/* Left Side: Contact Form - 8 columns */}
                             <div className="lg:col-span-8">
                                 <div className="bg-white rounded-xl shadow-sm p-8">
-                                    <h2 className="text-2xl font-bold text-gray-800 mb-2">{currentT.sendMessage}</h2>
+                                    <h2 className="text-2xl font-bold text-gray-800 mb-2">{content.sendMessageTitle}</h2>
                                     <p className="text-gray-600 mb-8">
-                                        Aşağıdaki formu doldurarak bizimle hızlıca iletişime geçebilirsiniz. Uzman ekibimiz en kısa sürede size geri dönüş yapacaktır.
+                                        {content.sendMessageDesc}
                                     </p>
 
                                     <form onSubmit={handleSubmit} className="space-y-6">
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                {currentT.formName}
+                                                {content.formNameLabel}
                                             </label>
                                             <input
                                                 required
@@ -141,13 +125,13 @@ const Contact = () => {
                                                 value={formData.name}
                                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                                                placeholder={currentT.formName}
+                                                placeholder={content.formNameLabel}
                                             />
                                         </div>
 
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                {currentT.formEmail}
+                                                {content.formEmailLabel}
                                             </label>
                                             <input
                                                 required
@@ -155,13 +139,13 @@ const Contact = () => {
                                                 value={formData.email}
                                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                                                placeholder={currentT.formEmail}
+                                                placeholder={content.formEmailLabel}
                                             />
                                         </div>
 
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                {currentT.formSubject}
+                                                {content.formSubjectLabel}
                                             </label>
                                             <input
                                                 required
@@ -169,13 +153,13 @@ const Contact = () => {
                                                 value={formData.subject}
                                                 onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                                                placeholder={currentT.formSubject}
+                                                placeholder={content.formSubjectLabel}
                                             />
                                         </div>
 
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                {currentT.formMessage}
+                                                {content.formMessageLabel}
                                             </label>
                                             <textarea
                                                 required
@@ -183,7 +167,7 @@ const Contact = () => {
                                                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                                                 rows={6}
                                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none resize-none"
-                                                placeholder={currentT.formMessage}
+                                                placeholder={content.formMessageLabel}
                                             ></textarea>
                                         </div>
 
@@ -192,7 +176,7 @@ const Contact = () => {
                                             className="px-8 py-3 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
                                             style={{ backgroundColor: '#0051ba' }}
                                         >
-                                            {currentT.formBtn}
+                                            {content.formButton}
                                         </button>
                                     </form>
                                 </div>
@@ -202,43 +186,43 @@ const Contact = () => {
                             <div className="lg:col-span-4 space-y-6">
                                 {/* Contact Information Card */}
                                 <div className="bg-white rounded-xl shadow-sm p-6">
-                                    <h3 className="text-xl font-bold text-gray-800 mb-6">{currentT.contactInfo}</h3>
+                                    <h3 className="text-xl font-bold text-gray-800 mb-6">{content.contactInfoTitle}</h3>
 
                                     <div className="space-y-5">
                                         {/* Address */}
                                         <div>
-                                            <h4 className="text-xs font-semibold text-gray-500 mb-1">{currentT.address}</h4>
-                                            <p className="text-gray-800 text-sm">{settings?.address || 'İstanbul, Türkiye'}</p>
+                                            <h4 className="text-xs font-semibold text-gray-500 mb-1">{content.addressLabel}</h4>
+                                            <p className="text-gray-800 text-sm">{content.addressValue}</p>
                                         </div>
 
                                         {/* Phone */}
                                         <div>
-                                            <h4 className="text-xs font-semibold text-gray-500 mb-1">{currentT.phone}</h4>
-                                            <p className="text-gray-800 text-sm font-medium">{settings?.phone || '+90 (212) 123 45 67'}</p>
+                                            <h4 className="text-xs font-semibold text-gray-500 mb-1">{content.phoneLabel}</h4>
+                                            <p className="text-gray-800 text-sm font-medium">{content.phoneValue}</p>
                                         </div>
 
                                         {/* Email */}
                                         <div>
-                                            <h4 className="text-xs font-semibold text-gray-500 mb-1">{currentT.email}</h4>
-                                            <p className="text-gray-800 text-sm font-medium break-all">{settings?.email || 'info@adorego.com'}</p>
+                                            <h4 className="text-xs font-semibold text-gray-500 mb-1">{content.emailLabel}</h4>
+                                            <p className="text-gray-800 text-sm font-medium break-all">{content.emailValue}</p>
                                         </div>
 
                                         {/* Working Hours */}
                                         <div>
-                                            <h4 className="text-xs font-semibold text-gray-500 mb-1">{currentT.workingHours}</h4>
-                                            <p className="text-gray-800 text-sm">{settings?.workingHours || 'Pazartesi - Cuma: 09:00 - 18:00'}</p>
+                                            <h4 className="text-xs font-semibold text-gray-500 mb-1">{content.workingHoursLabel}</h4>
+                                            <p className="text-gray-800 text-sm">{content.workingHoursValue}</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* WhatsApp Support Card */}
                                 <div className="rounded-xl shadow-sm p-6 text-white" style={{ backgroundColor: '#4DB848' }}>
-                                    <h4 className="text-lg font-bold mb-2">{currentT.quickSupport}</h4>
+                                    <h4 className="text-lg font-bold mb-2">{content.quickSupportTitle}</h4>
                                     <p className="text-white/90 text-sm mb-5">
-                                        Her türlü sorunuz için WhatsApp üzerinden bize anında ulaşabilirsiniz.
+                                        {content.quickSupportDesc}
                                     </p>
                                     <a
-                                        href={`https://wa.me/${settings?.whatsapp?.replace(/\D/g, '')}`}
+                                        href={`https://wa.me/${content.whatsappNumber?.replace(/\D/g, '')}`}
                                         target="_blank"
                                         rel="noreferrer"
                                         className="inline-flex items-center gap-2 bg-white text-green-600 px-5 py-2.5 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-sm"

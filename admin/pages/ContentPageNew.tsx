@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AdminLayout from '../components/Layout';
+import NewLayout from '../components/NewLayout';
 import { Input, TextArea, Button } from '../components/forms/FormComponents';
 import ImageUpload from '../components/forms/ImageUpload';
 import { contentAPI } from '../services/api';
@@ -97,7 +97,7 @@ const ContentPageNew: React.FC = () => {
     };
 
     return (
-        <AdminLayout>
+        <NewLayout>
             <div className="max-w-5xl">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-8">
@@ -266,7 +266,7 @@ const ContentPageNew: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </AdminLayout>
+        </NewLayout>
     );
 };
 

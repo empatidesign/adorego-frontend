@@ -17,28 +17,27 @@ import SEO from './components/SEO';
 
 // Admin componentleri
 import Login from './admin/pages/Login';
-import Dashboard from './admin/pages/Dashboard';
-import NavbarEditor from './admin/pages/editors/NavbarEditor';
-import HeroEditor from './admin/pages/editors/HeroEditor';
-import HowItWorksEditor from './admin/pages/editors/HowItWorksEditor';
-import FeaturesEditor from './admin/pages/editors/FeaturesEditor';
-import PartnersEditor from './admin/pages/editors/PartnersEditor';
-import CTAEditor from './admin/pages/editors/CTAEditor';
-import FAQEditor from './admin/pages/editors/FAQEditor';
-import SEOEditor from './admin/pages/editors/SEOEditor';
-import SolutionsEditor from './admin/pages/editors/SolutionsEditor';
-import SettingsEditor from './admin/pages/editors/SettingsEditor';
-import TargetAudienceEditor from './admin/pages/editors/TargetAudienceEditor';
-import PopularDestinationsEditor from './admin/pages/editors/PopularDestinationsEditor';
-import HowToSendEditor from './admin/pages/editors/HowToSendEditor';
-import PricingEditor from './admin/pages/editors/PricingEditor';
-import ContentPagesList from './admin/pages/ContentPagesList';
-import ContentPageEdit from './admin/pages/ContentPageEdit';
-import ContentPageNew from './admin/pages/ContentPageNew';
 import BlogList from './admin/pages/BlogList';
 import BlogNew from './admin/pages/BlogNew';
 import BlogEdit from './admin/pages/BlogEdit';
+import ContentPagesList from './admin/pages/ContentPagesList';
+import ContentPageEdit from './admin/pages/ContentPageEdit';
+import ContentPageNew from './admin/pages/ContentPageNew';
 import ProtectedRoute from './admin/components/ProtectedRoute';
+
+// Yeni Admin Sayfaları
+import NewDashboard from './admin/pages/NewDashboard';
+import PageHome from './admin/pages/PageHome';
+import PageInternational from './admin/pages/PageInternational';
+import PageDomestic from './admin/pages/PageDomestic';
+import PageHeaderFooter from './admin/pages/PageHeaderFooter';
+import PagePricing from './admin/pages/PagePricing';
+import PageTracking from './admin/pages/PageTracking';
+import PageBlog from './admin/pages/PageBlog';
+import PageNewsletter from './admin/pages/PageNewsletter';
+import PageContact from './admin/pages/PageContact';
+import PageContactMessages from './admin/pages/PageContactMessages';
+import GeneralSettings from './admin/pages/GeneralSettings';
 
 // Sayfalar
 import Pricing from './pages/Pricing';
@@ -51,6 +50,7 @@ import Contact from './pages/Contact';
 import InternationalShipping from './pages/InternationalShipping';
 import DomesticShipping from './pages/DomesticShipping';
 import WhatsAppButton from './components/WhatsAppButton';
+import ScrollToTop from './components/ScrollToTop';
 
 // Ana site sayfası
 const MainSite: React.FC = () => {
@@ -94,6 +94,7 @@ const App: React.FC = () => {
   return (
     <LanguageProvider>
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <ScrollToTop />
         <Routes>
           {/* Ana site */}
           <Route path="/" element={<MainSite />} />
@@ -117,127 +118,97 @@ const App: React.FC = () => {
           {/* Admin - Login */}
           <Route path="/admin" element={<Login />} />
 
-          {/* Admin - Protected routes */}
+          {/* Yeni Admin Panel */}
           <Route
-            path="/admin/dashboard"
+            path="/admin/new-dashboard"
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <NewDashboard />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/admin/navbar"
+            path="/admin/page-home"
             element={
               <ProtectedRoute>
-                <NavbarEditor />
+                <PageHome />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/admin/hero"
+            path="/admin/page-international"
             element={
               <ProtectedRoute>
-                <HeroEditor />
+                <PageInternational />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/admin/howitworks"
+            path="/admin/page-domestic"
             element={
               <ProtectedRoute>
-                <HowItWorksEditor />
+                <PageDomestic />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/admin/howtosend"
+            path="/admin/header-footer"
             element={
               <ProtectedRoute>
-                <HowToSendEditor />
+                <PageHeaderFooter />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/admin/pricing"
+            path="/admin/page-pricing"
             element={
               <ProtectedRoute>
-                <PricingEditor />
+                <PagePricing />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/admin/features"
+            path="/admin/page-tracking"
             element={
               <ProtectedRoute>
-                <FeaturesEditor />
+                <PageTracking />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/admin/partners"
+            path="/admin/newsletter"
             element={
               <ProtectedRoute>
-                <PartnersEditor />
+                <PageNewsletter />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/admin/solutions"
+            path="/admin/page-contact"
             element={
               <ProtectedRoute>
-                <SolutionsEditor />
+                <PageContact />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/admin/cta"
+            path="/admin/contact-messages"
             element={
               <ProtectedRoute>
-                <CTAEditor />
+                <PageContactMessages />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/admin/faq"
+            path="/admin/general-settings"
             element={
               <ProtectedRoute>
-                <FAQEditor />
+                <GeneralSettings />
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/admin/seo"
-            element={
-              <ProtectedRoute>
-                <SEOEditor />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/settings"
-            element={
-              <ProtectedRoute>
-                <SettingsEditor />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/target-audience"
-            element={
-              <ProtectedRoute>
-                <TargetAudienceEditor />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/popular-destinations"
-            element={
-              <ProtectedRoute>
-                <PopularDestinationsEditor />
-              </ProtectedRoute>
-            }
-          />
+
+          {/* Admin - Content Pages */}
           <Route
             path="/admin/content-pages"
             element={
@@ -259,6 +230,16 @@ const App: React.FC = () => {
             element={
               <ProtectedRoute>
                 <ContentPageEdit />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Admin - Blog */}
+          <Route
+            path="/admin/page-blog"
+            element={
+              <ProtectedRoute>
+                <PageBlog />
               </ProtectedRoute>
             }
           />

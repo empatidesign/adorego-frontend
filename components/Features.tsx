@@ -147,8 +147,13 @@ const Features: React.FC = () => {
     // CTA Banner yükle
     axios.get(`${API_BASE_URL}/content/cta?lang=${currentLang}`)
       .then(res => {
+        console.log('CTA API Response:', res.data);
         if (res.data && Object.keys(res.data).length > 0) {
-          setCta(res.data);
+          // Arka plan görselini her zaman default kullan
+          setCta({
+            ...res.data,
+            backgroundImage: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=2070&auto=format&fit=crop'
+          });
         } else {
           setCta(getDefaultCta(currentLang));
         }

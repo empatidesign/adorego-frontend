@@ -1,14 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../contexts/LanguageContext';
+import { API_BASE_URL } from '../src/api-config';
 
 const Tracking: React.FC = () => {
+    const { currentLang } = useLanguage();
     const [trackingNumber, setTrackingNumber] = useState('');
     const [trackingResult, setTrackingResult] = useState<any>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [content, setContent] = useState<any>({
+        pageTitle: 'Gönderi Takibi',
+        breadcrumb: 'Gönderi Takibi',
+        formTitle: 'Takip Numarası',
+        formPlaceholder: 'Örn: ALG123456789TR',
+        buttonText: 'Gönderimi Takip Et',
+        buttonLoadingText: 'Sorgulanıyor...',
+        infoTitle: 'Bilgi',
+        infoText: 'Takip numaranızı faturanızda veya size gönderilen e-postada bulabilirsiniz. Sorun yaşıyorsanız müşteri hizmetlerimizle iletişime geçebilirsiniz.'
+    });
+
+    useEffect(() => {
+        fetch(`${API_BASE_URL}/content/tracking?lang=${currentLang}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data && Object.keys(data).length > 0) {
+                    setContent(data);
+                }
+            })
+            .catch(err => console.error('Tracking content yüklenemedi:', err));
+    }, [currentLang]);
 
     const handleTrack = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -68,7 +92,7 @@ const Tracking: React.FC = () => {
 
     return (
         <div className="flex flex-col min-h-screen bg-white">
-            <SEO page="tracking" />
+            <SEO page="gonderi-takibi" />
             <Navbar />
             <main className="flex-grow pt-20">
                 {/* Compact Professional Header */}
@@ -82,11 +106,11 @@ const Tracking: React.FC = () => {
                 >
                     <div className="max-w-7xl mx-auto px-6 w-full">
                         <div className="flex flex-col gap-3">
-                            <h1 className="text-3xl font-bold">Gönderi Takibi</h1>
+                            <h1 className="text-3xl font-bold">{content.pageTitle}</h1>
                             <nav className="flex items-center gap-2 text-sm opacity-80">
                                 <Link to="/" className="hover:opacity-100">Anasayfa</Link>
                                 <span>/</span>
-                                <span>Gönderi Takibi</span>
+                                <span>{content.breadcrumb}</span>
                             </nav>
                         </div>
                     </div>
@@ -101,14 +125,14 @@ const Tracking: React.FC = () => {
                             <form onSubmit={handleTrack} className="space-y-6">
                                 <div>
                                     <label htmlFor="trackingNumber" className="block text-sm font-medium text-gray-700 mb-2">
-                                        Takip Numarası
+                                        {content.formTitle}
                                     </label>
                                     <input
                                         type="text"
                                         id="trackingNumber"
                                         value={trackingNumber}
                                         onChange={(e) => setTrackingNumber(e.target.value)}
-                                        placeholder="Örn: ALG123456789TR"
+                                        placeholder={content.formPlaceholder}
                                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
                                     />
                                 </div>
@@ -127,12 +151,12 @@ const Tracking: React.FC = () => {
                                     {loading ? (
                                         <span className="flex items-center justify-center gap-2">
                                             <i className="fas fa-spinner fa-spin"></i>
-                                            Sorgulanıyor...
+                                            {content.buttonLoadingText}
                                         </span>
                                     ) : (
                                         <span className="flex items-center justify-center gap-2">
                                             <i className="fas fa-search"></i>
-                                            Gönderimi Takip Et
+                                            {content.buttonText}
                                         </span>
                                     )}
                                 </button>
@@ -204,11 +228,10 @@ const Tracking: React.FC = () => {
                         <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
                             <h3 className="font-bold text-blue-900 mb-2 flex items-center gap-2">
                                 <i className="fas fa-info-circle"></i>
-                                Bilgi
+                                {content.infoTitle}
                             </h3>
                             <p className="text-blue-800 text-sm">
-                                Takip numaranızı faturanızda veya size gönderilen e-postada bulabilirsiniz.
-                                Sorun yaşıyorsanız müşteri hizmetlerimizle iletişime geçebilirsiniz.
+                                {content.infoText}
                             </p>
                         </div>
                     </div>

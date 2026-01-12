@@ -58,12 +58,13 @@ const Navbar: React.FC = () => {
     const role = localStorage.getItem('user_role');
     setIsAdmin(!!token && role === 'admin');
 
-    // Navbar menülerini yükle
+    // Navbar menülerini ve logoyu yükle
     axios.get(`${API_BASE_URL}/content/navbar?lang=${language}`)
       .then(res => {
         if (res.data && Object.keys(res.data).length > 0) {
           setNavbarData((prev: any) => ({
             ...prev,
+            logo: res.data.logo || prev.logo,
             menuItems: res.data.menuItems || prev.menuItems,
             ctaButtons: res.data.ctaButtons || prev.ctaButtons
           }));
@@ -73,13 +74,14 @@ const Navbar: React.FC = () => {
         console.error('Navbar content yüklenemedi:', err);
       });
 
-    // Logo ve Marka adını genel ayarlardan yükle
+    // Marka adını genel ayarlardan yükle (fallback)
     axios.get(`${API_BASE_URL}/content/settings/general?lang=${language}`)
       .then(res => {
         if (res.data && Object.keys(res.data).length > 0) {
           setNavbarData((prev: any) => ({
             ...prev,
-            logo: res.data.headerLogo || prev.logo,
+            // Sadece navbar'dan logo gelmemişse genel ayarlardan al
+            logo: prev.logo || res.data.headerLogo || '',
             brandName: res.data.siteName || prev.brandName
           }));
         }

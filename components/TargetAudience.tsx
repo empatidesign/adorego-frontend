@@ -228,15 +228,21 @@ const TargetAudience: React.FC = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {trustPoints.map((point, idx) => {
-              const icons = ["fa-award", "fa-tags", "fa-shield-halved", "fa-headset"];
-              const colors = ["bg-blue-500", "bg-green-500", "bg-purple-500", "bg-orange-500"];
+              // Default değerler
+              const defaultIcons = ["fa-award", "fa-tags", "fa-shield-halved", "fa-headset"];
+              const defaultColors = ["bg-blue-500", "bg-green-500", "bg-purple-500", "bg-orange-500"];
+              
+              // Admin panelden gelen değerleri kullan, yoksa default kullan
+              const icon = point.icon || defaultIcons[idx] || "fa-star";
+              const color = point.color || defaultColors[idx] || "bg-blue-500";
+              
               return (
                 <div 
                   key={idx} 
                   className="bg-white p-8 rounded-[16px] shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-100 hover:border-slate-200 hover:-translate-y-2 group"
                 >
-                  <div className={`w-14 h-14 ${colors[idx]} rounded-[12px] flex items-center justify-center mb-6 shadow-md group-hover:scale-110 transition-transform duration-300`}>
-                    <i className={`fas ${icons[idx]} text-white text-xl`}></i>
+                  <div className={`w-14 h-14 ${color} rounded-[12px] flex items-center justify-center mb-6 shadow-md group-hover:scale-110 transition-transform duration-300`}>
+                    <i className={`fas ${icon} text-white text-xl`}></i>
                   </div>
                   <h3 className="text-lg font-bold mb-3 tracking-tight text-[#102477] group-hover:text-[#4DB848] transition-colors">
                     {point.title}

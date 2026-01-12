@@ -26,6 +26,7 @@ const Hero: React.FC = () => {
   useEffect(() => {
     axios.get(`${API_BASE_URL}/content/hero?lang=${currentLang}`)
       .then(res => {
+        console.log('Hero API Response:', res.data);
         if (res.data && Object.keys(res.data).length > 0) {
           setContent(res.data);
         }

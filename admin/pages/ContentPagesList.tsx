@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AdminLayout from '../components/Layout';
+import NewLayout from '../components/NewLayout';
 import { Button } from '../components/forms/FormComponents';
 
 // All available pages with metadata
@@ -60,7 +60,7 @@ const ContentPagesList: React.FC = () => {
     });
 
     return (
-        <AdminLayout>
+        <NewLayout>
             <div className="max-w-7xl">
                 <div className="flex items-center justify-between mb-8">
                     <div>
@@ -185,7 +185,7 @@ const ContentPagesList: React.FC = () => {
                     Toplam {filteredPages.length} sayfa gösteriliyor
                 </div>
             </div>
-        </AdminLayout>
+        </NewLayout>
     );
 };
 

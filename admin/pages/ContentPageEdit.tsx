@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import AdminLayout from '../components/Layout';
+import NewLayout from '../components/NewLayout';
 import { Input, TextArea, Button } from '../components/forms/FormComponents';
 import ImageUpload from '../components/forms/ImageUpload';
 import { contentAPI } from '../services/api';
@@ -100,16 +100,16 @@ const ContentPageEdit: React.FC = () => {
 
     if (loading) {
         return (
-            <AdminLayout>
+            <NewLayout>
                 <div className="flex items-center justify-center h-64">
                     <div className="text-gray-600">Yükleniyor...</div>
                 </div>
-            </AdminLayout>
+            </NewLayout>
         );
     }
 
     return (
-        <AdminLayout>
+        <NewLayout>
             <div className="max-w-5xl">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-8">
@@ -293,7 +293,7 @@ const ContentPageEdit: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </AdminLayout>
+        </NewLayout>
     );
 };
 

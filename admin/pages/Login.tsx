@@ -21,7 +21,7 @@ const Login: React.FC = () => {
         if (response.user && response.user.role === 'admin') {
           localStorage.setItem('admin_token', response.access_token);
           localStorage.setItem('user_role', response.user.role);
-          navigate('/admin/dashboard');
+          navigate('/admin/new-dashboard');
         } else {
           setError('Bu panele erişim yetkiniz bulunmamaktadır.');
         }

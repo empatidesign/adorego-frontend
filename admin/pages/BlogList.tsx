@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AdminLayout from '../components/Layout';
+import NewLayout from '../components/NewLayout';
 import { Button } from '../components/forms/FormComponents';
 import { blogAPI } from '../services/api';
 
@@ -48,17 +48,17 @@ const BlogList: React.FC = () => {
 
     if (loading) {
         return (
-            <AdminLayout>
+            <NewLayout>
                 <div className="flex items-center justify-center h-64">
                     <div className="text-gray-600">Yükleniyor...</div>
                 </div>
-            </AdminLayout>
+            </NewLayout>
         );
     }
 
     return (
-        <AdminLayout>
-            <div className="max-w-7xl">
+        <NewLayout>
+            <div className="p-8">
                 <div className="flex items-center justify-between mb-8">
                     <div>
                         <h1 className="text-3xl font-bold text-gray-800">Blog Yazıları</h1>
@@ -185,7 +185,7 @@ const BlogList: React.FC = () => {
                     </table>
                 </div>
             </div>
-        </AdminLayout>
+        </NewLayout>
     );
 };
 

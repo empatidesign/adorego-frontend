@@ -34,6 +34,8 @@ export const authAPI = {
 
 // Content API
 export const contentAPI = {
+  getBaseURL: () => API_BASE_URL,
+  
   // GET methods
   getNavbar: async (lang: string = 'tr') => {
     const response = await api.get(`/content/navbar?lang=${lang}`);

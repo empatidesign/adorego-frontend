@@ -259,6 +259,16 @@ const Footer: React.FC = () => {
             } else {
               setBottomSection(getDefaultBottomSection(currentLang));
             }
+            // Sections (Menu)
+            if (footerRes.data.sections && footerRes.data.sections.length > 0) {
+              setSections(footerRes.data.sections);
+            } else {
+              setSections(getDefaultSections(currentLang));
+            }
+          } else {
+            setCta(getDefaultCta(currentLang));
+            setBottomSection(getDefaultBottomSection(currentLang));
+            setSections(getDefaultSections(currentLang));
           }
         }
       } catch (err) {
@@ -272,8 +282,8 @@ const Footer: React.FC = () => {
     fetchContent();
   }, [currentLang]);
 
-  // Footer logo'yu belirle: Önce site ayarlarındaki footerLogo, sonra Navbar'daki eski veri (varsa), en son footer content'teki logoUrl
-  const footerLogoUrl = (siteSettings?.footerLogo || navbarFooterLogo || bottomSection?.logoUrl || '').trim();
+  // Footer logo'yu belirle: Önce footer content'teki logoUrl, sonra site ayarlarındaki footerLogo (fallback)
+  const footerLogoUrl = (bottomSection?.logoUrl || siteSettings?.footerLogo || navbarFooterLogo || '').trim();
 
   // Footer logo URL değiştiğinde hata flag'ini sıfırla
   useEffect(() => {

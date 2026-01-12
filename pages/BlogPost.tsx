@@ -17,6 +17,12 @@ const BlogPost: React.FC = () => {
     const [allBlogs, setAllBlogs] = useState<any[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
 
+    // Newsletter state
+    const [newsletterEmail, setNewsletterEmail] = useState('');
+    const [newsletterLoading, setNewsletterLoading] = useState(false);
+    const [newsletterMessage, setNewsletterMessage] = useState('');
+    const [newsletterSuccess, setNewsletterSuccess] = useState(false);
+
     useEffect(() => {
         if (slug) {
             loadBlog();
@@ -47,6 +53,59 @@ const BlogPost: React.FC = () => {
     const handleSearchEnter = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' && searchTerm.trim()) {
             navigate(`/blog?search=${encodeURIComponent(searchTerm.trim())}`);
+        }
+    };
+
+    const handleNewsletterSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        
+        if (!newsletterEmail.trim()) {
+            setNewsletterMessage(language === 'tr' ? 'Lütfen e-posta adresinizi girin' : 'Please enter your email');
+            setNewsletterSuccess(false);
+            return;
+        }
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(newsletterEmail)) {
+            setNewsletterMessage(language === 'tr' ? 'Geçerli bir e-posta adresi girin' : 'Enter a valid email address');
+            setNewsletterSuccess(false);
+            return;
+        }
+
+        setNewsletterLoading(true);
+        setNewsletterMessage('');
+
+        try {
+            const response = await fetch('http://localhost:3001/api/content/newsletter/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: newsletterEmail }),
+            });
+
+            const data = await response.json();
+            console.log('Newsletter response:', data);
+
+            if (data.success) {
+                setNewsletterMessage(language === 'tr' ? 'Başarıyla abone oldunuz!' : 'Successfully subscribed!');
+                setNewsletterSuccess(true);
+                setNewsletterEmail('');
+            } else {
+                setNewsletterMessage(language === 'tr' ? 'Bu e-posta zaten kayıtlı' : 'This email is already registered');
+                setNewsletterSuccess(false);
+            }
+        } catch (error) {
+            console.error('Newsletter subscription error:', error);
+            setNewsletterMessage(language === 'tr' ? 'Bir hata oluştu, lütfen tekrar deneyin' : 'An error occurred, please try again');
+            setNewsletterSuccess(false);
+        } finally {
+            setNewsletterLoading(false);
+            // Clear message after 5 seconds
+            setTimeout(() => {
+                setNewsletterMessage('');
+            }, 5000);
         }
     };
 
@@ -198,7 +257,8 @@ const BlogPost: React.FC = () => {
                                     prose-headings:text-slate-900 prose-headings:font-black
                                     prose-p:text-slate-600 prose-p:leading-relaxed
                                     prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
-                                    prose-strong:text-slate-900 prose-img:rounded-3xl prose-img:shadow-lg"
+                                    prose-strong:text-slate-900 prose-img:rounded-3xl prose-img:shadow-lg
+                                    break-words overflow-wrap-anywhere w-full overflow-hidden"
                                 dangerouslySetInnerHTML={{ __html: content }}
                             />
 
@@ -337,18 +397,47 @@ const BlogPost: React.FC = () => {
                         {/* Newsletter CTA */}
                         <div className="bg-gradient-to-br from-[#102477] to-blue-600 p-8 rounded-[2rem] text-white relative overflow-hidden shadow-xl shadow-blue-900/20">
                             <i className="fas fa-paper-plane absolute -right-4 -bottom-4 text-8xl text-white/10 -rotate-12"></i>
-                            <h3 className="text-xl font-black mb-2 relative z-10">Bültene Katılın</h3>
-                            <p className="text-blue-100/80 text-sm mb-6 relative z-10">En yeni lojistik haberleri ve fırsatlardan ilk siz haberdar olun.</p>
-                            <div className="space-y-3 relative z-10">
+                            <h3 className="text-xl font-black mb-2 relative z-10">
+                                {language === 'tr' ? 'Bültene Katılın' : 'Join Newsletter'}
+                            </h3>
+                            <p className="text-blue-100/80 text-sm mb-6 relative z-10">
+                                {language === 'tr' 
+                                    ? 'En yeni lojistik haberleri ve fırsatlardan ilk siz haberdar olun.' 
+                                    : 'Be the first to know about the latest logistics news and opportunities.'}
+                            </p>
+                            <form onSubmit={handleNewsletterSubmit} className="space-y-3 relative z-10">
                                 <input
                                     type="email"
-                                    placeholder="E-posta adresiniz"
+                                    value={newsletterEmail}
+                                    onChange={(e) => setNewsletterEmail(e.target.value)}
+                                    placeholder={language === 'tr' ? 'E-posta adresiniz' : 'Your email address'}
                                     className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl focus:ring-4 focus:ring-white/10 focus:border-white outline-none placeholder:text-blue-200/50 text-sm"
+                                    disabled={newsletterLoading}
                                 />
-                                <button className="w-full py-4 bg-white text-[#102477] font-black rounded-xl hover:bg-blue-50 transition-colors">
-                                    Abone Ol
+                                <button 
+                                    type="submit"
+                                    disabled={newsletterLoading}
+                                    className="w-full py-4 bg-white text-[#102477] font-black rounded-xl hover:bg-blue-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                >
+                                    {newsletterLoading ? (
+                                        <>
+                                            <div className="w-4 h-4 border-2 border-[#102477] border-t-transparent rounded-full animate-spin"></div>
+                                            {language === 'tr' ? 'Gönderiliyor...' : 'Sending...'}
+                                        </>
+                                    ) : (
+                                        language === 'tr' ? 'Abone Ol' : 'Subscribe'
+                                    )}
                                 </button>
-                            </div>
+                                {newsletterMessage && (
+                                    <div className={`text-sm font-medium text-center p-3 rounded-xl ${
+                                        newsletterSuccess 
+                                            ? 'bg-green-500/20 text-green-100' 
+                                            : 'bg-red-500/20 text-red-100'
+                                    }`}>
+                                        {newsletterMessage}
+                                    </div>
+                                )}
+                            </form>
                         </div>
                     </aside>
                 </div>
