@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import NewLayout from '../components/NewLayout';
 import SEOForm from '../components/SEOForm';
 import { contentAPI } from '../services/api';
+import { API_BASE_URL } from '../../src/api-config';
 
 type Language = 'tr' | 'en';
 
@@ -59,8 +60,8 @@ const PageHome: React.FC = () => {
         contentAPI.getPopularDestinations('en'),
         contentAPI.getFaq('tr'),
         contentAPI.getFaq('en'),
-        fetch('http://localhost:3001/api/content/seo/home?lang=tr').then(r => r.json()),
-        fetch('http://localhost:3001/api/content/seo/home?lang=en').then(r => r.json()),
+        fetch(`${API_BASE_URL}/content/seo/home?lang=tr`).then(r => r.json()),
+        fetch(`${API_BASE_URL}/content/seo/home?lang=en`).then(r => r.json()),
       ]);
 
       setHeroTR(heroTRRes || {});
@@ -100,7 +101,7 @@ const PageHome: React.FC = () => {
         contentAPI.updatePopularDestinations(destinationsEN, 'en'),
         contentAPI.updateFaq(faqTR, 'tr'),
         contentAPI.updateFaq(faqEN, 'en'),
-        fetch('http://localhost:3001/api/content/seo/home', {
+        fetch(`${API_BASE_URL}/content/seo/home`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -108,7 +109,7 @@ const PageHome: React.FC = () => {
           },
           body: JSON.stringify({ data: seoTR, lang: 'tr' })
         }),
-        fetch('http://localhost:3001/api/content/seo/home', {
+        fetch(`${API_BASE_URL}/content/seo/home`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

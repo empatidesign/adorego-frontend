@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NewLayout from '../components/NewLayout';
+import { API_BASE_URL } from '../../src/api-config';
 
 interface Subscriber {
     email: string;
@@ -21,7 +22,7 @@ const PageNewsletter: React.FC = () => {
         try {
             const token = localStorage.getItem('admin_token');
             console.log('Token:', token);
-            const response = await axios.get('http://localhost:3001/api/content/newsletter/subscribers', {
+            const response = await axios.get(`${API_BASE_URL}/content/newsletter/subscribers`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             console.log('Subscribers response:', response.data);

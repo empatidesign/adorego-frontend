@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NewLayout from '../components/NewLayout';
 import SEOForm from '../components/SEOForm';
+import { API_BASE_URL } from '../../src/api-config';
 
 const PageContact: React.FC = () => {
     const [loading, setLoading] = useState(true);
@@ -86,10 +87,10 @@ const PageContact: React.FC = () => {
     const loadData = async () => {
         try {
             const [responseTR, responseEN, seoTR, seoEN] = await Promise.all([
-                axios.get('http://localhost:3001/api/content/contact?lang=tr'),
-                axios.get('http://localhost:3001/api/content/contact?lang=en'),
-                axios.get('http://localhost:3001/api/content/seo/contact?lang=tr'),
-                axios.get('http://localhost:3001/api/content/seo/contact?lang=en')
+                axios.get(`${API_BASE_URL}/content/contact?lang=tr`),
+                axios.get(`${API_BASE_URL}/content/contact?lang=en`),
+                axios.get(`${API_BASE_URL}/content/seo/contact?lang=tr`),
+                axios.get(`${API_BASE_URL}/content/seo/contact?lang=en`)
             ]);
 
             if (responseTR.data && Object.keys(responseTR.data).length > 0) {
@@ -116,19 +117,19 @@ const PageContact: React.FC = () => {
         try {
             const token = localStorage.getItem('admin_token');
             await Promise.all([
-                axios.put('http://localhost:3001/api/content/contact', 
+                axios.put(`${API_BASE_URL}/content/contact`, 
                     { data: data.tr, lang: 'tr' },
                     { headers: { Authorization: `Bearer ${token}` } }
                 ),
-                axios.put('http://localhost:3001/api/content/contact', 
+                axios.put(`${API_BASE_URL}/content/contact`, 
                     { data: data.en, lang: 'en' },
                     { headers: { Authorization: `Bearer ${token}` } }
                 ),
-                axios.put('http://localhost:3001/api/content/seo/contact', 
+                axios.put(`${API_BASE_URL}/content/seo/contact`, 
                     { data: seo.tr, lang: 'tr' },
                     { headers: { Authorization: `Bearer ${token}` } }
                 ),
-                axios.put('http://localhost:3001/api/content/seo/contact', 
+                axios.put(`${API_BASE_URL}/content/seo/contact`, 
                     { data: seo.en, lang: 'en' },
                     { headers: { Authorization: `Bearer ${token}` } }
                 )

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useLanguage } from '../contexts/LanguageContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { API_BASE_URL } from '../src/api-config';
 
 const Contact = () => {
     const { language } = useLanguage();
@@ -23,7 +24,7 @@ const Contact = () => {
 
     const loadContent = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/api/content/contact?lang=${language}`);
+            const response = await axios.get(`${API_BASE_URL}/content/contact?lang=${language}`);
             setContent(response.data);
         } catch (error) {
             console.error('İçerik yüklenemedi:', error);
@@ -35,7 +36,7 @@ const Contact = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:3001/api/content/contact/submit', formData);
+            await axios.post(`${API_BASE_URL}/content/contact/submit`, formData);
             alert(language === 'tr' ? 'Mesajınız gönderildi!' : 'Your message has been sent!');
             setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
         } catch (error) {

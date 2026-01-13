@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import NewLayout from '../components/NewLayout';
 import SEOForm from '../components/SEOForm';
 import { contentAPI } from '../services/api';
+import { API_BASE_URL } from '../../src/api-config';
 
 type Language = 'tr' | 'en';
 
@@ -43,8 +44,8 @@ const PagePricing: React.FC = () => {
       const [priceTR, priceEN, seoTRRes, seoENRes] = await Promise.all([
         contentAPI.getPricing('tr'),
         contentAPI.getPricing('en'),
-        fetch(`http://localhost:3001/api/content/seo/pricing?lang=tr`).then(r => r.json()),
-        fetch(`http://localhost:3001/api/content/seo/pricing?lang=en`).then(r => r.json()),
+        fetch(`${API_BASE_URL}/content/seo/pricing?lang=tr`).then(r => r.json()),
+        fetch(`${API_BASE_URL}/content/seo/pricing?lang=en`).then(r => r.json()),
       ]);
 
       setPricingTR(priceTR || { badge: 'FİYAT LİSTESİ', title: 'Ülkelere Göre Kargo Fiyatları', description: '', countries: [] });
@@ -72,7 +73,7 @@ const PagePricing: React.FC = () => {
       await Promise.all([
         contentAPI.updatePricing(pricingTR, 'tr'),
         contentAPI.updatePricing(pricingEN, 'en'),
-        fetch(`http://localhost:3001/api/content/seo/pricing`, {
+        fetch(`${API_BASE_URL}/content/seo/pricing`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -80,7 +81,7 @@ const PagePricing: React.FC = () => {
           },
           body: JSON.stringify({ data: seoTR, lang: 'tr' })
         }),
-        fetch(`http://localhost:3001/api/content/seo/pricing`, {
+        fetch(`${API_BASE_URL}/content/seo/pricing`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

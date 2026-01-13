@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NewLayout from '../components/NewLayout';
+import { API_BASE_URL } from '../../src/api-config';
 
 interface ContactMessage {
     id: string;
@@ -26,7 +27,7 @@ const PageContactMessages: React.FC = () => {
     const loadMessages = async () => {
         try {
             const token = localStorage.getItem('admin_token');
-            const response = await axios.get('http://localhost:3001/api/content/contact/messages', {
+            const response = await axios.get(`${API_BASE_URL}/content/contact/messages`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setMessages(response.data);
@@ -41,7 +42,7 @@ const PageContactMessages: React.FC = () => {
         try {
             const token = localStorage.getItem('admin_token');
             await axios.put(
-                `http://localhost:3001/api/content/contact/messages/${messageId}/read`,
+                `${API_BASE_URL}/content/contact/messages/${messageId}/read`,
                 {},
                 { headers: { Authorization: `Bearer ${token}` } }
             );

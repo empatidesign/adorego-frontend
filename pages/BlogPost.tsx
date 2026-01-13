@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
 import { blogAPI } from '../admin/services/api';
+import { API_BASE_URL } from '../src/api-config';
 
 const BlogPost: React.FC = () => {
     const navigate = useNavigate();
@@ -77,7 +78,7 @@ const BlogPost: React.FC = () => {
         setNewsletterMessage('');
 
         try {
-            const response = await fetch('http://localhost:3001/api/content/newsletter/subscribe', {
+            const response = await fetch(`${API_BASE_URL}/content/newsletter/subscribe`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -174,9 +175,8 @@ const BlogPost: React.FC = () => {
         if (!url) return '';
         if (url.startsWith('http')) return url;
         // Backend now serves fixed URLs starting with /api/upload/images/
-        // We need to ensure they point to the correct backend host in dev
-        const baseUrl = 'http://localhost:3001';
-        return url.startsWith('/') ? `${baseUrl}${url}` : `${baseUrl}/${url}`;
+        // We need to ensure they point to the correct backend host
+        return url.startsWith('/api') ? `${API_BASE_URL.replace('/api', '')}${url}` : `${API_BASE_URL}${url.startsWith('/') ? url : '/' + url}`;
     };
 
     return (
