@@ -16,81 +16,91 @@ const NewLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   };
 
   const menuItems = [
-    { 
-      path: '/admin/new-dashboard', 
-      label: 'Dashboard', 
+    {
+      path: '/admin/new-dashboard',
+      label: 'Dashboard',
       icon: 'fa-gauge',
       page: ''
     },
-    { 
-      path: '/admin/page-home', 
-      label: 'Ana Sayfa', 
+    {
+      path: '/admin/page-home',
+      label: 'Ana Sayfa',
       icon: 'fa-home',
       page: '/'
     },
-    { 
-      path: '/admin/page-international', 
-      label: 'Yurtdışı Kargo', 
+    {
+      path: '/admin/page-international',
+      label: 'Yurtdışı Kargo',
       icon: 'fa-plane',
       page: '/yurtdisi-kargo'
     },
-    { 
-      path: '/admin/page-domestic', 
-      label: 'Yurtiçi Kargo', 
+    {
+      path: '/admin/page-domestic',
+      label: 'Yurtiçi Kargo',
       icon: 'fa-truck',
       page: '/yurtici-kargo'
     },
-    { 
-      path: '/admin/header-footer', 
-      label: 'Header & Footer', 
+    {
+      path: '/admin/header-footer',
+      label: 'Header & Footer',
       icon: 'fa-bars',
       page: 'Tüm Sayfalar'
     },
-    { 
-      path: '/admin/page-pricing', 
-      label: 'Fiyatlar', 
+    {
+      path: '/admin/page-pricing',
+      label: 'Fiyatlar',
       icon: 'fa-tag',
       page: '/fiyatlar'
     },
-    { 
-      path: '/admin/page-tracking', 
-      label: 'Gönderi Takibi', 
+    {
+      path: '/admin/page-tracking',
+      label: 'Gönderi Takibi',
       icon: 'fa-search-location',
       page: '/gonderi-takibi'
     },
-
-    { 
-      path: '/admin/page-blog', 
-      label: 'Blog Sayfası', 
-      icon: 'fa-blog',
-      page: '/blog (Sayfa)'
-    },
-    { 
-      path: '/admin/blog', 
-      label: 'Blog Yazıları', 
+    {
+      path: '/admin/blog',
+      label: 'Blog Yazıları',
       icon: 'fa-newspaper',
       page: '/blog (Yazılar)'
     },
-    { 
-      path: '/admin/newsletter', 
-      label: 'Newsletter', 
+    {
+      path: '/admin/newsletter',
+      label: 'Newsletter',
       icon: 'fa-envelope',
       page: 'Bülten Aboneleri'
     },
-    { 
-      path: '/admin/page-contact', 
-      label: 'İletişim', 
+    {
+      path: '/admin/page-contact',
+      label: 'İletişim',
       icon: 'fa-address-book',
       page: '/iletisim'
     },
-    { 
-      path: '/admin/contact-messages', 
-      label: 'Gelen Mesajlar', 
+    {
+      path: '/admin/contact-messages',
+      label: 'Gelen Mesajlar',
       icon: 'fa-inbox',
       page: 'İletişim Formu'
     },
+    {
+      path: '/admin/content-pages',
+      label: 'İçerik Sayfaları',
+      icon: 'fa-file-alt',
+      page: 'Footer İçerikleri'
+    },
+    {
+      path: '/admin/seo',
+      label: 'SEO Ayarları',
+      icon: 'fa-search',
+      page: 'Meta & SEO'
+    },
+    {
+      path: '/admin/settings',
+      label: 'Genel Ayarlar',
+      icon: 'fa-cog',
+      page: 'Site Ayarları'
+    },
 
-  
   ];
 
   return (
@@ -109,11 +119,10 @@ const NewLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`block px-4 py-3 rounded-xl transition-all ${
-                  isActive
-                    ? 'bg-[#4DB848] text-white shadow-lg scale-105'
-                    : 'text-white/80 hover:bg-white/10 hover:text-white'
-                }`}
+                className={`block px-4 py-3 rounded-xl transition-all ${isActive
+                  ? 'bg-[#4DB848] text-white shadow-lg scale-105'
+                  : 'text-white/80 hover:bg-white/10 hover:text-white'
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <i className={`fas ${item.icon} text-lg w-5`}></i>

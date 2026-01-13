@@ -4,6 +4,56 @@ import { contentAPI } from '../services/api';
 
 type Language = 'tr' | 'en';
 
+// All available pages for link selection
+const ALL_PAGES = [
+  // Main Pages
+  { slug: '', title: 'Ana Sayfa', category: 'Ana Sayfalar' },
+  { slug: 'yurtdisi-kargo', title: 'Yurtdışı Kargo', category: 'Ana Sayfalar' },
+  { slug: 'yurtici-kargo', title: 'Yurtiçi Kargo', category: 'Ana Sayfalar' },
+  { slug: 'fiyatlar', title: 'Fiyatlar', category: 'Ana Sayfalar' },
+  { slug: 'gonderi-takibi', title: 'Gönderi Takibi', category: 'Ana Sayfalar' },
+  { slug: 'iletisim', title: 'İletişim', category: 'Ana Sayfalar' },
+  { slug: 'blog', title: 'Blog', category: 'Ana Sayfalar' },
+
+  // Services
+  { slug: 'ekonomik-kargo', title: 'Ekonomik Kargo', category: 'Hizmetlerimiz' },
+  { slug: 'express-kargo', title: 'Express Kargo', category: 'Hizmetlerimiz' },
+  { slug: 'yurtdisindan-turkiyeye', title: 'Yurtdışından Türkiye\'ye', category: 'Hizmetlerimiz' },
+  { slug: 'yurtici-avantajlar', title: 'Yurtiçi Avantajlar', category: 'Hizmetlerimiz' },
+  { slug: 'alici-odemeli-kargo', title: 'Alıcı Ödemeli Kargo', category: 'Hizmetlerimiz' },
+  { slug: 'kapida-odemeli-kargo', title: 'Kapıda Ödemeli Kargo', category: 'Hizmetlerimiz' },
+  { slug: 'buyuk-desi-gonderimler', title: 'Büyük Desi Gönderimler', category: 'Hizmetlerimiz' },
+
+  // How It Works
+  { slug: 'kapidan-alim-teslim', title: 'Kapıdan Alım – Teslim', category: 'Nasıl Çalışır' },
+  { slug: 'ilk-kez-gonderenler', title: 'İlk Kez Gönderenler', category: 'Nasıl Çalışır' },
+  { slug: 'gumruk-evrak-rehberi', title: 'Gümrük & Evrak Rehberi', category: 'Nasıl Çalışır' },
+  { slug: 'yurtdisi-iade-geri', title: 'Yurtdışı İade & Geri', category: 'Nasıl Çalışır' },
+  { slug: 'hangi-gonderim-uygun', title: 'Hangi Gönderim Uygun?', category: 'Nasıl Çalışır' },
+
+  // Resources
+  { slug: 'lojistik-blog', title: 'Lojistik Blog', category: 'Bilgi & Kaynaklar' },
+  { slug: 'sikca-sorulan-sorular', title: 'Sıkça Sorulan Sorular', category: 'Bilgi & Kaynaklar' },
+  { slug: 'yurtdisi-kargo-rehberi', title: 'Yurtdışı Kargo Rehberi', category: 'Bilgi & Kaynaklar' },
+  { slug: 'mikro-ihracat-rehberi', title: 'Mikro İhracat Rehberi', category: 'Bilgi & Kaynaklar' },
+  { slug: 'gumruk-rehberi', title: 'Gümrük Rehberi', category: 'Bilgi & Kaynaklar' },
+  { slug: 'guncel-duyurular', title: 'Güncel Duyurular', category: 'Bilgi & Kaynaklar' },
+
+  // Integrations
+  { slug: 'shopify-entegrasyonu', title: 'Shopify Entegrasyonu', category: 'Entegrasyonlar' },
+  { slug: 'etsy-entegrasyonu', title: 'Etsy Entegrasyonu', category: 'Entegrasyonlar' },
+  { slug: 'amazon-entegrasyonu', title: 'Amazon Entegrasyonu', category: 'Entegrasyonlar' },
+  { slug: 'woocommerce', title: 'WooCommerce', category: 'Entegrasyonlar' },
+  { slug: 'ozel-site-kargo-api', title: 'Özel Site Kargo API', category: 'Entegrasyonlar' },
+
+  // Corporate
+  { slug: 'hakkimizda', title: 'Hakkımızda', category: 'Kurumsal' },
+  { slug: 'destek', title: 'Destek', category: 'Kurumsal' },
+  { slug: 'gizlilik-politikasi', title: 'Gizlilik Politikası', category: 'Kurumsal' },
+  { slug: 'kullanim-sartlari', title: 'Kullanım Şartları', category: 'Kurumsal' },
+  { slug: 'kvkk-aydinlatma', title: 'KVKK Aydınlatma', category: 'Kurumsal' },
+];
+
 const PageHeaderFooter: React.FC = () => {
   const [currentLang, setCurrentLang] = useState<Language>('tr');
   const [loading, setLoading] = useState(true);
@@ -103,7 +153,7 @@ const PageHeaderFooter: React.FC = () => {
       });
 
       const data = await response.json();
-      
+
       if (data.success && data.url) {
         const fullUrl = `${contentAPI.getBaseURL()}${data.url}`;
         updateNavbar({ logo: fullUrl });
@@ -139,7 +189,7 @@ const PageHeaderFooter: React.FC = () => {
       });
 
       const data = await response.json();
-      
+
       if (data.success && data.url) {
         const fullUrl = `${contentAPI.getBaseURL()}${data.url}`;
         updateFooter({ bottomSection: { ...currentFooter.bottomSection, logoUrl: fullUrl } });
@@ -177,21 +227,19 @@ const PageHeaderFooter: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-800 mb-2">Header & Footer Yönetimi</h1>
             <p className="text-gray-600">Tüm sayfalarda görünen header ve footer içeriklerini yönetin</p>
           </div>
-          
+
           <div className="flex gap-2">
             <button
               onClick={() => setCurrentLang('tr')}
-              className={`px-6 py-2 rounded-lg font-semibold transition-all ${
-                currentLang === 'tr' ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-              }`}
+              className={`px-6 py-2 rounded-lg font-semibold transition-all ${currentLang === 'tr' ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                }`}
             >
               🇹🇷 Türkçe
             </button>
             <button
               onClick={() => setCurrentLang('en')}
-              className={`px-6 py-2 rounded-lg font-semibold transition-all ${
-                currentLang === 'en' ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-              }`}
+              className={`px-6 py-2 rounded-lg font-semibold transition-all ${currentLang === 'en' ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                }`}
             >
               🇬🇧 English
             </button>
@@ -211,7 +259,7 @@ const PageHeaderFooter: React.FC = () => {
               <i className="fas fa-bars text-blue-600"></i>
               Header - Logo ve Menü
             </h2>
-            
+
             {/* Logo URL */}
             <div className="mb-6 p-4 bg-blue-50 rounded-lg">
               <label className="block text-sm font-semibold text-gray-700 mb-2">Header Logo</label>
@@ -278,8 +326,8 @@ const PageHeaderFooter: React.FC = () => {
                   >
                     ×
                   </button>
-                  
-                  <div className="grid grid-cols-2 gap-3 pr-8">
+
+                  <div className="space-y-3 pr-8">
                     <div>
                       <label className="block text-xs font-semibold text-gray-600 mb-1">Sekme Adı</label>
                       <input
@@ -294,19 +342,68 @@ const PageHeaderFooter: React.FC = () => {
                         placeholder="Yurtdışı Kargo"
                       />
                     </div>
+
                     <div>
-                      <label className="block text-xs font-semibold text-gray-600 mb-1">Link</label>
-                      <input
-                        type="text"
-                        value={item.link || ''}
+                      <label className="block text-xs font-semibold text-gray-600 mb-1">Link Tipi</label>
+                      <select
+                        value={item.linkType || 'internal'}
                         onChange={(e) => {
                           const updated = [...currentNavbar.menuItems];
-                          updated[index] = { ...updated[index], link: e.target.value };
+                          const linkType = e.target.value as 'internal' | 'external';
+                          updated[index] = {
+                            ...updated[index],
+                            linkType,
+                            link: linkType === 'internal' ? '' : (updated[index].link || ''),
+                            pageSlug: linkType === 'internal' ? (updated[index].pageSlug || '') : undefined
+                          };
                           updateNavbar({ menuItems: updated });
                         }}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                        placeholder="/yurtdisi-kargo"
-                      />
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white"
+                      >
+                        <option value="internal">📄 İç Sayfa</option>
+                        <option value="external">🔗 Dış Link</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-600 mb-1">
+                        {item.linkType === 'external' ? 'URL' : 'Sayfa Seçin'}
+                      </label>
+                      {item.linkType === 'external' ? (
+                        <input
+                          type="text"
+                          value={item.link || ''}
+                          onChange={(e) => {
+                            const updated = [...currentNavbar.menuItems];
+                            updated[index] = { ...updated[index], link: e.target.value };
+                            updateNavbar({ menuItems: updated });
+                          }}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                          placeholder="https://example.com"
+                        />
+                      ) : (
+                        <select
+                          value={item.pageSlug || ''}
+                          onChange={(e) => {
+                            const updated = [...currentNavbar.menuItems];
+                            const selectedSlug = e.target.value;
+                            updated[index] = {
+                              ...updated[index],
+                              pageSlug: selectedSlug,
+                              link: selectedSlug ? `/${selectedSlug}` : '/'
+                            };
+                            updateNavbar({ menuItems: updated });
+                          }}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white"
+                        >
+                          <option value="">Sayfa Seçin...</option>
+                          {ALL_PAGES.map((page) => (
+                            <option key={page.slug} value={page.slug}>
+                              {page.title} {page.slug && `(/${page.slug})`}
+                            </option>
+                          ))}
+                        </select>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -320,7 +417,7 @@ const PageHeaderFooter: React.FC = () => {
               <i className="fas fa-bullhorn text-purple-600"></i>
               Footer - CTA Bölümü
             </h2>
-            
+
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -344,7 +441,7 @@ const PageHeaderFooter: React.FC = () => {
                   />
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Buton 1 Metni</label>
@@ -396,7 +493,7 @@ const PageHeaderFooter: React.FC = () => {
               <i className="fas fa-info-circle text-purple-600"></i>
               Footer - Alt Bölüm
             </h2>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Footer Logo</label>
@@ -429,7 +526,7 @@ const PageHeaderFooter: React.FC = () => {
                   </div>
                 )}
               </div>
-              
+
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Slogan</label>
                 <input
@@ -440,7 +537,7 @@ const PageHeaderFooter: React.FC = () => {
                   placeholder="Yeni Nesil Akıllı Lojistik..."
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Kurumsal Bağlantılar Başlığı</label>
                 <input
@@ -451,7 +548,7 @@ const PageHeaderFooter: React.FC = () => {
                   placeholder="Kurumsal Bağlantılar"
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Copyright Metni</label>
                 <textarea
@@ -470,11 +567,11 @@ const PageHeaderFooter: React.FC = () => {
                   <button
                     onClick={() => {
                       const newLink = { platform: 'instagram', url: '#', icon: 'fa-instagram' };
-                      updateFooter({ 
-                        bottomSection: { 
-                          ...currentFooter.bottomSection, 
-                          socialLinks: [...(currentFooter.bottomSection?.socialLinks || []), newLink] 
-                        } 
+                      updateFooter({
+                        bottomSection: {
+                          ...currentFooter.bottomSection,
+                          socialLinks: [...(currentFooter.bottomSection?.socialLinks || []), newLink]
+                        }
                       });
                     }}
                     className="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 text-xs"
@@ -483,7 +580,7 @@ const PageHeaderFooter: React.FC = () => {
                     Link Ekle
                   </button>
                 </div>
-                
+
                 <div className="space-y-2">
                   {(currentFooter.bottomSection?.socialLinks || []).map((social: any, index: number) => (
                     <div key={index} className="flex gap-2 items-center">
@@ -541,11 +638,11 @@ const PageHeaderFooter: React.FC = () => {
                   <button
                     onClick={() => {
                       const newLink = { name: 'Yeni Link', url: '#' };
-                      updateFooter({ 
-                        bottomSection: { 
-                          ...currentFooter.bottomSection, 
-                          corporateLinks: [...(currentFooter.bottomSection?.corporateLinks || []), newLink] 
-                        } 
+                      updateFooter({
+                        bottomSection: {
+                          ...currentFooter.bottomSection,
+                          corporateLinks: [...(currentFooter.bottomSection?.corporateLinks || []), newLink]
+                        }
                       });
                     }}
                     className="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 text-xs"
@@ -554,41 +651,92 @@ const PageHeaderFooter: React.FC = () => {
                     Link Ekle
                   </button>
                 </div>
-                
+
                 <div className="space-y-2">
                   {(currentFooter.bottomSection?.corporateLinks || []).map((link: any, index: number) => (
-                    <div key={index} className="flex gap-2 items-center">
-                      <input
-                        type="text"
-                        value={link.name || ''}
-                        onChange={(e) => {
-                          const updated = [...(currentFooter.bottomSection?.corporateLinks || [])];
-                          updated[index] = { ...updated[index], name: e.target.value };
-                          updateFooter({ bottomSection: { ...currentFooter.bottomSection, corporateLinks: updated } });
-                        }}
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                        placeholder="Hakkımızda"
-                      />
-                      <input
-                        type="text"
-                        value={link.url || ''}
-                        onChange={(e) => {
-                          const updated = [...(currentFooter.bottomSection?.corporateLinks || [])];
-                          updated[index] = { ...updated[index], url: e.target.value };
-                          updateFooter({ bottomSection: { ...currentFooter.bottomSection, corporateLinks: updated } });
-                        }}
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                        placeholder="/hakkimizda"
-                      />
-                      <button
-                        onClick={() => {
-                          const updated = currentFooter.bottomSection?.corporateLinks.filter((_: any, i: number) => i !== index);
-                          updateFooter({ bottomSection: { ...currentFooter.bottomSection, corporateLinks: updated } });
-                        }}
-                        className="w-8 h-8 bg-red-500 text-white rounded-full hover:bg-red-600 text-xs"
-                      >
-                        ×
-                      </button>
+                    <div key={index} className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                      <div className="flex gap-2 items-start">
+                        <div className="flex-1 space-y-2">
+                          <input
+                            type="text"
+                            value={link.name || ''}
+                            onChange={(e) => {
+                              const updated = [...(currentFooter.bottomSection?.corporateLinks || [])];
+                              updated[index] = { ...updated[index], name: e.target.value };
+                              updateFooter({ bottomSection: { ...currentFooter.bottomSection, corporateLinks: updated } });
+                            }}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                            placeholder="Hakkımızda"
+                          />
+
+                          <div className="flex gap-2">
+                            <select
+                              value={link.linkType || 'internal'}
+                              onChange={(e) => {
+                                const updated = [...(currentFooter.bottomSection?.corporateLinks || [])];
+                                const linkType = e.target.value as 'internal' | 'external';
+                                updated[index] = {
+                                  ...updated[index],
+                                  linkType,
+                                  url: linkType === 'internal' ? '' : (updated[index].url || ''),
+                                  pageSlug: linkType === 'internal' ? (updated[index].pageSlug || '') : undefined
+                                };
+                                updateFooter({ bottomSection: { ...currentFooter.bottomSection, corporateLinks: updated } });
+                              }}
+                              className="w-32 px-2 py-2 border border-gray-300 rounded-lg text-xs bg-white"
+                            >
+                              <option value="internal">📄 İç</option>
+                              <option value="external">🔗 Dış</option>
+                            </select>
+
+                            {link.linkType === 'external' ? (
+                              <input
+                                type="text"
+                                value={link.url || ''}
+                                onChange={(e) => {
+                                  const updated = [...(currentFooter.bottomSection?.corporateLinks || [])];
+                                  updated[index] = { ...updated[index], url: e.target.value };
+                                  updateFooter({ bottomSection: { ...currentFooter.bottomSection, corporateLinks: updated } });
+                                }}
+                                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                                placeholder="https://example.com"
+                              />
+                            ) : (
+                              <select
+                                value={link.pageSlug || ''}
+                                onChange={(e) => {
+                                  const updated = [...(currentFooter.bottomSection?.corporateLinks || [])];
+                                  const selectedSlug = e.target.value;
+                                  updated[index] = {
+                                    ...updated[index],
+                                    pageSlug: selectedSlug,
+                                    url: selectedSlug ? `/${selectedSlug}` : '/'
+                                  };
+                                  updateFooter({ bottomSection: { ...currentFooter.bottomSection, corporateLinks: updated } });
+                                }}
+                                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white"
+                              >
+                                <option value="">Sayfa Seçin...</option>
+                                {ALL_PAGES.map((page) => (
+                                  <option key={page.slug} value={page.slug}>
+                                    {page.title} {page.slug && `(/${page.slug})`}
+                                  </option>
+                                ))}
+                              </select>
+                            )}
+                          </div>
+                        </div>
+
+                        <button
+                          onClick={() => {
+                            const updated = currentFooter.bottomSection?.corporateLinks.filter((_: any, i: number) => i !== index);
+                            updateFooter({ bottomSection: { ...currentFooter.bottomSection, corporateLinks: updated } });
+                          }}
+                          className="w-8 h-8 bg-red-500 text-white rounded-full hover:bg-red-600 text-xs flex-shrink-0"
+                        >
+                          ×
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -602,7 +750,7 @@ const PageHeaderFooter: React.FC = () => {
               <i className="fas fa-list text-purple-600"></i>
               Footer - Menü Bölümleri
             </h2>
-            
+
             <div className="flex items-center justify-between mb-4">
               <p className="text-sm text-gray-600">Bölüm sayısı: {(currentFooter.sections || []).length}</p>
               <button
@@ -632,7 +780,7 @@ const PageHeaderFooter: React.FC = () => {
                   >
                     ×
                   </button>
-                  
+
                   <div className="mb-4 pr-10">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">Bölüm Başlığı</label>
                     <input
@@ -666,47 +814,102 @@ const PageHeaderFooter: React.FC = () => {
                         Link Ekle
                       </button>
                     </div>
-                    
+
                     <div className="space-y-2">
                       {(section.links || []).map((link: any, linkIndex: number) => (
-                        <div key={linkIndex} className="flex gap-2 items-center bg-white p-2 rounded-lg">
-                          <input
-                            type="text"
-                            value={link.n || ''}
-                            onChange={(e) => {
-                              const updated = [...currentFooter.sections];
-                              const updatedLinks = [...updated[sectionIndex].links];
-                              updatedLinks[linkIndex] = { ...updatedLinks[linkIndex], n: e.target.value };
-                              updated[sectionIndex] = { ...updated[sectionIndex], links: updatedLinks };
-                              updateFooter({ sections: updated });
-                            }}
-                            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                            placeholder="Link adı"
-                          />
-                          <input
-                            type="text"
-                            value={link.h || ''}
-                            onChange={(e) => {
-                              const updated = [...currentFooter.sections];
-                              const updatedLinks = [...updated[sectionIndex].links];
-                              updatedLinks[linkIndex] = { ...updatedLinks[linkIndex], h: e.target.value };
-                              updated[sectionIndex] = { ...updated[sectionIndex], links: updatedLinks };
-                              updateFooter({ sections: updated });
-                            }}
-                            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                            placeholder="/link-yolu"
-                          />
-                          <button
-                            onClick={() => {
-                              const updated = [...currentFooter.sections];
-                              const updatedLinks = updated[sectionIndex].links.filter((_: any, i: number) => i !== linkIndex);
-                              updated[sectionIndex] = { ...updated[sectionIndex], links: updatedLinks };
-                              updateFooter({ sections: updated });
-                            }}
-                            className="w-8 h-8 bg-red-500 text-white rounded-full hover:bg-red-600 text-xs"
-                          >
-                            ×
-                          </button>
+                        <div key={linkIndex} className="bg-white p-3 rounded-lg border border-gray-200">
+                          <div className="flex gap-2 items-start">
+                            <div className="flex-1 space-y-2">
+                              <input
+                                type="text"
+                                value={link.n || ''}
+                                onChange={(e) => {
+                                  const updated = [...currentFooter.sections];
+                                  const updatedLinks = [...updated[sectionIndex].links];
+                                  updatedLinks[linkIndex] = { ...updatedLinks[linkIndex], n: e.target.value };
+                                  updated[sectionIndex] = { ...updated[sectionIndex], links: updatedLinks };
+                                  updateFooter({ sections: updated });
+                                }}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                                placeholder="Link adı"
+                              />
+
+                              <div className="flex gap-2">
+                                <select
+                                  value={link.linkType || 'internal'}
+                                  onChange={(e) => {
+                                    const updated = [...currentFooter.sections];
+                                    const updatedLinks = [...updated[sectionIndex].links];
+                                    const linkType = e.target.value as 'internal' | 'external';
+                                    updatedLinks[linkIndex] = {
+                                      ...updatedLinks[linkIndex],
+                                      linkType,
+                                      h: linkType === 'internal' ? '' : (updatedLinks[linkIndex].h || ''),
+                                      pageSlug: linkType === 'internal' ? (updatedLinks[linkIndex].pageSlug || '') : undefined
+                                    };
+                                    updated[sectionIndex] = { ...updated[sectionIndex], links: updatedLinks };
+                                    updateFooter({ sections: updated });
+                                  }}
+                                  className="w-32 px-2 py-2 border border-gray-300 rounded-lg text-xs bg-white"
+                                >
+                                  <option value="internal">📄 İç</option>
+                                  <option value="external">🔗 Dış</option>
+                                </select>
+
+                                {link.linkType === 'external' ? (
+                                  <input
+                                    type="text"
+                                    value={link.h || ''}
+                                    onChange={(e) => {
+                                      const updated = [...currentFooter.sections];
+                                      const updatedLinks = [...updated[sectionIndex].links];
+                                      updatedLinks[linkIndex] = { ...updatedLinks[linkIndex], h: e.target.value };
+                                      updated[sectionIndex] = { ...updated[sectionIndex], links: updatedLinks };
+                                      updateFooter({ sections: updated });
+                                    }}
+                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                                    placeholder="https://example.com"
+                                  />
+                                ) : (
+                                  <select
+                                    value={link.pageSlug || ''}
+                                    onChange={(e) => {
+                                      const updated = [...currentFooter.sections];
+                                      const updatedLinks = [...updated[sectionIndex].links];
+                                      const selectedSlug = e.target.value;
+                                      updatedLinks[linkIndex] = {
+                                        ...updatedLinks[linkIndex],
+                                        pageSlug: selectedSlug,
+                                        h: selectedSlug ? `/${selectedSlug}` : '/'
+                                      };
+                                      updated[sectionIndex] = { ...updated[sectionIndex], links: updatedLinks };
+                                      updateFooter({ sections: updated });
+                                    }}
+                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white"
+                                  >
+                                    <option value="">Sayfa Seçin...</option>
+                                    {ALL_PAGES.map((page) => (
+                                      <option key={page.slug} value={page.slug}>
+                                        {page.title} {page.slug && `(/${page.slug})`}
+                                      </option>
+                                    ))}
+                                  </select>
+                                )}
+                              </div>
+                            </div>
+
+                            <button
+                              onClick={() => {
+                                const updated = [...currentFooter.sections];
+                                const updatedLinks = updated[sectionIndex].links.filter((_: any, i: number) => i !== linkIndex);
+                                updated[sectionIndex] = { ...updated[sectionIndex], links: updatedLinks };
+                                updateFooter({ sections: updated });
+                              }}
+                              className="w-8 h-8 bg-red-500 text-white rounded-full hover:bg-red-600 text-xs flex-shrink-0"
+                            >
+                              ×
+                            </button>
+                          </div>
                         </div>
                       ))}
                     </div>

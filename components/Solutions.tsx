@@ -7,22 +7,25 @@ import { API_BASE_URL } from '../src/api-config';
 const Solutions: React.FC = () => {
   const { currentLang } = useLanguage();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  
+
   const getDefaultContent = () => ({
     badge: currentLang === 'tr' ? 'ÖZEL ÇÖZÜMLER' : 'SPECIAL SOLUTIONS',
+    badgeColor: '#4DB848',
     title: currentLang === 'tr' ? 'İhtiyacına Göre' : 'Smart Shipping',
+    titleColor: '#102477',
     highlightedTitle: currentLang === 'tr' ? 'Akıllı Gönderim.' : 'Based on Your Needs.',
+    highlightedTitleColor: '#4DB848',
     buttonText: currentLang === 'tr' ? 'HEMEN BAŞLA' : 'GET STARTED',
     buttonLink: '#kayit',
     cardTitle: currentLang === 'tr' ? 'Hangi Gönderim Bana Uygun?' : 'Which Shipping is Right for Me?',
-    cardDescription: currentLang === 'tr' 
+    cardDescription: currentLang === 'tr'
       ? 'Kararsızsan sorun değil. Sistem, gönderinin aciliyet ve önceliğine göre en uygun gönderimi seçer.'
       : "No problem if you're undecided. The system selects the most suitable shipping based on urgency and priority.",
     services: [
       {
         id: '1',
         title: currentLang === 'tr' ? 'Mikro İhracat Satış Amaçlı Gönderimler' : 'Micro Export for Sales Purposes',
-        desc: currentLang === 'tr' 
+        desc: currentLang === 'tr'
           ? 'Yurtdışına ürün satışı yapıyorsan, kargonu mikro ihracata uygun gönder. Büyük firma olman gerekmez, küçük adetli satışlar yapılabilir.'
           : "If you're selling products abroad, send your cargo suitable for micro export. You don't need to be a large company, small quantity sales are possible.",
         icon: 'fa-box-open',
@@ -74,7 +77,7 @@ const Solutions: React.FC = () => {
         description: currentLang === 'tr'
           ? 'Maliyetinizi düşürün. Zaman esnekliğiniz varsa en uygun fiyatlarla standart teslimat süresi ile gönderin.'
           : 'Reduce your costs. If you have time flexibility, ship with the most affordable prices and standard delivery time.',
-        features: currentLang === 'tr' 
+        features: currentLang === 'tr'
           ? ['En uygun fiyat', '5-7 iş günü teslimat', 'Güvenli taşıma']
           : ['Best price', '5-7 business days delivery', 'Safe transport'],
         order: 0
@@ -121,13 +124,16 @@ const Solutions: React.FC = () => {
           const defaultData = getDefaultContent();
           const mergedData = {
             badge: res.data.badge || defaultData.badge,
+            badgeColor: res.data.badgeColor || defaultData.badgeColor,
             title: res.data.title || defaultData.title,
+            titleColor: res.data.titleColor || defaultData.titleColor,
             highlightedTitle: res.data.highlightedTitle || defaultData.highlightedTitle,
+            highlightedTitleColor: res.data.highlightedTitleColor || defaultData.highlightedTitleColor,
             buttonText: res.data.buttonText || defaultData.buttonText,
             buttonLink: res.data.buttonLink || defaultData.buttonLink,
             cardTitle: res.data.cardTitle || defaultData.cardTitle,
             cardDescription: res.data.cardDescription || defaultData.cardDescription,
-            services: (res.data.services && Array.isArray(res.data.services) && res.data.services.length > 0) 
+            services: (res.data.services && Array.isArray(res.data.services) && res.data.services.length > 0)
               ? res.data.services.sort((a: any, b: any) => (a.order || 0) - (b.order || 0))
               : defaultData.services,
             shippingOptions: (res.data.shippingOptions && Array.isArray(res.data.shippingOptions) && res.data.shippingOptions.length > 0)
@@ -149,9 +155,19 @@ const Solutions: React.FC = () => {
     <section className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-16">
-          <span className="text-[#4DB848] font-bold text-[9px] uppercase tracking-[0.2em] mb-3 block">{content.badge}</span>
-          <h2 className="text-3xl lg:text-4xl font-bold text-[#102477] mb-4 tracking-tight leading-tight">
-            {content.title} <span className="text-[#4DB848]">{content.highlightedTitle}</span>
+          <span
+            className="font-bold text-[9px] uppercase tracking-[0.2em] mb-3 block"
+            style={{ color: content.badgeColor || '#4DB848' }}
+          >
+            {content.badge}
+          </span>
+          <h2 className="text-3xl lg:text-4xl font-bold mb-4 tracking-tight leading-tight">
+            <span style={{ color: content.titleColor || '#102477' }}>
+              {content.title}
+            </span>{' '}
+            <span style={{ color: content.highlightedTitleColor || '#4DB848' }}>
+              {content.highlightedTitle}
+            </span>
           </h2>
         </div>
 
@@ -159,8 +175,8 @@ const Solutions: React.FC = () => {
           {/* Sol Taraf - Servisler */}
           <div className="space-y-5">
             {content.services?.sort((a: any, b: any) => a.order - b.order).map((service: any, idx: number) => (
-              <div 
-                key={idx} 
+              <div
+                key={idx}
                 className="group bg-white rounded-[16px] p-6 border-2 border-slate-100 hover:border-slate-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
               >
                 <div className="flex gap-5">
@@ -187,15 +203,14 @@ const Solutions: React.FC = () => {
                 <p className="text-white/70 text-sm mb-8 font-medium leading-relaxed">
                   {content.cardDescription || 'Kararsızsan sorun değil. Sistem, gönderinin aciliyet ve önceliğine göre en uygun gönderimi seçer.'}
                 </p>
-                
+
                 <div className="space-y-3 mb-10">
                   {content.shippingOptions?.sort((a: any, b: any) => a.order - b.order).map((option: any) => (
                     <button
                       key={option.id}
                       onClick={() => setSelectedOption(selectedOption === option.id ? null : option.id)}
-                      className={`w-full text-left transition-all duration-300 ${
-                        selectedOption === option.id ? 'bg-white/20' : 'bg-white/10'
-                      } backdrop-blur-sm rounded-[14px] border border-white/20 hover:bg-white/15`}
+                      className={`w-full text-left transition-all duration-300 ${selectedOption === option.id ? 'bg-white/20' : 'bg-white/10'
+                        } backdrop-blur-sm rounded-[14px] border border-white/20 hover:bg-white/15`}
                     >
                       <div className="flex items-center gap-4 p-5">
                         <div className={`w-10 h-10 ${option.color || 'bg-[#4DB848]'} rounded-full flex items-center justify-center shrink-0 transition-transform hover:scale-110`}>
@@ -207,7 +222,7 @@ const Solutions: React.FC = () => {
                         </div>
                         <i className={`fas ${selectedOption === option.id ? 'fa-chevron-up' : 'fa-chevron-down'} text-white/40 transition-all`}></i>
                       </div>
-                      
+
                       {/* Açılır İçerik */}
                       {selectedOption === option.id && (
                         <div className="px-5 pb-5 pt-2 border-t border-white/10">
@@ -227,9 +242,9 @@ const Solutions: React.FC = () => {
                     </button>
                   ))}
                 </div>
-                
-                <a 
-                  href={content.buttonLink || '#'} 
+
+                <a
+                  href={content.buttonLink || '#'}
                   className="block w-full bg-[#4DB848] text-white py-4 rounded-[14px] font-bold hover:bg-[#3da339] transition-all shadow-xl hover:shadow-2xl hover:scale-[1.02] duration-300 text-center"
                 >
                   {content.buttonText || 'HEMEN BAŞLA'}
