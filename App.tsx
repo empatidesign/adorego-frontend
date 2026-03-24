@@ -49,6 +49,22 @@ import BlogPost from './pages/BlogPost';
 import Contact from './pages/Contact';
 import InternationalShipping from './pages/InternationalShipping';
 import DomesticShipping from './pages/DomesticShipping';
+import AboutUs from './pages/AboutUs';
+import KVKKPage from './pages/KVKKPage';
+import FromAbroadToTurkey from './pages/FromAbroadToTurkey';
+import FAQPage from './pages/FAQPage';
+import GermanyShipping from './pages/GermanyShipping';
+import USAShipping from './pages/USAShipping';
+import IntlShippingPrices from './pages/IntlShippingPrices';
+import HowToShipAbroad from './pages/HowToShipAbroad';
+import ReceiverPayment from './pages/ReceiverPayment';
+import CheapestIntlShipping from './pages/CheapestIntlShipping';
+import IntlShippingGuide from './pages/IntlShippingGuide';
+import ShopifyIntegration from './pages/ShopifyIntegration';
+import EtsyIntegration from './pages/EtsyIntegration';
+import AmazonIntegration from './pages/AmazonIntegration';
+import WooCommerceIntegration from './pages/WooCommerceIntegration';
+import CustomAPIIntegration from './pages/CustomAPIIntegration';
 import WhatsAppButton from './components/WhatsAppButton';
 import ScrollToTop from './components/ScrollToTop';
 
@@ -77,6 +93,27 @@ const MainSite: React.FC = () => {
           <Partners />
         </div>
 
+        {/* CTA Banner - Hemen Gönderine Başla */}
+        <section className="py-20 bg-gradient-to-r from-[#102477] to-[#1a3a9e] relative overflow-hidden">
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-[#4DB848] rounded-full blur-[120px] -mr-48 -mt-48"></div>
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-400 rounded-full blur-[120px] -ml-48 -mb-48"></div>
+          </div>
+          <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center relative z-10">
+            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4 tracking-tight">Hemen gönderine başla</h2>
+            <p className="text-white/70 text-lg mb-10 font-medium">Kargonu oluştur, dünyaya satış yap</p>
+            <a
+              href="https://app.adorelgo.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 bg-[#4DB848] text-white font-bold px-10 py-4 rounded-xl hover:bg-[#3da03a] transition-all hover:-translate-y-1 shadow-xl text-lg"
+            >
+              Ücretsiz Üye Ol
+              <i className="fas fa-arrow-right"></i>
+            </a>
+          </div>
+        </section>
+
         <div className="bg-gradient-to-b from-pink-50/30 to-indigo-50/30">
           <PopularDestinations />
         </div>
@@ -104,6 +141,24 @@ const App: React.FC = () => {
           <Route path="/nasil-gonderirim" element={<HowToSend />} />
           <Route path="/gonderi-takibi" element={<Tracking />} />
 
+
+          {/* Yeni Sayfalar */}
+          <Route path="/hakkimizda" element={<AboutUs />} />
+          <Route path="/kvkk" element={<KVKKPage />} />
+          <Route path="/yurtdisindan-turkiye" element={<FromAbroadToTurkey />} />
+          <Route path="/sikca-sorulan-sorular" element={<FAQPage />} />
+          <Route path="/almanyaya-kargo" element={<GermanyShipping />} />
+          <Route path="/amerikaya-kargo" element={<USAShipping />} />
+          <Route path="/yurtdisi-kargo-fiyatlari" element={<IntlShippingPrices />} />
+          <Route path="/yurtdisina-kargo-nasil-gonderilir" element={<HowToShipAbroad />} />
+          <Route path="/alici-odemeli-kargo" element={<ReceiverPayment />} />
+          <Route path="/en-ucuz-yurtdisi-kargo" element={<CheapestIntlShipping />} />
+          <Route path="/yurtdisi-gonderim-rehberi" element={<IntlShippingGuide />} />
+          <Route path="/shopify-entegrasyonu" element={<ShopifyIntegration />} />
+          <Route path="/etsy-entegrasyonu" element={<EtsyIntegration />} />
+          <Route path="/amazon-entegrasyonu" element={<AmazonIntegration />} />
+          <Route path="/woocommerce-entegrasyonu" element={<WooCommerceIntegration />} />
+          <Route path="/ozel-site-api" element={<CustomAPIIntegration />} />
 
           {/* Blog */}
           <Route path="/blog" element={<Blog />} />

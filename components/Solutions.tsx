@@ -9,11 +9,11 @@ const Solutions: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   const getDefaultContent = () => ({
-    badge: currentLang === 'tr' ? 'ÖZEL ÇÖZÜMLER' : 'SPECIAL SOLUTIONS',
+    badge: '',
     badgeColor: '#4DB848',
-    title: currentLang === 'tr' ? 'İhtiyacına Göre' : 'Smart Shipping',
+    title: currentLang === 'tr' ? 'Tüm Kargolarını' : 'Manage All Your',
     titleColor: '#102477',
-    highlightedTitle: currentLang === 'tr' ? 'Akıllı Gönderim.' : 'Based on Your Needs.',
+    highlightedTitle: currentLang === 'tr' ? 'Tek Yerden Yönet' : 'Shipments in One Place',
     highlightedTitleColor: '#4DB848',
     buttonText: currentLang === 'tr' ? 'HEMEN BAŞLA' : 'GET STARTED',
     buttonLink: '#kayit',
@@ -24,32 +24,32 @@ const Solutions: React.FC = () => {
     services: [
       {
         id: '1',
-        title: currentLang === 'tr' ? 'Mikro İhracat Satış Amaçlı Gönderimler' : 'Micro Export for Sales Purposes',
+        title: currentLang === 'tr' ? 'Yurtdışı Kargo' : 'International Shipping',
         desc: currentLang === 'tr'
-          ? 'Yurtdışına ürün satışı yapıyorsan, kargonu mikro ihracata uygun gönder. Büyük firma olman gerekmez, küçük adetli satışlar yapılabilir.'
-          : "If you're selling products abroad, send your cargo suitable for micro export. You don't need to be a large company, small quantity sales are possible.",
-        icon: 'fa-box-open',
+          ? "Dünyanın her yerine gönder"
+          : 'Ship anywhere in the world',
+        icon: 'fa-globe',
         color: 'bg-blue-500',
         bgColor: 'bg-blue-50',
         order: 0
       },
       {
         id: '2',
-        title: currentLang === 'tr' ? 'Büyük Desi + Alıcı Ödemeli' : 'Large Volume + Receiver Payment',
+        title: currentLang === 'tr' ? 'Yurtiçi Kargo' : 'Domestic Shipping',
         desc: currentLang === 'tr'
-          ? 'Desisi yüksek gönderilerde kapıda nakit & kart tahsilat. Kargo ücretini alıcı ödemeli gönderebilirsin.'
-          : 'Cash & card collection at the door for high volume shipments. You can send the cargo with receiver payment.',
-        icon: 'fa-truck-loading',
-        color: 'bg-purple-500',
-        bgColor: 'bg-purple-50',
+          ? 'En uygun fiyatla gönder'
+          : 'Ship at the best price',
+        icon: 'fa-flag',
+        color: 'bg-red-500',
+        bgColor: 'bg-red-50',
         order: 1
       },
       {
         id: '3',
-        title: currentLang === 'tr' ? 'Alıcı Ödemeli Kargo (Yurtiçi)' : 'Receiver Payment Cargo (Domestic)',
+        title: currentLang === 'tr' ? 'Alıcı Ödemeli Lojistik Gönderiler' : 'Receiver Payment Logistics',
         desc: currentLang === 'tr'
-          ? 'Kargo ücreti satıcıdan değil, teslimatta alıcıdan tahsil edilir. Alıcı nakit veya kredi kartı ile ödeyebilir.'
-          : 'Cargo fee is collected from the receiver on delivery, not from the sender. Receiver can pay by cash or credit card.',
+          ? 'Kargo ücretini alıcıya ödet'
+          : 'Let the receiver pay the shipping fee',
         icon: 'fa-hand-holding-dollar',
         color: 'bg-green-500',
         bgColor: 'bg-green-50',
@@ -57,10 +57,10 @@ const Solutions: React.FC = () => {
       },
       {
         id: '4',
-        title: currentLang === 'tr' ? "Yurtdışından Türkiye'ye Kargo" : 'From Abroad to Turkey Cargo',
+        title: currentLang === 'tr' ? "Yurtdışından Türkiye" : 'From Abroad to Turkey',
         desc: currentLang === 'tr'
-          ? "Yurtdışındaki adresinden Türkiye'deki adrese kargo gönderebilirsin. Kapıdan alım, kapıya teslim."
-          : 'You can send cargo from your address abroad to an address in Turkey. Door-to-door pickup and delivery.',
+          ? "Kapıdan alım, Türkiye'de teslim"
+          : 'Door pickup, delivery in Turkey',
         icon: 'fa-plane-arrival',
         color: 'bg-orange-500',
         bgColor: 'bg-orange-50',
@@ -116,39 +116,7 @@ const Solutions: React.FC = () => {
   const [content, setContent] = useState<any>(getDefaultContent());
 
   useEffect(() => {
-    // API'den yükle
-    axios.get(`${API_BASE_URL}/content/solutions?lang=${currentLang}`)
-      .then(res => {
-        if (res.data && Object.keys(res.data).length > 0 && (res.data.badge || res.data.title || res.data.services || res.data.shippingOptions)) {
-          // API'den gelen veriyi kullan, eksik olanları default ile doldur
-          const defaultData = getDefaultContent();
-          const mergedData = {
-            badge: res.data.badge || defaultData.badge,
-            badgeColor: res.data.badgeColor || defaultData.badgeColor,
-            title: res.data.title || defaultData.title,
-            titleColor: res.data.titleColor || defaultData.titleColor,
-            highlightedTitle: res.data.highlightedTitle || defaultData.highlightedTitle,
-            highlightedTitleColor: res.data.highlightedTitleColor || defaultData.highlightedTitleColor,
-            buttonText: res.data.buttonText || defaultData.buttonText,
-            buttonLink: res.data.buttonLink || defaultData.buttonLink,
-            cardTitle: res.data.cardTitle || defaultData.cardTitle,
-            cardDescription: res.data.cardDescription || defaultData.cardDescription,
-            services: (res.data.services && Array.isArray(res.data.services) && res.data.services.length > 0)
-              ? res.data.services.sort((a: any, b: any) => (a.order || 0) - (b.order || 0))
-              : defaultData.services,
-            shippingOptions: (res.data.shippingOptions && Array.isArray(res.data.shippingOptions) && res.data.shippingOptions.length > 0)
-              ? res.data.shippingOptions.sort((a: any, b: any) => (a.order || 0) - (b.order || 0))
-              : defaultData.shippingOptions
-          };
-          setContent(mergedData);
-        } else {
-          setContent(getDefaultContent());
-        }
-      })
-      .catch(err => {
-        console.error('Solutions content yüklenemedi:', err);
-        setContent(getDefaultContent());
-      });
+    setContent(getDefaultContent());
   }, [currentLang]);
 
   return (

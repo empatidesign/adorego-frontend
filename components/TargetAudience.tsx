@@ -16,8 +16,14 @@ const TargetAudience: React.FC = () => {
           highlightedTitle: 'Yurtiçi Ucuzlasın.',
           description: 'Yurtdışı gönderi yaptığınızda sistem sizi aktif kullanıcı olarak tanır ve yurtiçi kargo fiyatlarınız otomatik olarak avantajlı hale gelir.',
           benefits: [
-            { number: '01', text: 'Sistem sizi otomatik tanır, başvuru gerekmez.' },
-            { number: '02', text: 'Gönderi sayınız arttıkça fiyatlar kendiliğinden düşer.' }
+            { number: '01', text: 'Yurtdışı gönderi yap → sistem seni tanır' },
+            { number: '02', text: 'Yurtiçi fiyatların otomatik düşer' },
+            { number: '03', text: 'Gönderdikçe avantajın artar' }
+          ],
+          bottomText: 'Başvuru yok. Pazarlık yok. Sistem kendisi uygular.',
+          buttons: [
+            { text: 'Yurtdışı Gönder', link: '/yurtdisi-kargo', style: 'primary' },
+            { text: 'Yurtiçi Fiyatları İste', link: '/yurtici-kargo', style: 'secondary' }
           ],
           card: {
             topBadge: 'AKILLI FİYATLANDIRMA',
@@ -33,13 +39,13 @@ const TargetAudience: React.FC = () => {
           }
         },
         trustSection: {
-          title: 'Neden bize',
-          highlightedTitle: 'Güvenmelisiniz?',
+          title: 'Kargon güvende,',
+          highlightedTitle: 'süreç kontrol altında',
           points: [
-            { title: '35 Yıllık Tecrübe', desc: 'Yazılım ve teknoloji alanındaki derin birikimimizle yanınızdayız.' },
-            { title: 'Net Fiyat Garantisi', desc: 'Fiyatlar baştan nettir, sonradan sürpriz masraf çıkmaz.' },
-            { title: 'Kontrollü Süreç', desc: 'Teslim edilemeyen gönderiler dahil her an kontrol altındadır.' },
-            { title: 'Tek Nokta Destek', desc: 'Tüm süreçleriniz için tek bir muhatap ve hızlı çözüm.' }
+            { title: '35+ Yıl Tecrübe', desc: '35+ yıl yazılım ve teknoloji tecrübesi' },
+            { title: 'Net Fiyat', desc: 'Fiyatlar baştan net, sürpriz yok' },
+            { title: 'Anlık Takip', desc: 'Tüm gönderiler panelden anlık takip edilir' },
+            { title: 'Kontrollü Süreç', desc: 'İade ve sorunlu gönderiler kontrol altında' }
           ]
         }
       };
@@ -51,8 +57,14 @@ const TargetAudience: React.FC = () => {
           highlightedTitle: 'Domestic Gets Cheaper.',
           description: 'When you make international shipments, the system recognizes you as an active user and your domestic cargo prices automatically become advantageous.',
           benefits: [
-            'System recognizes you automatically, no application required.',
-            'Prices decrease automatically as your shipment count increases.'
+            { number: '01', text: 'Ship internationally → system recognizes you' },
+            { number: '02', text: 'Your domestic prices drop automatically' },
+            { number: '03', text: 'Your advantage grows as you ship more' }
+          ],
+          bottomText: 'No application. No negotiation. The system applies it automatically.',
+          buttons: [
+            { text: 'Ship Abroad', link: '/yurtdisi-kargo', style: 'primary' },
+            { text: 'Get Domestic Prices', link: '/yurtici-kargo', style: 'secondary' }
           ],
           card: {
             topBadge: 'Smart Pricing',
@@ -68,13 +80,13 @@ const TargetAudience: React.FC = () => {
           }
         },
         trustSection: {
-          title: 'Why should you',
-          highlightedTitle: 'Trust us?',
+          title: 'Your cargo is safe,',
+          highlightedTitle: 'process under control',
           points: [
-            { title: '35 Years Experience', desc: 'We are with you with our deep knowledge in software and technology.' },
-            { title: 'Net Price Guarantee', desc: 'Prices are net from the start, no surprise costs later.' },
-            { title: 'Controlled Process', desc: 'Everything is under control at all times, including undeliverable shipments.' },
-            { title: 'Single Point Support', desc: 'One contact and quick solution for all your processes.' }
+            { title: '35+ Years Experience', desc: '35+ years of software and technology expertise' },
+            { title: 'Transparent Pricing', desc: 'Prices are clear upfront, no surprises' },
+            { title: 'Live Tracking', desc: 'Track all shipments instantly from the panel' },
+            { title: 'Controlled Process', desc: 'Returns and problematic shipments under control' }
           ]
         }
       };
@@ -84,50 +96,37 @@ const TargetAudience: React.FC = () => {
   const [content, setContent] = useState<any>(getDefaultContent(currentLang));
 
   useEffect(() => {
-    // API'den yükle
-    axios.get(`${API_BASE_URL}/content/target-audience?lang=${currentLang}`)
-      .then(res => {
-        if (res.data && Object.keys(res.data).length > 0) {
-          // API'den gelen veriyi default ile merge et (eksik alanları doldur)
-          const defaultData = getDefaultContent(currentLang);
-          const mergedData = {
-            earnSection: {
-              ...defaultData.earnSection,
-              ...res.data.earnSection,
-              card: {
-                ...defaultData.earnSection.card,
-                ...res.data.earnSection?.card,
-                miniCards: res.data.earnSection?.card?.miniCards?.length > 0 
-                  ? res.data.earnSection.card.miniCards 
-                  : defaultData.earnSection.card.miniCards
-              },
-              benefits: res.data.earnSection?.benefits?.length > 0 
-                ? res.data.earnSection.benefits 
-                : defaultData.earnSection.benefits
-            },
-            trustSection: {
-              ...defaultData.trustSection,
-              ...res.data.trustSection,
-              points: res.data.trustSection?.points?.length > 0 
-                ? res.data.trustSection.points 
-                : defaultData.trustSection.points
-            }
-          };
-          setContent(mergedData);
-        } else {
-          setContent(getDefaultContent(currentLang));
-        }
-      })
-      .catch(err => {
-        console.error('Target Audience content yüklenemedi:', err);
-        setContent(getDefaultContent(currentLang));
-      });
+    setContent(getDefaultContent(currentLang));
   }, [currentLang]);
 
   const trustPoints = content.trustSection?.points || [];
 
   return (
     <>
+      {/* Sayısal Kutular - Binlerce Satıcı */}
+      <section className="py-20 bg-white">
+        <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
+          <h2 className="text-3xl lg:text-4xl font-bold text-[#102477] mb-4 tracking-tight">
+            {currentLang === 'tr' ? 'Binlerce satıcı' : 'Thousands of sellers'}{' '}
+            <span className="text-[#4DB848]">{currentLang === 'tr' ? 'AdoreGo ile gönderiyor' : 'ship with AdoreGo'}</span>
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+            <div className="bg-slate-50 rounded-2xl p-8 border border-gray-100">
+              <p className="text-4xl lg:text-5xl font-black text-[#102477] mb-2">50.000+</p>
+              <p className="text-gray-500 text-sm font-medium">{currentLang === 'tr' ? 'gönderi / ay' : 'shipments / month'}</p>
+            </div>
+            <div className="bg-slate-50 rounded-2xl p-8 border border-gray-100">
+              <p className="text-4xl lg:text-5xl font-black text-[#4DB848] mb-2">220+</p>
+              <p className="text-gray-500 text-sm font-medium">{currentLang === 'tr' ? 'ülkeye gönderim' : 'countries served'}</p>
+            </div>
+            <div className="bg-slate-50 rounded-2xl p-8 border border-gray-100">
+              <p className="text-4xl lg:text-5xl font-black text-[#102477] mb-2">%80</p>
+              <p className="text-gray-500 text-sm font-medium">{currentLang === 'tr' ? 'aktif kullanım' : 'active usage'}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Gri Zemin - Yurtdışı Gönder Yurtiçi Ucuzlasın Bölümü */}
       <section className="py-24 bg-slate-100 text-[#102477] relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#4DB848]/10 rounded-full blur-[100px] -mr-48 -mt-48"></div>
@@ -157,60 +156,43 @@ const TargetAudience: React.FC = () => {
                   );
                 })}
               </div>
-            </div>
-            <div className="hidden lg:block lg:w-1/2 mt-12 lg:mt-0">
-              <div className="relative bg-gradient-to-br from-[#102477] via-[#1a3a9e] to-[#102477] rounded-xl shadow-lg p-10 min-h-[600px] flex flex-col justify-between">
-                {/* Üst Badge */}
-                <div className="flex justify-between items-center mb-10">
-                  <span className="bg-white/10 backdrop-blur-sm text-white text-[9px] font-bold px-4 py-2 rounded-full uppercase tracking-widest border border-white/20">
-                    {content.earnSection?.card?.topBadge}
-                  </span>
-                  <span className="bg-[#4DB848] text-white text-[9px] font-bold px-4 py-2 rounded-full uppercase tracking-widest">
-                    {content.earnSection?.card?.statusBadge}
-                  </span>
-                </div>
 
-                {/* Orta Bölüm - Fiyatlandırma ve İndirim */}
-                <div className="flex-1 flex flex-col justify-center">
-                  {/* Fiyatlandırma Göstergesi */}
-                  <div className="mb-12">
-                    <div className="flex items-center justify-between mb-4">
-                      <p className="text-white text-sm font-medium">{content.earnSection?.card?.fromLabel}</p>
-                      <div className="flex-1 mx-4 relative h-2.5">
-                        <div className="h-full bg-gray-300/30 rounded-full overflow-hidden">
-                          <div className="h-full relative">
-                            <div className="absolute left-0 top-0 w-1/2 h-full bg-gray-400/50 rounded-l-full"></div>
-                            <div className="absolute left-1/2 top-0 w-1/2 h-full bg-[#4DB848] rounded-r-full"></div>
-                            <div className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-lg z-10">
-                              <i className="fas fa-arrow-right text-[#4DB848] text-xs"></i>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <p className="text-white text-sm font-medium">{content.earnSection?.card?.toLabel}</p>
-                    </div>
-                  </div>
-                  
-                  {/* İndirim */}
-                  <div className="text-center mb-12">
-                    <p className="text-[120px] font-black mb-4 leading-none bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 bg-clip-text text-transparent">
-                      {content.earnSection?.card?.discount}
-                    </p>
-                    <p className="text-white text-[11px] font-bold uppercase tracking-[0.15em]">
-                      {content.earnSection?.card?.discountLabel}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Alt Mini Kartlar */}
-                <div className="grid grid-cols-2 gap-4 mt-8">
-                  {content.earnSection?.card?.miniCards?.map((card: any, idx: number) => (
-                    <div key={idx} className="bg-white/10 backdrop-blur-sm rounded-lg p-5 border border-white/20 text-center">
-                      <i className={`fas ${card.icon} text-[#4DB848] text-2xl mb-3 block`}></i>
-                      <p className="text-white text-xs font-bold">{card.label}</p>
-                    </div>
+              {/* Alt Yazı ve Butonlar */}
+              <div className="mt-10">
+                <p className="text-slate-500 text-sm font-medium mb-6">{content.earnSection?.bottomText}</p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  {content.earnSection?.buttons?.map((button: any, idx: number) => (
+                    <a
+                      key={idx}
+                      href={button.link}
+                      className={`font-bold text-base flex items-center justify-center gap-2 px-8 py-4 rounded-xl transition-all hover:-translate-y-1 ${
+                        button.style === 'primary'
+                          ? 'bg-[#102477] text-white hover:bg-[#0a1a5a] shadow-lg'
+                          : 'bg-white text-[#102477] border-2 border-gray-200 hover:border-[#102477]'
+                      }`}
+                    >
+                      {button.text}
+                      <i className={`fas fa-arrow-right ${button.style === 'secondary' ? 'text-[#4DB848]' : ''}`}></i>
+                    </a>
                   ))}
                 </div>
+              </div>
+            </div>
+
+            {/* Sağ Taraf - Resim Alanı */}
+            <div className="hidden lg:block lg:w-1/2 mt-12 lg:mt-0">
+              <div className="relative bg-gradient-to-br from-[#102477] via-[#1a3a9e] to-[#102477] rounded-xl shadow-lg min-h-[600px] flex items-center justify-center overflow-hidden">
+                {content.earnSection?.card?.image ? (
+                  <img src={content.earnSection.card.image} alt="" className="w-full h-full object-cover absolute inset-0" />
+                ) : (
+                  <div className="text-center p-10">
+                    <div className="w-24 h-24 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                      <i className="fas fa-image text-white/40 text-4xl"></i>
+                    </div>
+                    <p className="text-white/40 text-sm font-medium">Görsel Alanı</p>
+                    <p className="text-white/30 text-xs mt-2">Admin panelden resim ekleyebilirsiniz</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>

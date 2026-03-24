@@ -41,6 +41,9 @@ const Partners: React.FC = () => {
       {/* Carrier Section - API'den gelen partnerler */}
       <div className="border-y border-gray-100/50 py-12">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <p className="text-center text-sm text-gray-500 font-medium mb-8">
+            {currentLang === 'tr' ? "Dünyanın en güçlü kargo firmalarıyla çalışıyoruz" : "We work with the world's most powerful cargo companies"}
+          </p>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {carriers.map((carrier, i) => (
               <div key={i} className="flex flex-col items-center text-center group">
@@ -93,6 +96,47 @@ const Partners: React.FC = () => {
               ))}
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Sosyal Kanıt + CTA */}
+      <div className="py-20 bg-slate-50">
+        <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
+          <h3 className="text-2xl lg:text-3xl font-bold text-[#102477] mb-4 tracking-tight">
+            {currentLang === 'tr' ? 'E-ticaret satıcıları tarafından' : 'Actively used by'}
+            {' '}<span className="text-[#4DB848]">{currentLang === 'tr' ? 'aktif olarak kullanılmaktadır' : 'e-commerce sellers'}</span>
+          </h3>
+
+          <div className="flex flex-col sm:flex-row gap-6 justify-center mt-10 mb-12">
+            <div className="bg-white rounded-2xl px-8 py-6 border border-gray-100 shadow-md flex-1 max-w-sm relative">
+              <div className="absolute -top-3 left-6 w-8 h-8 bg-[#4DB848] rounded-full flex items-center justify-center">
+                <i className="fas fa-quote-left text-white text-xs"></i>
+              </div>
+              <p className="text-[#102477] font-semibold text-base mt-2">
+                {currentLang === 'tr' ? '"Fiyat ve hız konusunda en iyi çözüm."' : '"The best solution for price and speed."'}
+              </p>
+              <p className="text-gray-400 text-xs mt-3 font-medium">{currentLang === 'tr' ? '— E-ticaret satıcısı' : '— E-commerce seller'}</p>
+            </div>
+            <div className="bg-white rounded-2xl px-8 py-6 border border-gray-100 shadow-md flex-1 max-w-sm relative">
+              <div className="absolute -top-3 left-6 w-8 h-8 bg-[#102477] rounded-full flex items-center justify-center">
+                <i className="fas fa-quote-left text-white text-xs"></i>
+              </div>
+              <p className="text-[#102477] font-semibold text-base mt-2">
+                {currentLang === 'tr' ? '"Tek panelden tüm kargoları yönetiyoruz."' : '"We manage all shipments from a single panel."'}
+              </p>
+              <p className="text-gray-400 text-xs mt-3 font-medium">{currentLang === 'tr' ? '— Mağaza sahibi' : '— Store owner'}</p>
+            </div>
+          </div>
+
+          <a
+            href="https://app.adorelgo.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 bg-[#102477] text-white font-bold px-10 py-4 rounded-xl hover:bg-[#0a1a5a] transition-all hover:-translate-y-1 shadow-lg text-base"
+          >
+            {currentLang === 'tr' ? 'Sen de gönderine başla' : 'Start shipping now'}
+            <i className="fas fa-arrow-right"></i>
+          </a>
         </div>
       </div>
 

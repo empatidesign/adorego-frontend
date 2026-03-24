@@ -22,20 +22,20 @@ const Footer: React.FC = () => {
     if (lang === 'tr') {
       return {
         title: 'Sorun mu var? Kararsız mı kaldın?',
-        subtitle: 'Destek ekibimiz e-ticaret lojistik süreçlerinizde her adımda yanınızda.',
+        subtitle: 'Destek ekibimiz yardımcı olsun.',
         button1Text: 'İletişime Geç',
-        button1Link: '#',
-        button2Text: 'Ücretsiz Kayıt Ol',
-        button2Link: '#'
+        button1Link: '/iletisim',
+        button2Text: 'Ücretsiz Üye Ol',
+        button2Link: 'https://app.adorelgo.com'
       };
     } else {
       return {
         title: 'Having problems? Undecided?',
-        subtitle: 'Our support team is with you at every step of your e-commerce logistics processes.',
+        subtitle: 'Let our support team help you.',
         button1Text: 'Contact Us',
-        button1Link: '#',
+        button1Link: '/iletisim',
         button2Text: 'Free Sign Up',
-        button2Link: '#'
+        button2Link: 'https://app.adorelgo.com'
       };
     }
   };
@@ -49,14 +49,12 @@ const Footer: React.FC = () => {
           { platform: 'instagram', url: '#', icon: 'fa-instagram' },
           { platform: 'linkedin', url: '#', icon: 'fa-linkedin-in' }
         ],
-        corporateTitle: 'Kurumsal Bağlantılar',
+        corporateTitle: 'Kurumsal',
         corporateLinks: [
           { name: 'Hakkımızda', url: '/hakkimizda' },
           { name: 'İletişim', url: '/iletisim' },
-          { name: 'Destek', url: '/destek' },
-          { name: 'Gizlilik Politikası', url: '/gizlilik-politikasi' },
-          { name: 'Kullanım Şartları', url: '/kullanim-sartlari' },
-          { name: 'KVKK Aydınlatma', url: '/kvkk-aydinlatma' }
+          { name: 'Destek', url: '/iletisim' },
+          { name: 'KVKK Aydınlatma Metni', url: '/kvkk' }
         ],
         copyrightText: '© 2024 adoreGo. Site kargo firması vitrini değil, teknoloji lojistik platformudur.'
       };
@@ -68,14 +66,12 @@ const Footer: React.FC = () => {
           { platform: 'instagram', url: '#', icon: 'fa-instagram' },
           { platform: 'linkedin', url: '#', icon: 'fa-linkedin-in' }
         ],
-        corporateTitle: 'Corporate Links',
+        corporateTitle: 'Corporate',
         corporateLinks: [
           { name: 'About Us', url: '/hakkimizda' },
           { name: 'Contact', url: '/iletisim' },
-          { name: 'Support', url: '/destek' },
-          { name: 'Privacy Policy', url: '/gizlilik-politikasi' },
-          { name: 'Terms of Use', url: '/kullanim-sartlari' },
-          { name: 'GDPR Notice', url: '/kvkk-aydinlatma' }
+          { name: 'Support', url: '/iletisim' },
+          { name: 'GDPR Notice', url: '/kvkk' }
         ],
         copyrightText: '© 2024 adoreGo. This site is not a cargo company showcase, but a technology logistics platform.'
       };
@@ -86,96 +82,108 @@ const Footer: React.FC = () => {
     if (lang === 'tr') {
       return [
         {
-          title: "1-Hizmetlerimiz",
+          title: "Hizmetlerimiz",
           links: [
             { n: "Yurtdışı Kargo", h: "/yurtdisi-kargo" },
-            { n: "Ekonomik Kargo", h: "/ekonomik-kargo" },
-            { n: "Express Kargo", h: "/express-kargo" },
-            { n: "Yurtdışından Türkiye'ye", h: "/yurtdisindan-turkiye-ye" },
-            { n: "Yurtiçi Avantajlar", h: "/yurtici-kargo" },
-            { n: "Alıcı Ödemeli Kargo", h: "/alici-odemeli-kargo" },
-            { n: "Kapıda Ödemeli Kargo", h: "/kapida-odemeli-kargo" },
-            { n: "Büyük Desi Gönderimler", h: "/buyuk-desi-gonderimler" }
+            { n: "Yurtiçi Kargo", h: "/yurtici-kargo" },
+            { n: "Yurtdışından Türkiye'ye Kargo", h: "/yurtdisindan-turkiye" },
+            { n: "Alıcı Ödemeli Lojistik", h: "/yurtici-kargo#alici-odemeli" },
+            { n: "Kapıda Ödemeli Kargo", h: "/yurtici-kargo#kapida-odemeli" }
           ]
         },
         {
-          title: "2-Nasıl Çalışır?",
+          title: "Nasıl Gönderirim?",
           links: [
-            { n: "Nasıl Gönderirim?", h: "/nasil-gonderirim" },
-            { n: "Kapıdan Alım – Teslim", h: "/kapidan-alim-teslim" },
-            { n: "İlk Kez Gönderenler", h: "/ilk-kez-gonderenler" },
-            { n: "Gümrük & Evrak Rehberi", h: "/gumruk-evrak-rehberi" },
-            { n: "Yurtdışı İade & Geri", h: "/yurtdisi-iade-geri" },
-            { n: "Hangi Gönderim Uygun?", h: "/hangi-gonderim-uygun" }
+            { n: "Nasıl Gönderirim?", h: "/yurtdisi-kargo#nasil-gonderirim" },
+            { n: "Kapıdan Alım – Kapıya Teslim", h: "/yurtdisi-kargo#kapidan-alim" },
+            { n: "İlk Kez Yurtdışına Gönderenler", h: "/yurtdisi-kargo#ilk-kez" },
+            { n: "Gümrük & Evrak Rehberi", h: "/yurtdisi-kargo#gumruk-evrak" },
+            { n: "Yurtdışı İade & Geri Gönderim", h: "/yurtdisi-kargo#iade-geri" }
           ]
         },
         {
-          title: "3-Bilgi & Kaynaklar",
+          title: "Gönderi & Araçlar",
+          links: [
+            { n: "Gönderi Oluştur", h: "/iletisim" },
+            { n: "Gönderi Takip", h: "/gonderi-takibi" },
+            { n: "Almanya'ya Kargo", h: "/almanyaya-kargo" },
+            { n: "Amerika'ya Kargo", h: "/amerikaya-kargo" },
+            { n: "Yurtdışı Kargo Fiyatları", h: "/yurtdisi-kargo-fiyatlari" },
+            { n: "Yurtdışına Nasıl Gönderilir", h: "/yurtdisina-kargo-nasil-gonderilir" },
+            { n: "Alıcı Ödemeli Kargo", h: "/alici-odemeli-kargo" },
+            { n: "En Ucuz Yurtdışı Kargo", h: "/en-ucuz-yurtdisi-kargo" }
+          ]
+        },
+        {
+          title: "Kaynaklar",
           links: [
             { n: "Blog", h: "/blog" },
             { n: "Sıkça Sorulan Sorular", h: "/sikca-sorulan-sorular" },
-            { n: "Yurtdışı Kargo Rehberi", h: "/yurtdisi-kargo-rehberi" },
-            { n: "Mikro İhracat Rehberi", h: "/mikro-ihracat-rehberi" },
-            { n: "Gümrük Rehberi", h: "/gumruk-rehberi" },
-            { n: "Güncel Duyurular", h: "/duyurular" }
+            { n: "Yurtdışı Gönderim Rehberi", h: "/yurtdisi-gonderim-rehberi" }
           ]
         },
         {
-          title: "4-Entegrasyonlar",
+          title: "Entegrasyonlar",
           links: [
             { n: "Shopify Entegrasyonu", h: "/shopify-entegrasyonu" },
             { n: "Etsy Entegrasyonu", h: "/etsy-entegrasyonu" },
             { n: "Amazon Entegrasyonu", h: "/amazon-entegrasyonu" },
             { n: "WooCommerce", h: "/woocommerce-entegrasyonu" },
-            { n: "Özel Site Kargo API", h: "/kargo-api" }
+            { n: "Özel Site Entegrasyonu (API)", h: "/ozel-site-api" }
           ]
         }
       ];
     } else {
       return [
         {
-          title: "1-Our Services",
+          title: "Our Services",
           links: [
             { n: "International Shipping", h: "/yurtdisi-kargo" },
-            { n: "Economy Shipping", h: "/economy-shipping" },
-            { n: "Express Shipping", h: "/express-shipping" },
-            { n: "From Abroad to Turkey", h: "/from-abroad-to-turkey" },
-            { n: "Domestic Advantages", h: "/yurtici-kargo" },
-            { n: "Receiver Payment", h: "/receiver-payment" },
-            { n: "Cash on Delivery", h: "/cash-on-delivery" },
-            { n: "Large Volume Shipments", h: "/large-volume-shipments" }
+            { n: "Domestic Shipping", h: "/yurtici-kargo" },
+            { n: "From Abroad to Turkey", h: "/yurtdisindan-turkiye" },
+            { n: "Receiver Payment Logistics", h: "/yurtici-kargo#alici-odemeli" },
+            { n: "Cash on Delivery", h: "/yurtici-kargo#kapida-odemeli" }
           ]
         },
         {
-          title: "2-How It Works?",
+          title: "How to Send?",
           links: [
-            { n: "How to Ship?", h: "/nasil-gonderirim" },
-            { n: "Door to Door", h: "/door-to-door" },
-            { n: "First Time Shippers", h: "/first-time-shippers" },
-            { n: "Customs & Documents Guide", h: "/customs-documents-guide" },
-            { n: "International Returns", h: "/international-returns" },
-            { n: "Which Shipping is Right?", h: "/which-shipping-is-right" }
+            { n: "How to Send?", h: "/yurtdisi-kargo#nasil-gonderirim" },
+            { n: "Door-to-Door Delivery", h: "/yurtdisi-kargo#kapidan-alim" },
+            { n: "First Time Shippers", h: "/yurtdisi-kargo#ilk-kez" },
+            { n: "Customs & Documents", h: "/yurtdisi-kargo#gumruk-evrak" },
+            { n: "International Returns", h: "/yurtdisi-kargo#iade-geri" }
           ]
         },
         {
-          title: "3-Info & Resources",
+          title: "Shipping & Tools",
+          links: [
+            { n: "Create Shipment", h: "/iletisim" },
+            { n: "Track Shipment", h: "/gonderi-takibi" },
+            { n: "Ship to Germany", h: "/almanyaya-kargo" },
+            { n: "Ship to USA", h: "/amerikaya-kargo" },
+            { n: "Intl Shipping Prices", h: "/yurtdisi-kargo-fiyatlari" },
+            { n: "How to Ship Abroad", h: "/yurtdisina-kargo-nasil-gonderilir" },
+            { n: "Receiver Payment", h: "/alici-odemeli-kargo" },
+            { n: "Cheapest Intl Shipping", h: "/en-ucuz-yurtdisi-kargo" }
+          ]
+        },
+        {
+          title: "Resources",
           links: [
             { n: "Blog", h: "/blog" },
-            { n: "FAQ", h: "/faq" },
-            { n: "International Shipping Guide", h: "/international-shipping-guide" },
-            { n: "Micro Export Guide", h: "/micro-export-guide" },
-            { n: "Customs Guide", h: "/customs-guide" },
-            { n: "Latest Announcements", h: "/announcements" }
+            { n: "FAQ", h: "/sikca-sorulan-sorular" },
+            { n: "Intl Shipping Guide", h: "/yurtdisi-gonderim-rehberi" }
           ]
         },
         {
-          title: "4-Integrations",
+          title: "Integrations",
           links: [
-            { n: "Shopify Integration", h: "/shopify-integration" },
-            { n: "Etsy Integration", h: "/etsy-integration" },
-            { n: "Amazon Integration", h: "/amazon-integration" },
-            { n: "WooCommerce", h: "/woocommerce-integration" },
-            { n: "Custom Site Shipping API", h: "/shipping-api" }
+            { n: "Shopify", h: "/shopify-entegrasyonu" },
+            { n: "Etsy", h: "/etsy-entegrasyonu" },
+            { n: "Amazon", h: "/amazon-entegrasyonu" },
+            { n: "WooCommerce", h: "/woocommerce-entegrasyonu" },
+            { n: "Custom API", h: "/ozel-site-api" }
           ]
         }
       ];
@@ -201,85 +209,10 @@ const Footer: React.FC = () => {
         console.error('Site settings yüklenemedi:', err);
       });
 
-    // Menü ve Footer content'ini yükle
-    const fetchContent = async () => {
-      try {
-        const [navbarRes, footerRes] = await Promise.all([
-          axios.get(`${API_BASE_URL}/content/navbar?lang=${currentLang}`),
-          axios.get(`${API_BASE_URL}/content/footer?lang=${currentLang}`)
-        ]);
-
-        // Navbar'dan gelen footer linklerini işle
-        if (navbarRes.data) {
-          if (navbarRes.data.footerLogo) {
-            setNavbarFooterLogo(navbarRes.data.footerLogo);
-          }
-
-          if (navbarRes.data.menuItems) {
-            const footerItems = navbarRes.data.menuItems
-              .filter((item: any) => item.position === 'footer' && item.isActive !== false)
-              .sort((a: any, b: any) => (a.order || 0) - (b.order || 0));
-
-            // Kategorileri (parentId: null) bul
-            const categories = footerItems.filter((item: any) => !item.parentId);
-
-            // Bölümleri (sections) oluştur
-            const footerSections = categories.map((cat: any) => {
-              const links = footerItems
-                .filter((item: any) => item.parentId === cat.id)
-                .map((link: any) => ({
-                  n: link.label || link.labelTR || link.labelEN,
-                  h: link.link || link.href
-                }));
-
-              return {
-                title: cat.label || cat.labelTR || cat.labelEN,
-                links: links
-              };
-            });
-
-            if (footerSections.length > 0) {
-              setSections(footerSections);
-            } else {
-              setSections(getDefaultSections(currentLang));
-            }
-          }
-
-          // Footer CTA ve Bottom Section
-          if (footerRes.data && Object.keys(footerRes.data).length > 0) {
-            // CTA 
-            if (footerRes.data.cta && Object.keys(footerRes.data.cta).length > 0) {
-              setCta(footerRes.data.cta);
-            } else {
-              setCta(getDefaultCta(currentLang));
-            }
-            // Bottom Section
-            if (footerRes.data.bottomSection && Object.keys(footerRes.data.bottomSection).length > 0) {
-              setBottomSection(footerRes.data.bottomSection);
-            } else {
-              setBottomSection(getDefaultBottomSection(currentLang));
-            }
-            // Sections (Menu)
-            if (footerRes.data.sections && footerRes.data.sections.length > 0) {
-              setSections(footerRes.data.sections);
-            } else {
-              setSections(getDefaultSections(currentLang));
-            }
-          } else {
-            setCta(getDefaultCta(currentLang));
-            setBottomSection(getDefaultBottomSection(currentLang));
-            setSections(getDefaultSections(currentLang));
-          }
-        }
-      } catch (err) {
-        console.error('Footer content yüklenemedi:', err);
-        setSections(getDefaultSections(currentLang));
-        setCta(getDefaultCta(currentLang));
-        setBottomSection(getDefaultBottomSection(currentLang));
-      }
-    };
-
-    fetchContent();
+    // Hardcoded footer kullan
+    setSections(getDefaultSections(currentLang));
+    setCta(getDefaultCta(currentLang));
+    setBottomSection(getDefaultBottomSection(currentLang));
   }, [currentLang]);
 
   // Footer logo'yu belirle: Önce footer content'teki logoUrl, sonra site ayarlarındaki footerLogo (fallback)
@@ -295,7 +228,7 @@ const Footer: React.FC = () => {
       {/* Menü Bölümü - Tam Sayfa Genişliği */}
       <div className="w-full bg-slate-50/50 py-8 lg:py-12">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
             {sections.map((section, idx) => (
               <nav key={idx} aria-label={section.title}>
                 <h4 className="font-bold text-[#102477] text-xs mb-8 tracking-[0.1em] border-l-4 border-[#4DB848] pl-3">

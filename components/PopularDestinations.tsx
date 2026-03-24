@@ -133,19 +133,14 @@ const PopularDestinations: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-[#102477] via-[#102477]/20 to-transparent"></div>
               
               <div className="absolute bottom-0 left-0 p-6 w-full z-10">
-                <span className="bg-[#4DB848] text-white text-[8px] font-bold px-2.5 py-1 rounded-[5px] uppercase tracking-wider mb-2.5 inline-block">
+                <span className="bg-[#4DB848] text-white text-[8px] font-bold px-2.5 py-1 rounded-[5px] uppercase tracking-wider mb-2 inline-block">
                   {dest.tag}
                 </span>
-                <h3 className="text-2xl font-bold text-white mb-2 tracking-tight uppercase">{dest.name}</h3>
-                
-                <div className="flex items-center justify-between mt-3">
-                   <div className="flex flex-col">
-                      <p className="text-white/70 text-[8px] font-bold uppercase tracking-widest leading-none mb-1">{dest.priceLabel || 'Başlangıç'}</p>
-                      <p className="text-[#4DB848] text-xl font-bold">{dest.price}<span className="text-xs ml-0.5 font-bold text-white">{dest.currency || '€'}</span></p>
-                   </div>
-                   <div className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-[5px] flex items-center justify-center text-white">
-                      <i className="fas fa-arrow-right text-[10px]"></i>
-                   </div>
+                <div className="flex items-end justify-between">
+                  <h3 className="text-2xl font-bold text-white tracking-tight uppercase">{dest.name}</h3>
+                  <div className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-[5px] flex items-center justify-center text-white">
+                    <i className="fas fa-arrow-right text-[10px]"></i>
+                  </div>
                 </div>
               </div>
             </div>

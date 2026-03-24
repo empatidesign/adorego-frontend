@@ -11,14 +11,14 @@ const Features: React.FC = () => {
     if (lang === 'tr') {
       return {
         badge: '',
-        title: 'Neden adoreGo?',
-        subtitle: 'Yurtdışı kargo gönderiminde en iyi deneyim için ihtiyacınız olan her şey'
+        title: 'Sistem en doğrusunu seçer.',
+        subtitle: 'Gönderiniz için en uygun kargo firmasını, en hızlı rotayı ve en güvenli seçeneği sistem otomatik belirler.'
       };
     } else {
       return {
         badge: '',
-        title: 'Why adoreGo?',
-        subtitle: 'Everything you need for the best experience in international shipping'
+        title: 'The system picks the best.',
+        subtitle: 'The system automatically determines the most affordable carrier, fastest route, and safest option for your shipment.'
       };
     }
   };
@@ -51,55 +51,43 @@ const Features: React.FC = () => {
     if (lang === 'tr') {
       return [
         {
-          icon: "fa-rocket",
+          icon: "fa-coins",
           color: "bg-gradient-to-br from-blue-500 to-blue-600",
-          title: "Hızlı Entegrasyon",
-          description: "Pazaryeri mağazalarınızı dakikalar içinde bağlayın, gönderilerinizi otomatik yönetin."
+          title: "En Uygun",
+          description: "En düşük maliyetle gönder"
+        },
+        {
+          icon: "fa-bolt",
+          color: "bg-gradient-to-br from-green-500 to-green-600",
+          title: "En Hızlı",
+          description: "En kısa sürede teslim et"
         },
         {
           icon: "fa-shield-halved",
-          color: "bg-gradient-to-br from-green-500 to-green-600",
-          title: "Tam Güvence",
-          description: "adoreGo ile tüm paketleriniz sigortalı ve uçtan uca takip sistemimizle koruma altında."
-        },
-        {
-          icon: "fa-map-location-dot",
           color: "bg-gradient-to-br from-purple-500 to-purple-600",
-          title: "Global Takip",
-          description: "Dünyanın neresinde olursa olsun kargonuzu canlı harita üzerinden takip edin."
-        },
-        {
-          icon: "fa-hand-holding-dollar",
-          color: "bg-gradient-to-br from-orange-500 to-orange-600",
-          title: "Rekabetçi Fiyat",
-          description: "Hacminiz ne olursa olsun, en uygun birim fiyat garantisi ile lojistik maliyetlerinizi düşürün."
+          title: "En Sorunsuz",
+          description: "Risk almadan gönder"
         }
       ];
     } else {
       return [
         {
-          icon: "fa-rocket",
+          icon: "fa-coins",
           color: "bg-gradient-to-br from-blue-500 to-blue-600",
-          title: "Fast Integration",
-          description: "Connect your marketplace stores in minutes and manage your shipments automatically."
+          title: "Most Affordable",
+          description: "Ship at the lowest cost"
+        },
+        {
+          icon: "fa-bolt",
+          color: "bg-gradient-to-br from-green-500 to-green-600",
+          title: "Fastest",
+          description: "Deliver in the shortest time"
         },
         {
           icon: "fa-shield-halved",
-          color: "bg-gradient-to-br from-green-500 to-green-600",
-          title: "Full Protection",
-          description: "All your packages are insured with adoreGo and protected by our end-to-end tracking system."
-        },
-        {
-          icon: "fa-map-location-dot",
           color: "bg-gradient-to-br from-purple-500 to-purple-600",
-          title: "Global Tracking",
-          description: "Track your shipment on a live map, wherever it is in the world."
-        },
-        {
-          icon: "fa-hand-holding-dollar",
-          color: "bg-gradient-to-br from-orange-500 to-orange-600",
-          title: "Competitive Pricing",
-          description: "Reduce your logistics costs with the best unit price guarantee, regardless of your volume."
+          title: "Most Reliable",
+          description: "Ship without risk"
         }
       ];
     }
@@ -108,41 +96,11 @@ const Features: React.FC = () => {
   const [features, setFeatures] = useState<any[]>(getDefaultFeatures(currentLang));
 
   useEffect(() => {
-    // Features Header yükle
-    axios.get(`${API_BASE_URL}/content/features-header?lang=${currentLang}`)
-      .then(res => {
-        if (res.data && Object.keys(res.data).length > 0 && res.data.title) {
-          setHeader(res.data);
-        } else {
-          setHeader(getDefaultHeader(currentLang));
-        }
-      })
-      .catch(err => {
-        console.error('Features header yüklenemedi:', err);
-        setHeader(getDefaultHeader(currentLang));
-      });
+    // Hardcoded header kullan - API override devre dışı
+    setHeader(getDefaultHeader(currentLang));
 
-    // Features yükle - API'den gelen veriyi kullan ama ikonları görseldeki gibi düzelt
-    axios.get(`${API_BASE_URL}/content/features?lang=${currentLang}`)
-      .then(res => {
-        if (res.data && Array.isArray(res.data) && res.data.length > 0) {
-          // API'den gelen veriyi kullan ama ikon renklerini görseldeki gibi ayarla
-          const updatedFeatures = res.data.map((feature: any, idx: number) => {
-            const colors = ['blue-500', 'green-500', 'purple-500', 'orange-500'];
-            return {
-              ...feature,
-              color: `bg-${colors[idx % colors.length]}`
-            };
-          });
-          setFeatures(updatedFeatures);
-        } else {
-          setFeatures(getDefaultFeatures(currentLang));
-        }
-      })
-      .catch(err => {
-        console.error('Features content yüklenemedi:', err);
-        setFeatures(getDefaultFeatures(currentLang));
-      });
+    // Hardcoded features kullan - API override devre dışı
+    setFeatures(getDefaultFeatures(currentLang));
     
     // CTA Banner yükle
     axios.get(`${API_BASE_URL}/content/cta?lang=${currentLang}`)
@@ -176,7 +134,7 @@ const Features: React.FC = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {features.map((feature, idx) => {
             // Görseldeki renk paleti: mavi, yeşil, mor, turuncu
             const colors = [
