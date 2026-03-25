@@ -209,14 +209,13 @@ const Footer: React.FC = () => {
         console.error('Site settings yüklenemedi:', err);
       });
 
-    // Footer içeriğini DB'den yükle
+    // Footer içeriğini DB'den yükle, boşsa default göster
     axios.get(`${API_BASE_URL}/content/footer?lang=${currentLang}`)
       .then(res => {
-        if (res.data) {
-          if (res.data.sections?.length) setSections(res.data.sections);
-          if (res.data.cta && Object.keys(res.data.cta).length) setCta(res.data.cta);
-          if (res.data.bottomSection && Object.keys(res.data.bottomSection).length) setBottomSection(res.data.bottomSection);
-        }
+        const d = res.data;
+        setSections(d?.sections?.length ? d.sections : getDefaultSections(currentLang));
+        setCta(d?.cta && Object.keys(d.cta).length ? d.cta : getDefaultCta(currentLang));
+        setBottomSection(d?.bottomSection && Object.keys(d.bottomSection).length ? d.bottomSection : getDefaultBottomSection(currentLang));
       })
       .catch(() => {
         setSections(getDefaultSections(currentLang));
