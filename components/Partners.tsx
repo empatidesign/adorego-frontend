@@ -16,8 +16,9 @@ const Partners: React.FC = () => {
   useEffect(() => {
     axios.get(`${API_BASE_URL}/content/partners?lang=${currentLang}`)
       .then(res => {
-        if (res.data && res.data.length > 0) {
-          setCarriers(res.data);
+        const data = Array.isArray(res.data) ? res.data : res.data?.data;
+        if (Array.isArray(data) && data.length > 0) {
+          setCarriers(data);
         }
       })
       .catch(err => {

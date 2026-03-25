@@ -61,8 +61,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         // Backend'den gelen URL'i kullan
         const imgUrl = response.data.url;
         // Backend /upload/images/filename.jpg şeklinde döndürüyor
-        // API_BASE_URL: http://localhost:3001/api
-        // Tam URL: http://localhost:3001/api/upload/images/filename.jpg
+        // API_BASE_URL: VITE_API_URL env değişkeninden gelir
+        // Tam URL: {API_BASE_URL}/upload/images/filename.jpg
         const fullUrl = imgUrl.startsWith('http') ? imgUrl : `${API_BASE_URL}${imgUrl}`;
         
         onImageUploaded(fullUrl);
