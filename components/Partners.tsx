@@ -18,7 +18,11 @@ const Partners: React.FC = () => {
       .then(res => {
         const data = Array.isArray(res.data) ? res.data : res.data?.data;
         if (Array.isArray(data) && data.length > 0) {
-          setCarriers(data);
+          setCarriers((prev: any[]) => data.map((item: any, i: number) => ({
+            ...prev[i],
+            ...item,
+            color: item.color || prev[i]?.color || 'bg-gradient-to-br from-blue-500 to-blue-600'
+          })));
         }
       })
       .catch(err => {

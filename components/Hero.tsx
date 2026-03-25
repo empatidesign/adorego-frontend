@@ -28,7 +28,7 @@ const Hero: React.FC = () => {
       .then(res => {
         console.log('Hero API Response:', res.data);
         if (res.data && Object.keys(res.data).length > 0) {
-          setContent(res.data);
+          setContent((prev: any) => ({ ...prev, ...res.data }));
         }
       })
       .catch(err => {

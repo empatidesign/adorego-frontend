@@ -113,10 +113,7 @@ const HowItWorks: React.FC = () => {
     axios.get(`${API_BASE_URL}/content/howitworks?lang=${currentLang}`)
       .then(res => {
         if (res.data && res.data.steps && res.data.steps.length > 0) {
-          const updatedContent = {
-            ...res.data
-          };
-          setContent(updatedContent);
+          setContent((prev: any) => ({ ...prev, ...res.data }));
         }
       })
       .catch(err => console.error('HowItWorks content yüklenemedi:', err));
