@@ -209,10 +209,20 @@ const Footer: React.FC = () => {
         console.error('Site settings yüklenemedi:', err);
       });
 
-    // Hardcoded footer kullan
-    setSections(getDefaultSections(currentLang));
-    setCta(getDefaultCta(currentLang));
-    setBottomSection(getDefaultBottomSection(currentLang));
+    // Footer içeriğini DB'den yükle
+    axios.get(`${API_BASE_URL}/content/footer?lang=${currentLang}`)
+      .then(res => {
+        if (res.data) {
+          if (res.data.sections?.length) setSections(res.data.sections);
+          if (res.data.cta && Object.keys(res.data.cta).length) setCta(res.data.cta);
+          if (res.data.bottomSection && Object.keys(res.data.bottomSection).length) setBottomSection(res.data.bottomSection);
+        }
+      })
+      .catch(() => {
+        setSections(getDefaultSections(currentLang));
+        setCta(getDefaultCta(currentLang));
+        setBottomSection(getDefaultBottomSection(currentLang));
+      });
   }, [currentLang]);
 
   // Footer logo'yu belirle: Önce footer content'teki logoUrl, sonra site ayarlarındaki footerLogo (fallback)
