@@ -25,7 +25,7 @@ const HomeCTA: React.FC = () => {
   }, [currentLang]);
 
   return (
-    <section className="py-20 bg-gradient-to-r from-[#102477] to-[#1a3a9e] relative overflow-hidden">
+    <section className="py-8 md:py-20 bg-gradient-to-r from-[#102477] to-[#1a3a9e] relative overflow-hidden">
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#4DB848] rounded-full blur-[120px] -mr-48 -mt-48"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-400 rounded-full blur-[120px] -ml-48 -mb-48"></div>

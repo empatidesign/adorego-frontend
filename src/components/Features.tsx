@@ -123,7 +123,7 @@ const Features: React.FC = () => {
   }, [currentLang]);
 
   return (
-    <section className="py-24 relative overflow-hidden bg-white">
+    <section className="py-8 md:py-24 relative overflow-hidden bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="mb-16 text-center">
           <h2 className="text-4xl lg:text-5xl font-bold text-[#102477] mb-4 tracking-tight">

@@ -114,7 +114,7 @@ const Partners: React.FC = () => {
       </div>
 
       {/* Sosyal Kanıt + CTA */}
-      <div className="py-20 bg-slate-50">
+      <div className="py-6 md:py-20 bg-slate-50">
         <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
           <h3 className="text-2xl lg:text-3xl font-bold text-[#102477] mb-4 tracking-tight">
             {socialProof.title}

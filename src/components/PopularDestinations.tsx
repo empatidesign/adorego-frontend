@@ -119,7 +119,7 @@ const PopularDestinations: React.FC = () => {
   const destinations = content.destinations || [];
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-8 md:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-16">
           <span className="text-[#4DB848] font-bold text-[9px] uppercase tracking-[0.2em] mb-3 block">{content.badge}</span>

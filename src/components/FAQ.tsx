@@ -121,7 +121,7 @@ const FAQ: React.FC = () => {
   };
 
   return (
-    <section className="py-24" id="sss">
+    <section className="py-8 md:py-24" id="sss">
       <script type="application/ld+json">
         {JSON.stringify(faqSchema)}
       </script>

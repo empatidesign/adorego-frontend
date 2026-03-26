@@ -125,7 +125,7 @@ const TargetAudience: React.FC = () => {
   return (
     <>
       {/* Sayısal Kutular - Binlerce Satıcı */}
-      <section className="py-20 bg-white">
+      <section className="py-6 md:py-20 bg-white">
         <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold text-[#102477] mb-4 tracking-tight">
             {statsTitle}{' '}
@@ -143,7 +143,7 @@ const TargetAudience: React.FC = () => {
       </section>
 
       {/* Gri Zemin - Yurtdışı Gönder Yurtiçi Ucuzlasın Bölümü */}
-      <section className="py-24 bg-slate-100 text-[#102477] relative overflow-hidden">
+      <section className="py-8 md:py-24 bg-slate-100 text-[#102477] relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#4DB848]/10 rounded-full blur-[100px] -mr-48 -mt-48"></div>
         
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
@@ -215,7 +215,7 @@ const TargetAudience: React.FC = () => {
       </section>
 
       {/* Beyaz Zemin - Neden Bize Güvenmelisiniz Bölümü */}
-      <section className="py-24 bg-white text-[#102477]">
+      <section className="py-8 md:py-24 bg-white text-[#102477]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-[#102477]">
