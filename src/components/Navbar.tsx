@@ -55,7 +55,7 @@ const defaultMenuItems = [
     children: [
       { id: 'c1', label: 'Yurtdışı Kargo', link: '/yurtdisi-kargo' },
       { id: 'c2', label: 'Yurtiçi Kargo', link: '/yurtici-kargo' },
-      { id: 'c3', label: 'Alıcı Ödemeli Lojistik', link: '/alici-odemeli-lojistik' },
+      { id: 'c3', label: 'Alıcı Ödemeli Lojistik', link: '/alici-odemeli-kargo' },
     ],
   },
   { id: 'd2', label: 'Nasıl Gönderirim?', link: '/nasil-gonderirim', type: 'link', order: 1, isActive: true },
