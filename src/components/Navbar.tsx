@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useNavigate, Link } from 'react-router-dom';
@@ -30,35 +30,63 @@ const Logo: React.FC<{ className?: string; src?: string; brandName?: string }> =
   );
 };
 
+const ChevronDownIcon = ({ open }: { open: boolean }) => (
+  <svg
+    className={`w-3.5 h-3.5 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+    fill="none" stroke="currentColor" viewBox="0 0 24 24"
+  >
+    <path d="M6 9l6 6 6-6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const UserPlusIcon = () => (
+  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="9" cy="7" r="4" strokeWidth="2" />
+    <line x1="19" y1="8" x2="19" y2="14" strokeWidth="2" strokeLinecap="round" />
+    <line x1="22" y1="11" x2="16" y2="11" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
+// Default fallback menu items if API returns nothing
+const defaultMenuItems = [
+  {
+    id: 'd1', label: 'Hizmetlerimiz', type: 'dropdown', order: 0, isActive: true,
+    children: [
+      { id: 'c1', label: 'Yurtdışı Kargo', link: '/yurtdisi-kargo' },
+      { id: 'c2', label: 'Yurtiçi Kargo', link: '/yurtici-kargo' },
+      { id: 'c3', label: 'Alıcı Ödemeli Lojistik', link: '/alici-odemeli-lojistik' },
+    ],
+  },
+  { id: 'd2', label: 'Nasıl Gönderirim?', link: '/nasil-gonderirim', type: 'link', order: 1, isActive: true },
+  { id: 'd3', label: 'Gönderi Takip', link: '/gonderi-takibi', type: 'link', order: 2, isActive: true },
+  { id: 'd4', label: 'İletişim', link: '/iletisim', type: 'link', order: 3, isActive: true },
+];
+
 const Navbar: React.FC = () => {
   const { language, setLanguage } = useLanguage();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [hizmetlerOpen, setHizmetlerOpen] = useState(false);
+  const [mobileHizmetlerOpen, setMobileHizmetlerOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const [navbarData, setNavbarData] = useState<any>({
     logo: "",
     brandName: "AdorelGo",
-    menuItems: [
-      { id: "1", label: "Yurtdışı Kargo", link: "/yurtdisi-kargo", type: "link" },
-      { id: "2", label: "Yurtiçi Kargo", link: "/yurtici-kargo", type: "link" },
-      { id: "3", label: "Fiyatlar", link: "/fiyatlar", type: "link" },
-      { id: "4", label: "Nasıl Gönderirim?", link: "/nasil-gonderirim", type: "link" },
-      { id: "5", label: "Gönderi Takibi", link: "/gonderi-takibi", type: "link" },
-      { id: "6", label: "İletişim", link: "/iletisim", type: "link" },
-    ],
+    menuItems: [],
     ctaButtons: [
-      { id: "2", label: "ÜYE OL", link: "#", style: "primary" },
+      { id: "2", label: "Üye Ol", link: "#", style: "primary" },
     ]
   });
 
   useEffect(() => {
-    // Session kontrolü
     const token = localStorage.getItem('admin_token');
     const role = localStorage.getItem('user_role');
     setIsAdmin(!!token && role === 'admin');
 
-    // Navbar menülerini ve logoyu yükle
     axios.get(`${API_BASE_URL}/content/navbar?lang=${language}`)
       .then(res => {
         if (res.data && Object.keys(res.data).length > 0) {
@@ -74,13 +102,11 @@ const Navbar: React.FC = () => {
         console.error('Navbar content yüklenemedi:', err);
       });
 
-    // Marka adını genel ayarlardan yükle (fallback)
     axios.get(`${API_BASE_URL}/content/settings/general?lang=${language}`)
       .then(res => {
         if (res.data && Object.keys(res.data).length > 0) {
           setNavbarData((prev: any) => ({
             ...prev,
-            // Sadece navbar'dan logo gelmemişse genel ayarlardan al
             logo: prev.logo || res.data.headerLogo || '',
             brandName: res.data.siteName || prev.brandName
           }));
@@ -99,28 +125,36 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setHizmetlerOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const handleLinkClick = (href: string) => {
     setIsOpen(false);
+    setHizmetlerOpen(false);
 
     if (!href) return;
 
-    // Eğer external link ise
     if (href.startsWith('http')) {
       window.location.href = href;
       return;
     }
 
-    // Eğer internal route ise (Anchor değilse)
     if (href.startsWith('/') && !href.includes('#')) {
       navigate(href);
       return;
     }
 
-    // Anchor link ise
     const anchor = href.includes('#') ? href.substring(href.indexOf('#')) : (href.startsWith('#') ? href : null);
 
     if (anchor) {
-      // Eğer ana sayfada değilsek veya sadece /#anchor ise önce ana sayfaya git
       if (window.location.pathname !== '/' || (href.startsWith('/') && href.includes('#'))) {
         navigate(href);
         return;
@@ -148,12 +182,8 @@ const Navbar: React.FC = () => {
     }
   };
 
-  const navLinks = (navbarData?.menuItems || [])
-    .filter((item: any) => item.isActive !== false && (!item.position || item.position === 'header'))
-    .filter((item: any) => {
-      const label = item.label?.toUpperCase();
-      return label !== 'PANEL' && label !== 'ÜYE OL' && label !== 'SIGN UP';
-    })
+  const menuItems = ((navbarData?.menuItems?.length ? navbarData.menuItems : defaultMenuItems) as any[])
+    .filter((item: any) => item.isActive !== false)
     .sort((a: any, b: any) => (a.order || 0) - (b.order || 0));
 
   const ctaButtons = (navbarData?.ctaButtons || [])
@@ -167,47 +197,78 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex justify-between items-center h-14">
           <div className="flex items-center gap-10">
-            <div
-              className="flex-shrink-0 cursor-pointer"
-              onClick={() => navigate('/')}
-            >
-              <Logo
-                className="h-9"
-                src={navbarData.logo}
-                brandName={navbarData.brandName}
-              />
-            </div>
-
-            <div className="hidden lg:flex lg:items-center lg:space-x-8">
-              {navLinks.map((link: any) => (
-                <button
-                  key={link.id}
-                  onClick={() => handleLinkClick(link.link || link.href)}
-                  className="text-[12px] font-bold tracking-[0.05em] text-slate-500 hover:text-[#102477] transition-all whitespace-nowrap"
-                >
-                  {link.label}
-                </button>
-              ))}
-            </div>
+          {/* Logo */}
+          <div
+            className="flex-shrink-0 cursor-pointer"
+            onClick={() => navigate('/')}
+          >
+            <Logo
+              className="h-9"
+              src={navbarData.logo}
+              brandName={navbarData.brandName}
+            />
           </div>
 
-          <div className="hidden lg:flex items-center space-x-5">
+          {/* Desktop Nav */}
+          <div className="hidden lg:flex lg:items-center lg:space-x-8">
+            {menuItems.map((item: any) => item.type === 'dropdown' ? (
+              <div key={item.id} className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setHizmetlerOpen(prev => !prev)}
+                  className={`flex items-center gap-1.5 text-[13px] font-semibold transition-all whitespace-nowrap ${hizmetlerOpen ? 'text-[#102477]' : 'text-slate-600 hover:text-[#102477]'}`}
+                >
+                  {item.label}
+                  <ChevronDownIcon open={hizmetlerOpen} />
+                </button>
+                {hizmetlerOpen && (
+                  <div className="absolute top-full left-0 mt-3 w-64 bg-white rounded-2xl shadow-xl shadow-black/10 border border-slate-100 py-2 z-50 animate-fadeIn">
+                    {(item.children || []).map((child: any) => (
+                      <button
+                        key={child.id || child.link}
+                        onClick={() => handleLinkClick(child.link)}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-[13px] font-medium text-slate-700 hover:bg-slate-50 hover:text-[#102477] transition-colors text-left"
+                      >
+                        <span className="flex-shrink-0 w-8 h-8 bg-slate-100 rounded-xl flex items-center justify-center">
+                          <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M5 12h14M12 5l7 7-7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </span>
+                        {child.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button
+                key={item.id}
+                onClick={() => handleLinkClick(item.link)}
+                className="text-[13px] font-semibold text-slate-600 hover:text-[#102477] transition-all whitespace-nowrap"
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+          </div>{/* end left group */}
+
+          {/* Right side: CTA + Lang */}
+          <div className="hidden lg:flex items-center space-x-4">
             {ctaButtons.map((button: any) => (
               <button
                 key={button.id}
                 onClick={() => handleLinkClick(button.link)}
                 className={`${button.style === 'primary'
                   ? 'bg-[#4DB848] text-white hover:bg-[#3da339]'
-                  : 'border border-[#102477] text-[#102477] hover:bg-slate-50'} 
-                  px-5 py-2 rounded-[8px] text-[12px] font-bold tracking-[0.05em] transition-all whitespace-nowrap flex items-center gap-2`}
+                  : 'border border-[#102477] text-[#102477] hover:bg-slate-50'}
+                  px-5 py-2.5 rounded-[10px] text-[13px] font-bold tracking-[0.02em] transition-all whitespace-nowrap flex items-center gap-2`}
               >
-                {button.icon && <i className={`fas ${button.icon}`}></i>}
+                {button.style === 'primary' ? <UserPlusIcon /> : (button.icon && <i className={`fas ${button.icon}`}></i>)}
                 {button.label}
               </button>
             ))}
 
-            {/* Dil Değiştirme Butonları */}
-            <div className="flex items-center gap-1 border-l border-slate-200 pl-5">
+            {/* Language switcher */}
+            <div className="flex items-center gap-1 border-l border-slate-200 pl-4">
               <button
                 onClick={() => setLanguage('tr')}
                 className={`text-[11px] font-bold px-3 py-1.5 rounded-[6px] transition-all ${language === 'tr'
@@ -229,7 +290,7 @@ const Navbar: React.FC = () => {
             </div>
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile hamburger */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="lg:hidden inline-flex items-center justify-center p-2 rounded-md text-slate-700 hover:text-[#102477] hover:bg-slate-100 focus:outline-none transition-colors"
@@ -246,32 +307,60 @@ const Navbar: React.FC = () => {
         {/* Mobile menu */}
         {isOpen && (
           <div className="lg:hidden mt-4 pb-4">
-            <div className="flex flex-col space-y-3">
-              {navLinks.map((link: any) => (
+            <div className="flex flex-col space-y-1">
+              {menuItems.map((item: any) => item.type === 'dropdown' ? (
+                <div key={item.id}>
+                  <button
+                    onClick={() => setMobileHizmetlerOpen((p: boolean) => !p)}
+                    className="w-full flex items-center justify-between text-left text-sm font-bold text-slate-600 hover:text-[#102477] transition-all py-2.5 px-1"
+                  >
+                    {item.label}
+                    <ChevronDownIcon open={mobileHizmetlerOpen} />
+                  </button>
+                  {mobileHizmetlerOpen && (
+                    <div className="pl-4 pb-1 space-y-1">
+                      {(item.children || []).map((child: any) => (
+                        <button
+                          key={child.id || child.link}
+                          onClick={() => handleLinkClick(child.link)}
+                          className="w-full flex items-center gap-3 py-2.5 px-2 text-sm font-medium text-slate-600 hover:text-[#102477] transition-colors text-left rounded-lg hover:bg-slate-50"
+                        >
+                          <span className="flex-shrink-0 w-7 h-7 bg-slate-100 rounded-lg flex items-center justify-center">
+                            <svg className="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path d="M5 12h14M12 5l7 7-7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          </span>
+                          {child.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
                 <button
-                  key={link.id}
-                  onClick={() => handleLinkClick(link.link || link.href)}
-                  className="text-left text-sm font-bold tracking-[0.05em] text-slate-500 hover:text-[#102477] transition-all py-2"
+                  key={item.id}
+                  onClick={() => handleLinkClick(item.link)}
+                  className="text-left text-sm font-bold text-slate-600 hover:text-[#102477] transition-all py-2.5 px-1"
                 >
-                  {link.label}
+                  {item.label}
                 </button>
               ))}
+
               <div className="pt-3 border-t border-slate-200 space-y-2">
                 {ctaButtons.map((button: any) => (
                   <button
                     key={button.id}
                     onClick={() => handleLinkClick(button.link)}
-                    className={`w-full text-[12px] font-bold tracking-[0.05em] transition-colors flex items-center justify-center gap-2 py-2 ${button.style === 'primary'
-                      ? 'bg-[#4DB848] text-white rounded-[8px] hover:bg-[#3da339]'
+                    className={`w-full text-[13px] font-bold tracking-[0.02em] transition-colors flex items-center justify-center gap-2 py-2.5 ${button.style === 'primary'
+                      ? 'bg-[#4DB848] text-white rounded-[10px] hover:bg-[#3da339]'
                       : 'text-slate-500 hover:text-[#102477]'
                       }`}
                   >
-                    {button.icon && <i className={`fas ${button.icon}`}></i>}
+                    {button.style === 'primary' ? <UserPlusIcon /> : (button.icon && <i className={`fas ${button.icon}`}></i>)}
                     {button.label}
                   </button>
                 ))}
 
-                {/* Mobil Dil Değiştirme */}
                 <div className="flex items-center gap-2 justify-center pt-2">
                   <button
                     onClick={() => setLanguage('tr')}
