@@ -8,6 +8,7 @@ import Hero from './components/Hero';
 import HowItWorks from './components/HowItWorks';
 import Features from './components/Features';
 import Solutions from './components/Solutions';
+import SolutionsCta from './components/SolutionsCta';
 import Partners from './components/Partners';
 import PopularDestinations from './components/PopularDestinations';
 import TargetAudience from './components/TargetAudience';
@@ -69,6 +70,7 @@ const MainSite: React.FC = () => {
         {/* Yurtiçi Kargo Bölümü */}
         <div id="yurtici" className="bg-gradient-to-b from-blue-50/30 to-purple-50/30">
           <Solutions />
+          <SolutionsCta />
           <TargetAudience />
           <UseCases />
         </div>
