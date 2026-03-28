@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { API_BASE_URL } from '../api-config';
 
@@ -17,6 +18,7 @@ const Logo: React.FC<{ className?: string }> = ({ className = "h-8" }) => (
 
 const Footer: React.FC = () => {
   const { currentLang } = useLanguage();
+  const navigate = useNavigate();
 
   const getDefaultCta = (lang: string) => {
     if (lang === 'tr') {
@@ -247,9 +249,9 @@ const Footer: React.FC = () => {
                 <ul className="space-y-4 text-slate-500 font-bold text-[12px]">
                   {section.links.map((link, lIdx) => (
                     <li key={lIdx}>
-                      <a href={link.h} className="hover:text-[#4DB848] transition-colors inline-block" title={link.n}>
+                      <Link to={link.h} className="hover:text-[#4DB848] transition-colors inline-block" title={link.n}>
                         {link.n}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -268,13 +270,13 @@ const Footer: React.FC = () => {
             </div>
             <div className="flex items-center gap-4">
               <button
-                onClick={() => window.location.href = cta.button1Link}
+                onClick={() => cta.button1Link?.startsWith('http') ? window.open(cta.button1Link, '_blank') : navigate(cta.button1Link)}
                 className="bg-[#102477] text-white px-8 py-3 rounded-[10px] font-bold text-sm flex items-center gap-2 hover:bg-black transition-colors"
               >
                 <i className="fas fa-comment-dots" aria-hidden="true"></i> {cta.button1Text}
               </button>
               <button
-                onClick={() => window.location.href = cta.button2Link}
+                onClick={() => cta.button2Link?.startsWith('http') ? window.open(cta.button2Link, '_blank') : navigate(cta.button2Link)}
                 className="bg-[#4DB848] text-white px-8 py-3 rounded-[10px] font-bold text-sm hover:bg-[#3da339] transition-colors shadow-lg shadow-green-500/10"
               >
                 {cta.button2Text}
@@ -318,7 +320,7 @@ const Footer: React.FC = () => {
               <ul className="flex flex-wrap gap-x-8 gap-y-4 text-slate-400 font-bold text-[11px] tracking-widest">
                 {bottomSection.corporateLinks?.map((link: any, idx: number) => (
                   <li key={idx}>
-                    <a href={link.url} className="hover:text-[#102477]" title={link.name}>{link.name}</a>
+                    <Link to={link.url} className="hover:text-[#102477]" title={link.name}>{link.name}</Link>
                   </li>
                 ))}
               </ul>
