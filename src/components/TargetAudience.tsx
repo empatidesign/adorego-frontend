@@ -93,55 +93,21 @@ const TargetAudience: React.FC = () => {
     }
   };
 
-  const getDefaultStats = (lang: string) => [
-    { value: '50.000+', label: lang === 'tr' ? 'gönderi / ay' : 'shipments / month' },
-    { value: '220+', label: lang === 'tr' ? 'ülkeye gönderim' : 'countries served' },
-    { value: '%80', label: lang === 'tr' ? 'aktif kullanım' : 'active usage' },
-  ];
-
   const [content, setContent] = useState<any>(getDefaultContent(currentLang));
-  const [statsTitle, setStatsTitle] = useState(currentLang === 'tr' ? 'Binlerce satıcı' : 'Thousands of sellers');
-  const [statsHighlight, setStatsHighlight] = useState(currentLang === 'tr' ? 'AdorelGo ile gönderiyor' : 'ship with AdorelGo');
-  const [stats, setStats] = useState<any[]>(getDefaultStats(currentLang));
 
   useEffect(() => {
     axios.get(`${API_BASE_URL}/content/target-audience?lang=${currentLang}`)
       .then(res => {
         if (res.data && res.data.earnSection) setContent(res.data);
         else setContent(getDefaultContent(currentLang));
-        if (res.data?.statsTitle) setStatsTitle(res.data.statsTitle);
-        if (res.data?.statsHighlight) setStatsHighlight(res.data.statsHighlight);
-        if (res.data?.stats?.length > 0) setStats(res.data.stats);
-        else setStats(getDefaultStats(currentLang));
       })
-      .catch(() => {
-        setContent(getDefaultContent(currentLang));
-        setStats(getDefaultStats(currentLang));
-      });
+      .catch(() => setContent(getDefaultContent(currentLang)));
   }, [currentLang]);
 
   const trustPoints = content.trustSection?.points || [];
 
   return (
     <>
-      {/* Sayısal Kutular - Binlerce Satıcı */}
-      <section className="py-6 md:py-20 bg-white">
-        <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold text-[#102477] mb-4 tracking-tight">
-            {statsTitle}{' '}
-            <span className="text-[#4DB848]">{statsHighlight}</span>
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-            {stats.map((stat: any, idx: number) => (
-              <div key={idx} className="bg-slate-50 rounded-2xl p-8 border border-gray-100">
-                <p className={`text-4xl lg:text-5xl font-black mb-2 ${idx === 1 ? 'text-[#4DB848]' : 'text-[#102477]'}`}>{stat.value}</p>
-                <p className="text-gray-500 text-sm font-medium">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Gri Zemin - Yurtdışı Gönder Yurtiçi Ucuzlasın Bölümü */}
       <section className="py-8 md:py-24 bg-slate-100 text-[#102477] relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#4DB848]/10 rounded-full blur-[100px] -mr-48 -mt-48"></div>
@@ -149,7 +115,7 @@ const TargetAudience: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
           <div className="lg:flex items-center justify-between gap-16">
             <div className="lg:w-1/2">
-              <span className="text-[#4DB848] font-bold text-[9px] uppercase tracking-[0.2em] mb-4 block">{content.earnSection?.badge}</span>
+              <span className="text-[#4DB848] font-bold text-sm uppercase tracking-[0.2em] mb-4 block">{content.earnSection?.badge}</span>
               <h2 className="text-3xl lg:text-5xl font-bold mb-6 tracking-tight leading-tight">
                 {content.earnSection?.title} <br />
                 <span className="text-[#4DB848]">{content.earnSection?.highlightedTitle}</span>
@@ -215,7 +181,7 @@ const TargetAudience: React.FC = () => {
       </section>
 
       {/* Beyaz Zemin - Neden Bize Güvenmelisiniz Bölümü */}
-      <section className="py-8 md:py-24 bg-white text-[#102477]">
+      <section className="pb-8 md:pb-24 pt-14 bg-white text-[#102477]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-[#102477]">
@@ -253,6 +219,7 @@ const TargetAudience: React.FC = () => {
           </div>
         </div>
       </section>
+
     </>
   );
 };

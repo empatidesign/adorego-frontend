@@ -72,19 +72,20 @@ const MainSite: React.FC = () => {
           <Solutions />
           <SolutionsCta />
           <TargetAudience />
-          <UseCases />
         </div>
 
         <div className="bg-gradient-to-b from-purple-50/30 to-pink-50/30">
           <Partners />
         </div>
 
+
+
+        <div>
+          <UseCases />
+        </div>
+
         {/* CTA Banner - Hemen Gönderine Başla */}
         <HomeCTA />
-
-        <div className="bg-gradient-to-b from-pink-50/30 to-indigo-50/30">
-          <PopularDestinations />
-        </div>
 
         <div className="bg-gradient-to-b from-indigo-50/30 to-white">
           <FAQ />

@@ -1,15 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useLanguage } from '../contexts/LanguageContext';
+import { API_BASE_URL } from '../api-config';
 
 const SolutionsCta: React.FC = () => {
   const { currentLang } = useLanguage();
 
-  const subDescription = currentLang === 'tr'
+  const defaultSubDescription = currentLang === 'tr'
     ? 'Yurtiçi, yurtdışı ve tahsilatlı tüm gönderimler tek panelde'
     : 'All domestic, international and cash-on-delivery shipments in one panel';
+  const defaultCtaText = currentLang === 'tr' ? 'Gönderi Oluştur' : 'Create Shipment';
+  const defaultCtaLink = '/gonderi-olustur';
 
-  const ctaText = currentLang === 'tr' ? 'Gönderi Oluştur' : 'Create Shipment';
-  const ctaLink = '/gonderi-olustur';
+  const [subDescription, setSubDescription] = useState(defaultSubDescription);
+  const [ctaText, setCtaText] = useState(defaultCtaText);
+  const [ctaLink, setCtaLink] = useState(defaultCtaLink);
+
+  useEffect(() => {
+    axios.get(`${API_BASE_URL}/content/solutions?lang=${currentLang}`)
+      .then(res => {
+        if (res.data) {
+          setSubDescription(res.data.subDescription || defaultSubDescription);
+          setCtaText(res.data.ctaButtonText || defaultCtaText);
+          setCtaLink(res.data.ctaButtonLink || defaultCtaLink);
+        }
+      })
+      .catch(() => {});
+  }, [currentLang]);
 
   return (
     <section className="bg-white pb-16">

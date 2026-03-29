@@ -40,7 +40,7 @@ const UseCases: React.FC = () => {
   }, [currentLang]);
 
   return (
-    <section className="py-8 md:py-24 bg-slate-50">
+    <section className="pb-8 md:pb-24 pt-5 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl lg:text-4xl font-bold tracking-tight">
@@ -48,7 +48,7 @@ const UseCases: React.FC = () => {
             <span className="text-[#4DB848]">{data.highlightedTitle}</span>
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex flex-wrap justify-center gap-6">
           {(data.items || []).map((item: any, idx: number) => (
             <div key={item.id || idx} className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 duration-300">
               <div className={`w-14 h-14 ${item.color || 'bg-blue-500'} rounded-xl flex items-center justify-center mb-6 text-white`}>

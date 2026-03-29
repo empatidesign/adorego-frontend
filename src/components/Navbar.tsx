@@ -78,7 +78,7 @@ const Navbar: React.FC = () => {
     brandName: "AdorelGo",
     menuItems: [],
     ctaButtons: [
-      { id: "2", label: "Üye Ol", link: "#", style: "primary" },
+      { id: "2", label: "Üye Ol / Giriş", link: "#", style: "primary" },
     ]
   });
 

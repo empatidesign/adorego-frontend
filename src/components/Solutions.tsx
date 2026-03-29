@@ -125,11 +125,11 @@ const Solutions: React.FC = () => {
   }, [currentLang]);
 
   return (
-    <section className="py-8 md:py-24 bg-white">
+    <section className="pb-8 md:pb-24 pt-0 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-16">
           <span
-            className="font-bold text-[9px] uppercase tracking-[0.2em] mb-3 block"
+            className="font-bold text-sm uppercase tracking-[0.2em] mb-3 block"
             style={{ color: content.badgeColor || '#4DB848' }}
           >
             {content.badge}

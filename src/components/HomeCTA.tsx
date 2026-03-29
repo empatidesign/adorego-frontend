@@ -31,17 +31,30 @@ const HomeCTA: React.FC = () => {
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-400 rounded-full blur-[120px] -ml-48 -mb-48"></div>
       </div>
       <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center relative z-10">
-        <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4 tracking-tight">{data.title}</h2>
-        <p className="text-white/70 text-lg mb-10 font-medium">{data.subtitle}</p>
-        <a
-          href={data.buttonLink || 'https://app.adorelgo.com'}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-3 bg-[#4DB848] text-white font-bold px-10 py-4 rounded-xl hover:bg-[#3da03a] transition-all hover:-translate-y-1 shadow-xl text-lg"
-        >
-          {data.buttonText}
-          <i className="fas fa-arrow-right"></i>
-        </a>
+        <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4 tracking-tight">
+          {currentLang === 'tr' ? 'Sorun mu var? Kararsız mı kaldın?' : 'Have questions? Not sure yet?'}
+        </h2>
+        <p className="text-white/70 text-lg mb-10 font-medium">
+          {currentLang === 'tr' ? 'Destek ekibimiz yardımcı olsun.' : 'Let our support team help you.'}
+        </p>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a
+            href="/iletisim"
+            className="inline-flex items-center gap-3 bg-[#102477] text-white font-bold px-10 py-4 rounded-xl hover:bg-[#0a1a5a] transition-all hover:-translate-y-1 shadow-xl text-lg border-2 border-white/20"
+          >
+            <i className="fas fa-headset"></i>
+            {currentLang === 'tr' ? 'İletişime Geç' : 'Contact Us'}
+          </a>
+          <a
+            href={data.buttonLink || 'https://app.adorelgo.com'}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 bg-[#4DB848] text-white font-bold px-10 py-4 rounded-xl hover:bg-[#3da03a] transition-all hover:-translate-y-1 shadow-xl text-lg"
+          >
+            <i className="fas fa-user-plus"></i>
+            {currentLang === 'tr' ? 'Ücretsiz Üye Ol' : 'Sign Up Free'}
+          </a>
+        </div>
       </div>
     </section>
   );

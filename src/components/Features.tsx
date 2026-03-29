@@ -123,13 +123,13 @@ const Features: React.FC = () => {
   }, [currentLang]);
 
   return (
-    <section className="py-8 md:py-24 relative overflow-hidden bg-white">
+    <section className="pb-8 md:pb-12 pt-0 relative overflow-hidden bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        <div className="mb-16 text-center">
+        <div className="mb-8 text-center">
           <h2 className="text-4xl lg:text-5xl font-bold text-[#102477] mb-4 tracking-tight">
             {header.title}
           </h2>
-          <p className="text-lg text-gray-700 max-w-3xl mx-auto font-normal">
+          <p className="text-lg text-gray-700 mx-auto font-normal whitespace-nowrap">
             {header.subtitle}
           </p>
         </div>
@@ -146,9 +146,9 @@ const Features: React.FC = () => {
             const iconBg = feature.color || colors[idx % colors.length];
             
             return (
-              <div 
-                key={idx} 
-                className="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300"
+              <div
+                key={idx}
+                className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col items-center text-center"
               >
                 <div className={`w-16 h-16 ${iconBg} rounded-lg flex items-center justify-center mb-6 text-white`}>
                   <i className={`fas ${feature.icon} text-2xl`}></i>
@@ -164,7 +164,14 @@ const Features: React.FC = () => {
           })}
         </div>
 
-        <div className="mt-20 relative rounded-[10px] overflow-hidden min-h-[250px] flex items-center shadow-lg">
+        <div className="mt-10 text-center">
+          <p className="text-2xl lg:text-3xl font-bold text-[#102477]">
+            Kargo firması seçmezsin{' '}
+            <span className="text-[#4DB848]">sonuç seçersin.</span>
+          </p>
+        </div>
+
+        <div className="mt-10 relative rounded-[10px] overflow-hidden min-h-[250px] flex items-center shadow-lg">
            <img 
             src={cta.backgroundImage} 
             className="absolute inset-0 w-full h-full object-cover" 

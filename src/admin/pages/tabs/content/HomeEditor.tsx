@@ -9,10 +9,9 @@ const HomeEditor: React.FC = () => {
     () => contentAPI.getPartners().then((d: any) => Array.isArray(d) ? { carriers: d, socialProof: {} } : d),
     d => contentAPI.updatePartners(d)
   );
+  const cta = useEditor(() => contentAPI.getCta(), d => contentAPI.updateCta(d));
   const faqHeader = useEditor(() => contentAPI.getFaqHeader(), d => contentAPI.updateFaqHeader(d));
   const faq = useEditor(() => contentAPI.getFaq(), d => contentAPI.updateFaq(d));
-  const cta = useEditor(() => contentAPI.getCta(), d => contentAPI.updateCta(d));
-  const dest = useEditor(() => contentAPI.getPopularDestinations(), d => contentAPI.updatePopularDestinations(d));
   const featuresHeader = useEditor(() => contentAPI.getFeaturesHeader(), d => contentAPI.updateFeaturesHeader(d));
   const solutions = useEditor(() => contentAPI.getSolutions(), d => contentAPI.updateSolutions(d));
   const targetAudience = useEditor(() => contentAPI.getTargetAudience(), d => contentAPI.updateTargetAudience(d));
@@ -26,8 +25,8 @@ const HomeEditor: React.FC = () => {
 
       {/* HERO */}
       <Card title="Hero Banner">
-        <div><Label text="Ana Başlık" /><Textarea value={hero.data?.title} onChange={v => hero.set('title', v)} rows={2} /></div>
-        <div><Label text="Alt Başlık" /><Textarea value={hero.data?.subtitle} onChange={v => hero.set('subtitle', v)} /></div>
+        <div><Label text="Ana Başlık" /><Textarea value={hero.data?.title} onChange={v => hero.set('title', v)} rows={2} placeholder="Kazanç&#10;Yurtdışında.&#10;En Uygun Kargo Bizde." /></div>
+        <div><Label text="Alt Başlık" /><Textarea value={hero.data?.subtitle} onChange={v => hero.set('subtitle', v)} placeholder="Yurtdışı gönderimlerinizi kolaylaştırıyoruz." /></div>
         <ImageUpload label="Hero Görseli" value={hero.data?.image ?? ''} onChange={v => hero.set('image', v)} />
         <div>
           <div className="flex items-center justify-between mb-2">
@@ -69,14 +68,14 @@ const HomeEditor: React.FC = () => {
         }])} />
       }>
         <div className="grid grid-cols-2 gap-3">
-          <div><Label text="Rozet" /><Input value={howitworks.data?.badge} onChange={v => howitworks.set('badge', v)} /></div>
-          <div><Label text="Alt Başlık" /><Input value={howitworks.data?.subtitle} onChange={v => howitworks.set('subtitle', v)} /></div>
+          <div><Label text="Rozet" /><Input value={howitworks.data?.badge} onChange={v => howitworks.set('badge', v)} placeholder="NASIL ÇALIŞIR" /></div>
+          <div><Label text="Alt Başlık" /><Input value={howitworks.data?.subtitle} onChange={v => howitworks.set('subtitle', v)} placeholder="Hızlı ve kolay" /></div>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <div><Label text='Başlık ("Yurtdışı Kargo")' /><Input value={howitworks.data?.title} onChange={v => howitworks.set('title', v)} /></div>
-          <div><Label text='Vurgulu Başlık ("Nasıl Çalışır?")' /><Input value={howitworks.data?.titleHighlight} onChange={v => howitworks.set('titleHighlight', v)} /></div>
+          <div><Label text='Başlık ("Yurtdışı Kargo")' /><Input value={howitworks.data?.title} onChange={v => howitworks.set('title', v)} placeholder="Yurtdışı Kargo" /></div>
+          <div><Label text='Vurgulu Başlık ("Nasıl Çalışır?")' /><Input value={howitworks.data?.titleHighlight} onChange={v => howitworks.set('titleHighlight', v)} placeholder="Nasıl Çalışır?" /></div>
         </div>
-        <div><Label text="Alt Buton Metni (İhtiyacını seç → Fiyatı gör...)" /><Input value={howitworks.data?.buttons?.[0]?.text ?? ''} onChange={v => howitworks.set('buttons.0.text', v)} /></div>
+        <div><Label text="Alt Buton Metni (İhtiyacını seç → Fiyatı gör...)" /><Input value={howitworks.data?.buttons?.[0]?.text ?? ''} onChange={v => howitworks.set('buttons.0.text', v)} placeholder="İhtiyacını seç → Fiyatı gör → Gönder" /></div>
         <div className="space-y-3">
           {(howitworks.data?.steps || []).map((step: any, i: number) => (
             <div key={step.id || i} className="border border-gray-100 rounded-xl p-4 space-y-3 bg-gray-50">
@@ -97,139 +96,49 @@ const HomeEditor: React.FC = () => {
         <SaveBtn onSave={howitworks.handleSave} saving={howitworks.saving} success={howitworks.success} error={howitworks.error} />
       </Card>
 
-      {/* SSS BAŞLIK */}
-      <Card title="SSS — Başlık">
-        <div className="grid grid-cols-2 gap-3">
-          <div><Label text="Başlık" /><Input value={faqHeader.data?.title} onChange={v => faqHeader.set('title', v)} /></div>
-          <div><Label text="Alt Başlık" /><Input value={faqHeader.data?.subtitle} onChange={v => faqHeader.set('subtitle', v)} /></div>
-        </div>
-        <SaveBtn onSave={faqHeader.handleSave} saving={faqHeader.saving} success={faqHeader.success} error={faqHeader.error} />
-      </Card>
-
-      {/* SSS SORULAR */}
-      <Card title="SSS — Sorular & Cevaplar" action={
-        <AddBtn onClick={() => faq.set('', [...(faq.data || []), { id: String(Date.now()), question: 'Yeni soru?', answer: 'Cevap...' }])} />
+      {/* SİSTEM EN DOĞRUSUNU SEÇER */}
+      <Card title="Sistem en Doğrusunu Seçer — Başlık & Kartlar" action={
+        <AddBtn onClick={() => featuresHeader.set('miniCards', [...(featuresHeader.data?.miniCards || []), { icon: 'fa-star', color: 'bg-blue-500', title: 'Yeni Kart', description: '' }])} />
       }>
-        <div className="space-y-3">
-          {(faq.data || []).map((item: any, i: number) => (
-            <div key={item.id || i} className="border border-gray-100 rounded-xl p-4 space-y-2 bg-gray-50">
-              <div className="flex items-start gap-2">
-                <div className="flex-1 space-y-2">
-                  <div><Label text="Soru" /><Input value={item.question} onChange={v => faq.set(`${i}.question`, v)} /></div>
-                  <div><Label text="Cevap" /><Textarea value={item.answer} onChange={v => faq.set(`${i}.answer`, v)} rows={2} /></div>
-                </div>
-                <RemoveBtn onClick={() => faq.set('', faq.data.filter((_: any, j: number) => j !== i))} />
-              </div>
-            </div>
-          ))}
-        </div>
-        <SaveBtn onSave={faq.handleSave} saving={faq.saving} success={faq.success} error={faq.error} />
-      </Card>
-
-      {/* PARTNERLER */}
-      <Card title="Partnerler (Kargo Firmaları)" action={
-        <AddBtn onClick={() => partners.set('carriers', [...(Array.isArray(partners.data?.carriers) ? partners.data.carriers : (Array.isArray(partners.data) ? partners.data : [])), { name: 'Yeni Partner', logo: '', color: 'bg-gray-100' }])} />
-      }>
-        <div className="space-y-3">
-          {(Array.isArray(partners.data?.carriers) ? partners.data.carriers : Array.isArray(partners.data) ? partners.data : []).map((p: any, i: number) => (
-            <div key={i} className="border border-gray-100 rounded-xl p-4 bg-gray-50 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-gray-400">{i + 1}. Partner</span>
-                <RemoveBtn onClick={() => {
-                  const list = Array.isArray(partners.data?.carriers) ? partners.data.carriers : partners.data;
-                  partners.set('carriers', list.filter((_: any, j: number) => j !== i));
-                }} />
-              </div>
-              <div><Label text="İsim" /><Input value={p.name} onChange={v => partners.set(`carriers.${i}.name`, v)} placeholder="DHL" /></div>
-              <ImageUpload label="Logo" value={p.logo ?? ''} onChange={v => partners.set(`carriers.${i}.logo`, v)} />
-            </div>
-          ))}
-        </div>
-        <SaveBtn onSave={partners.handleSave} saving={partners.saving} success={partners.success} error={partners.error} />
-      </Card>
-
-      {/* SOSYAL KANIT */}
-      <Card title="Sosyal Kanıt — Yorumlar & CTA" action={
-        <AddBtn onClick={() => partners.set('socialProof.testimonials', [...(Array.isArray(partners.data?.socialProof?.testimonials) ? partners.data.socialProof.testimonials : []), { quote: '"Yorum metni."', author: '— İsim' }])} />
-      }>
-        <div className="grid grid-cols-2 gap-3">
-          <div><Label text='Başlık ("E-ticaret satıcıları tarafından")' /><Input value={partners.data?.socialProof?.title ?? 'E-ticaret satıcıları tarafından'} onChange={v => partners.set('socialProof.title', v)} /></div>
-          <div><Label text='Vurgulu Kısım ("aktif olarak kullanılmaktadır")' /><Input value={partners.data?.socialProof?.highlightedTitle ?? 'aktif olarak kullanılmaktadır'} onChange={v => partners.set('socialProof.highlightedTitle', v)} /></div>
-        </div>
+        <div><Label text="Başlık" /><Input value={featuresHeader.data?.title} onChange={v => featuresHeader.set('title', v)} placeholder="Sistem en doğrusunu seçer." /></div>
+        <div><Label text="Alt Başlık" /><Textarea value={featuresHeader.data?.subtitle} onChange={v => featuresHeader.set('subtitle', v)} placeholder="Gönderiniz için en uygun kargo firması otomatik seçilir." /></div>
         <div className="space-y-2">
-          {(Array.isArray(partners.data?.socialProof?.testimonials) ? partners.data.socialProof.testimonials : []).map((t: any, i: number) => (
+          {(featuresHeader.data?.miniCards || []).map((c: any, i: number) => (
             <div key={i} className="border border-gray-100 rounded-xl p-3 bg-gray-50 space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-gray-400">{i + 1}. Yorum</span>
-                <RemoveBtn onClick={() => partners.set('socialProof.testimonials', partners.data.socialProof.testimonials.filter((_: any, j: number) => j !== i))} />
+                <span className="text-xs font-semibold text-gray-400">{i + 1}. Kart</span>
+                <RemoveBtn onClick={() => featuresHeader.set('miniCards', featuresHeader.data.miniCards.filter((_: any, j: number) => j !== i))} />
               </div>
-              <div><Label text="Yorum Metni" /><Input value={t.quote} onChange={v => partners.set(`socialProof.testimonials.${i}.quote`, v)} /></div>
-              <div><Label text="Kişi (— E-ticaret satıcısı)" /><Input value={t.author} onChange={v => partners.set(`socialProof.testimonials.${i}.author`, v)} /></div>
+              <div className="grid grid-cols-2 gap-2">
+                <div><Label text="Başlık" /><Input value={c.title} onChange={v => featuresHeader.set(`miniCards.${i}.title`, v)} /></div>
+                <div><Label text="Açıklama" /><Input value={c.description} onChange={v => featuresHeader.set(`miniCards.${i}.description`, v)} /></div>
+              </div>
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-2 gap-3">
-          <div><Label text='CTA Buton Metni ("Sen de gönderine başla")' /><Input value={partners.data?.socialProof?.ctaText ?? 'Sen de gönderine başla'} onChange={v => partners.set('socialProof.ctaText', v)} /></div>
-          <div><Label text="CTA Buton URL" /><Input value={partners.data?.socialProof?.ctaLink ?? 'https://app.adorelgo.com'} onChange={v => partners.set('socialProof.ctaLink', v)} /></div>
-        </div>
-        <SaveBtn onSave={partners.handleSave} saving={partners.saving} success={partners.success} error={partners.error} />
-      </Card>
-
-      {/* POPÜLER DESTİNASYONLAR */}
-      <Card title="Popüler Destinasyonlar">
-        <div><Label text="Başlık" /><Input value={dest.data?.title} onChange={v => dest.set('title', v)} /></div>
-        <div><Label text="Alt Başlık" /><Textarea value={dest.data?.subtitle} onChange={v => dest.set('subtitle', v)} /></div>
-        <div>
-          <div className="flex items-center justify-between mb-2">
-            <Label text="Ülkeler" />
-            <AddBtn onClick={() => dest.set('countries', [...(dest.data?.countries || []), {
-              id: Date.now(), flag: '🌍', name: 'Yeni Ülke', order: dest.data?.countries?.length || 0, description: ''
-            }])} />
-          </div>
-          <div className="space-y-2">
-            {(dest.data?.countries || []).map((c: any, i: number) => (
-              <div key={c.id || i} className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
-                <div className="w-14 shrink-0"><Input value={c.flag} onChange={v => dest.set(`countries.${i}.flag`, v)} placeholder="🇩🇪" /></div>
-                <div className="w-32 shrink-0"><Input value={c.name} onChange={v => dest.set(`countries.${i}.name`, v)} placeholder="Almanya" /></div>
-                <Input value={c.description} onChange={v => dest.set(`countries.${i}.description`, v)} placeholder="Açıklama" />
-                <RemoveBtn onClick={() => dest.set('countries', dest.data.countries.filter((_: any, j: number) => j !== i))} />
-              </div>
-            ))}
-          </div>
-        </div>
-        {/* Destinasyon kartları (resimli) */}
-        {dest.data?.destinations && dest.data.destinations.length > 0 && (
-          <div>
-            <Label text="Destinasyon Kartları (Resimler)" />
-            <div className="space-y-3 mt-1">
-              {dest.data.destinations.map((d: any, i: number) => (
-                <div key={i} className="border border-gray-100 rounded-xl p-4 bg-gray-50 space-y-3">
-                  <div className="grid grid-cols-2 gap-3">
-                    <div><Label text="Ülke" /><Input value={d.name} onChange={v => dest.set(`destinations.${i}.name`, v)} /></div>
-                    <div><Label text="Etiket" /><Input value={d.tag} onChange={v => dest.set(`destinations.${i}.tag`, v)} /></div>
-                    <div><Label text="Fiyat" /><Input value={d.price} onChange={v => dest.set(`destinations.${i}.price`, v)} /></div>
-                  </div>
-                  <ImageUpload label="Kart Görseli" value={d.image ?? ''} onChange={v => dest.set(`destinations.${i}.image`, v)} />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-        <SaveBtn onSave={dest.handleSave} saving={dest.saving} success={dest.success} error={dest.error} />
+        <SaveBtn onSave={featuresHeader.handleSave} saving={featuresHeader.saving} success={featuresHeader.success} error={featuresHeader.error} />
       </Card>
 
       {/* TÜM KARGOLARINI TEK YERDEN YÖNET */}
       <Card title="Tüm Kargolarını Tek Yerden Yönet — Başlık & Buton">
         <div className="grid grid-cols-2 gap-3">
-          <div><Label text='Başlık ("Tüm Kargolarını")' /><Input value={solutions.data?.title} onChange={v => solutions.set('title', v)} /></div>
-          <div><Label text='Vurgulu Başlık ("Tek Yerden Yönet")' /><Input value={solutions.data?.highlightedTitle} onChange={v => solutions.set('highlightedTitle', v)} /></div>
+          <div><Label text='Başlık ("Tüm Kargolarını")' /><Input value={solutions.data?.title} onChange={v => solutions.set('title', v)} placeholder="Tüm Kargolarını" /></div>
+          <div><Label text='Vurgulu Başlık ("Tek Yerden Yönet")' /><Input value={solutions.data?.highlightedTitle} onChange={v => solutions.set('highlightedTitle', v)} placeholder="Tek Yerden Yönet" /></div>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <div><Label text="Buton Metni (HEMEN BAŞLA)" /><Input value={solutions.data?.buttonText} onChange={v => solutions.set('buttonText', v)} /></div>
+          <div><Label text="Buton Metni (HEMEN BAŞLA)" /><Input value={solutions.data?.buttonText} onChange={v => solutions.set('buttonText', v)} placeholder="HEMEN BAŞLA" /></div>
           <div><Label text="Buton URL" /><Input value={solutions.data?.buttonLink} onChange={v => solutions.set('buttonLink', v)} placeholder="#kayit" /></div>
         </div>
-        <div><Label text='Kart Başlığı ("Hangi Gönderim Bana Uygun?")' /><Input value={solutions.data?.cardTitle} onChange={v => solutions.set('cardTitle', v)} /></div>
-        <div><Label text="Kart Alt Metni" /><Textarea value={solutions.data?.cardDescription} onChange={v => solutions.set('cardDescription', v)} rows={2} /></div>
+        <div><Label text='Kart Başlığı ("Hangi Gönderim Bana Uygun?")' /><Input value={solutions.data?.cardTitle} onChange={v => solutions.set('cardTitle', v)} placeholder="Hangi Gönderim Bana Uygun?" /></div>
+        <div><Label text="Kart Alt Metni" /><Textarea value={solutions.data?.cardDescription} onChange={v => solutions.set('cardDescription', v)} rows={2} placeholder="İhtiyacına göre en uygun gönderim seçeneğini bul." /></div>
+        <div className="border-t border-gray-100 pt-4 mt-2">
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Alt Banner (SolutionsCta)</p>
+          <div><Label text='Alt Metin ("Yurtiçi, yurtdışı ve tahsilatlı...")' /><Input value={solutions.data?.subDescription} onChange={v => solutions.set('subDescription', v)} placeholder="Yurtiçi, yurtdışı ve tahsilatlı tüm gönderimler tek panelde" /></div>
+          <div className="grid grid-cols-2 gap-3 mt-2">
+            <div><Label text='Buton Metni ("Gönderi Oluştur")' /><Input value={solutions.data?.ctaButtonText} onChange={v => solutions.set('ctaButtonText', v)} placeholder="Gönderi Oluştur" /></div>
+            <div><Label text="Buton URL" /><Input value={solutions.data?.ctaButtonLink} onChange={v => solutions.set('ctaButtonLink', v)} placeholder="/gonderi-olustur" /></div>
+          </div>
+        </div>
         <SaveBtn onSave={solutions.handleSave} saving={solutions.saving} success={solutions.success} error={solutions.error} />
       </Card>
 
@@ -293,35 +202,15 @@ const HomeEditor: React.FC = () => {
         <SaveBtn onSave={solutions.handleSave} saving={solutions.saving} success={solutions.success} error={solutions.error} />
       </Card>
 
-      {/* BİNLERCE SATICI - İSTATİSTİKLER */}
-      <Card title="İstatistikler (50.000+ / 220+ / %80)" action={
-        <AddBtn onClick={() => targetAudience.set('stats', [...(targetAudience.data?.stats || []), { value: '0+', label: 'Yeni İstatistik' }])} />
-      }>
-        <div className="grid grid-cols-2 gap-3">
-          <div><Label text='Başlık ("Binlerce satıcı")' /><Input value={targetAudience.data?.statsTitle ?? 'Binlerce satıcı'} onChange={v => targetAudience.set('statsTitle', v)} /></div>
-          <div><Label text='Vurgulu Kısım ("AdorelGo ile gönderiyor")' /><Input value={targetAudience.data?.statsHighlight ?? 'AdorelGo ile gönderiyor'} onChange={v => targetAudience.set('statsHighlight', v)} /></div>
-        </div>
-        <div className="space-y-2">
-          {(Array.isArray(targetAudience.data?.stats) ? targetAudience.data.stats : []).map((s: any, i: number) => (
-            <div key={i} className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
-              <div className="w-28 shrink-0"><Input value={s.value} onChange={v => targetAudience.set(`stats.${i}.value`, v)} placeholder="50.000+" /></div>
-              <Input value={s.label} onChange={v => targetAudience.set(`stats.${i}.label`, v)} placeholder="gönderi / ay" />
-              <RemoveBtn onClick={() => targetAudience.set('stats', targetAudience.data.stats.filter((_: any, j: number) => j !== i))} />
-            </div>
-          ))}
-        </div>
-        <SaveBtn onSave={targetAudience.handleSave} saving={targetAudience.saving} success={targetAudience.success} error={targetAudience.error} />
-      </Card>
-
       {/* GÖNDERDİKÇE KAZAN */}
       <Card title="Gönderdikçe Kazan Bölümü">
         <div className="grid grid-cols-2 gap-3">
-          <div><Label text="Rozet (GÖNDERDİKÇE KAZAN)" /><Input value={targetAudience.data?.earnSection?.badge} onChange={v => targetAudience.set('earnSection.badge', v)} /></div>
-          <div><Label text='Başlık ("Yurtdışı Gönder")' /><Input value={targetAudience.data?.earnSection?.title} onChange={v => targetAudience.set('earnSection.title', v)} /></div>
+          <div><Label text="Rozet (GÖNDERDİKÇE KAZAN)" /><Input value={targetAudience.data?.earnSection?.badge} onChange={v => targetAudience.set('earnSection.badge', v)} placeholder="GÖNDERDİKÇE KAZAN" /></div>
+          <div><Label text='Başlık ("Yurtdışı Gönder")' /><Input value={targetAudience.data?.earnSection?.title} onChange={v => targetAudience.set('earnSection.title', v)} placeholder="Yurtdışı Gönder" /></div>
         </div>
-        <div><Label text='Vurgulu Başlık ("Yurtiçi Ucuzlasın.")' /><Input value={targetAudience.data?.earnSection?.highlightedTitle} onChange={v => targetAudience.set('earnSection.highlightedTitle', v)} /></div>
-        <div><Label text="Açıklama" /><Textarea value={targetAudience.data?.earnSection?.description} onChange={v => targetAudience.set('earnSection.description', v)} rows={3} /></div>
-        <div><Label text="Alt Yazı (Başvuru yok. Pazarlık yok...)" /><Input value={targetAudience.data?.earnSection?.bottomText} onChange={v => targetAudience.set('earnSection.bottomText', v)} /></div>
+        <div><Label text='Vurgulu Başlık ("Yurtiçi Ucuzlasın.")' /><Input value={targetAudience.data?.earnSection?.highlightedTitle} onChange={v => targetAudience.set('earnSection.highlightedTitle', v)} placeholder="Yurtiçi Ucuzlasın." /></div>
+        <div><Label text="Açıklama" /><Textarea value={targetAudience.data?.earnSection?.description} onChange={v => targetAudience.set('earnSection.description', v)} rows={3} placeholder="Yurtdışı satışlarındaki gelirin bir kısmını yurtiçi kargo indirimlerine dönüştür." /></div>
+        <div><Label text="Alt Yazı (Başvuru yok. Pazarlık yok...)" /><Input value={targetAudience.data?.earnSection?.bottomText} onChange={v => targetAudience.set('earnSection.bottomText', v)} placeholder="Başvuru yok. Pazarlık yok. Gönder, kazan." /></div>
         <div>
           <div className="flex items-center justify-between mb-2">
             <Label text="Adımlar (01, 02, 03...)" />
@@ -356,6 +245,75 @@ const HomeEditor: React.FC = () => {
         <SaveBtn onSave={targetAudience.handleSave} saving={targetAudience.saving} success={targetAudience.success} error={targetAudience.error} />
       </Card>
 
+      {/* PARTNERLER (Kargo Firmaları) */}
+      <Card title="Partnerler — Kargo Firmaları" action={
+        <AddBtn onClick={() => partners.set('carriers', [...(Array.isArray(partners.data?.carriers) ? partners.data.carriers : (Array.isArray(partners.data) ? partners.data : [])), { name: 'Yeni Partner', logo: '', color: 'bg-gray-100' }])} />
+      }>
+        <div className="space-y-3">
+          {(Array.isArray(partners.data?.carriers) ? partners.data.carriers : Array.isArray(partners.data) ? partners.data : []).map((p: any, i: number) => (
+            <div key={i} className="border border-gray-100 rounded-xl p-4 bg-gray-50 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-gray-400">{i + 1}. Partner</span>
+                <RemoveBtn onClick={() => {
+                  const list = Array.isArray(partners.data?.carriers) ? partners.data.carriers : partners.data;
+                  partners.set('carriers', list.filter((_: any, j: number) => j !== i));
+                }} />
+              </div>
+              <div><Label text="İsim" /><Input value={p.name} onChange={v => partners.set(`carriers.${i}.name`, v)} placeholder="DHL" /></div>
+              <ImageUpload label="Logo" value={p.logo ?? ''} onChange={v => partners.set(`carriers.${i}.logo`, v)} />
+            </div>
+          ))}
+        </div>
+        <SaveBtn onSave={partners.handleSave} saving={partners.saving} success={partners.success} error={partners.error} />
+      </Card>
+
+      {/* BİNLERCE SATICI - İSTATİSTİKLER */}
+      <Card title="İstatistikler — Binlerce Satıcı" action={
+        <AddBtn onClick={() => targetAudience.set('stats', [...(targetAudience.data?.stats || []), { value: '0+', label: 'Yeni İstatistik' }])} />
+      }>
+        <div className="grid grid-cols-2 gap-3">
+          <div><Label text='Başlık ("Binlerce satıcı")' /><Input value={targetAudience.data?.statsTitle ?? 'Binlerce satıcı'} onChange={v => targetAudience.set('statsTitle', v)} /></div>
+          <div><Label text='Vurgulu Kısım ("AdorelGo ile gönderiyor")' /><Input value={targetAudience.data?.statsHighlight ?? 'AdorelGo ile gönderiyor'} onChange={v => targetAudience.set('statsHighlight', v)} /></div>
+        </div>
+        <div className="space-y-2">
+          {(Array.isArray(targetAudience.data?.stats) ? targetAudience.data.stats : []).map((s: any, i: number) => (
+            <div key={i} className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
+              <div className="w-28 shrink-0"><Input value={s.value} onChange={v => targetAudience.set(`stats.${i}.value`, v)} placeholder="50.000+" /></div>
+              <Input value={s.label} onChange={v => targetAudience.set(`stats.${i}.label`, v)} placeholder="gönderi / ay" />
+              <RemoveBtn onClick={() => targetAudience.set('stats', targetAudience.data.stats.filter((_: any, j: number) => j !== i))} />
+            </div>
+          ))}
+        </div>
+        <SaveBtn onSave={targetAudience.handleSave} saving={targetAudience.saving} success={targetAudience.success} error={targetAudience.error} />
+      </Card>
+
+      {/* SOSYAL KANIT */}
+      <Card title="Sosyal Kanıt — Yorumlar & CTA" action={
+        <AddBtn onClick={() => partners.set('socialProof.testimonials', [...(Array.isArray(partners.data?.socialProof?.testimonials) ? partners.data.socialProof.testimonials : []), { quote: '"Yorum metni."', author: '— İsim' }])} />
+      }>
+        <div className="grid grid-cols-2 gap-3">
+          <div><Label text='Başlık' /><Input value={partners.data?.socialProof?.title ?? ''} onChange={v => partners.set('socialProof.title', v)} placeholder="E-ticaret satıcıları tarafından" /></div>
+          <div><Label text='Vurgulu Kısım' /><Input value={partners.data?.socialProof?.highlightedTitle ?? ''} onChange={v => partners.set('socialProof.highlightedTitle', v)} placeholder="aktif olarak kullanılmaktadır" /></div>
+        </div>
+        <div className="space-y-2">
+          {(Array.isArray(partners.data?.socialProof?.testimonials) ? partners.data.socialProof.testimonials : []).map((t: any, i: number) => (
+            <div key={i} className="border border-gray-100 rounded-xl p-3 bg-gray-50 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-gray-400">{i + 1}. Yorum</span>
+                <RemoveBtn onClick={() => partners.set('socialProof.testimonials', partners.data.socialProof.testimonials.filter((_: any, j: number) => j !== i))} />
+              </div>
+              <div><Label text="Yorum Metni" /><Input value={t.quote} onChange={v => partners.set(`socialProof.testimonials.${i}.quote`, v)} /></div>
+              <div><Label text="Kişi" /><Input value={t.author} onChange={v => partners.set(`socialProof.testimonials.${i}.author`, v)} /></div>
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div><Label text='CTA Buton Metni' /><Input value={partners.data?.socialProof?.ctaText ?? ''} onChange={v => partners.set('socialProof.ctaText', v)} placeholder="Sen de gönderine başla" /></div>
+          <div><Label text="CTA Buton URL" /><Input value={partners.data?.socialProof?.ctaLink ?? ''} onChange={v => partners.set('socialProof.ctaLink', v)} placeholder="https://app.adorelgo.com" /></div>
+        </div>
+        <SaveBtn onSave={partners.handleSave} saving={partners.saving} success={partners.success} error={partners.error} />
+      </Card>
+
       {/* KULLANANLAR BIRAKMIYOR */}
       <Card title="Kullananlar Bırakmıyor" action={
         <AddBtn onClick={() => {
@@ -364,8 +322,8 @@ const HomeEditor: React.FC = () => {
         }} />
       }>
         <div className="grid grid-cols-2 gap-3">
-          <div><Label text='Başlık ("Kullananlar")' /><Input value={useCases.data?.title} onChange={v => useCases.set('title', v)} /></div>
-          <div><Label text='Vurgulu Kısım ("Bırakmıyor")' /><Input value={useCases.data?.highlightedTitle} onChange={v => useCases.set('highlightedTitle', v)} /></div>
+          <div><Label text='Başlık ("Kullananlar")' /><Input value={useCases.data?.title} onChange={v => useCases.set('title', v)} placeholder="Kullananlar" /></div>
+          <div><Label text='Vurgulu Kısım ("Bırakmıyor")' /><Input value={useCases.data?.highlightedTitle} onChange={v => useCases.set('highlightedTitle', v)} placeholder="Bırakmıyor" /></div>
         </div>
         <div className="space-y-3">
           {(Array.isArray(useCases.data?.items) ? useCases.data.items : []).map((item: any, i: number) => (
@@ -382,45 +340,51 @@ const HomeEditor: React.FC = () => {
         <SaveBtn onSave={useCases.handleSave} saving={useCases.saving} success={useCases.success} error={useCases.error} />
       </Card>
 
-      {/* SİSTEM EN DOĞRUSUNU SEÇER */}
-      <Card title="Sistem en Doğrusunu Seçer — Başlık & Kartlar" action={
-        <AddBtn onClick={() => featuresHeader.set('miniCards', [...(featuresHeader.data?.miniCards || []), { icon: 'fa-star', color: 'bg-blue-500', title: 'Yeni Kart', description: '' }])} />
-      }>
-        <div><Label text="Başlık" /><Input value={featuresHeader.data?.title} onChange={v => featuresHeader.set('title', v)} /></div>
-        <div><Label text="Alt Başlık" /><Textarea value={featuresHeader.data?.subtitle} onChange={v => featuresHeader.set('subtitle', v)} /></div>
-        <div className="space-y-2">
-          {(featuresHeader.data?.miniCards || []).map((c: any, i: number) => (
-            <div key={i} className="border border-gray-100 rounded-xl p-3 bg-gray-50 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-gray-400">{i + 1}. Kart</span>
-                <RemoveBtn onClick={() => featuresHeader.set('miniCards', featuresHeader.data.miniCards.filter((_: any, j: number) => j !== i))} />
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <div><Label text="Başlık" /><Input value={c.title} onChange={v => featuresHeader.set(`miniCards.${i}.title`, v)} /></div>
-                <div><Label text="Açıklama" /><Input value={c.description} onChange={v => featuresHeader.set(`miniCards.${i}.description`, v)} /></div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <SaveBtn onSave={featuresHeader.handleSave} saving={featuresHeader.saving} success={featuresHeader.success} error={featuresHeader.error} />
-      </Card>
-
       {/* HEMEN GÖNDERİNE BAŞLA CTA */}
       <Card title="Hemen Gönderine Başla — Orta CTA">
-        <div><Label text="Başlık" /><Input value={homeCta.data?.title} onChange={v => homeCta.set('title', v)} /></div>
-        <div><Label text="Alt Yazı" /><Input value={homeCta.data?.subtitle} onChange={v => homeCta.set('subtitle', v)} /></div>
+        <div><Label text="Başlık" /><Input value={homeCta.data?.title} onChange={v => homeCta.set('title', v)} placeholder="Sorun mu var? Kararsız mı kaldın?" /></div>
+        <div><Label text="Alt Yazı" /><Input value={homeCta.data?.subtitle} onChange={v => homeCta.set('subtitle', v)} placeholder="Destek ekibimiz yardımcı olsun." /></div>
         <div className="grid grid-cols-2 gap-3">
-          <div><Label text="Buton Metni" /><Input value={homeCta.data?.buttonText} onChange={v => homeCta.set('buttonText', v)} /></div>
+          <div><Label text="Buton Metni" /><Input value={homeCta.data?.buttonText} onChange={v => homeCta.set('buttonText', v)} placeholder="Ücretsiz Üye Ol" /></div>
           <div><Label text="Buton URL" /><Input value={homeCta.data?.buttonLink} onChange={v => homeCta.set('buttonLink', v)} placeholder="https://app.adorelgo.com" /></div>
         </div>
         <SaveBtn onSave={homeCta.handleSave} saving={homeCta.saving} success={homeCta.success} error={homeCta.error} />
       </Card>
 
+      {/* SSS BAŞLIK */}
+      <Card title="SSS — Başlık">
+        <div className="grid grid-cols-2 gap-3">
+          <div><Label text="Başlık" /><Input value={faqHeader.data?.title} onChange={v => faqHeader.set('title', v)} placeholder="Sıkça Sorulan Sorular" /></div>
+          <div><Label text="Alt Başlık" /><Input value={faqHeader.data?.subtitle} onChange={v => faqHeader.set('subtitle', v)} placeholder="Merak ettiklerinizi yanıtlıyoruz." /></div>
+        </div>
+        <SaveBtn onSave={faqHeader.handleSave} saving={faqHeader.saving} success={faqHeader.success} error={faqHeader.error} />
+      </Card>
+
+      {/* SSS SORULAR */}
+      <Card title="SSS — Sorular & Cevaplar" action={
+        <AddBtn onClick={() => faq.set('', [...(faq.data || []), { id: String(Date.now()), question: 'Yeni soru?', answer: 'Cevap...' }])} />
+      }>
+        <div className="space-y-3">
+          {(faq.data || []).map((item: any, i: number) => (
+            <div key={item.id || i} className="border border-gray-100 rounded-xl p-4 space-y-2 bg-gray-50">
+              <div className="flex items-start gap-2">
+                <div className="flex-1 space-y-2">
+                  <div><Label text="Soru" /><Input value={item.question} onChange={v => faq.set(`${i}.question`, v)} /></div>
+                  <div><Label text="Cevap" /><Textarea value={item.answer} onChange={v => faq.set(`${i}.answer`, v)} rows={2} /></div>
+                </div>
+                <RemoveBtn onClick={() => faq.set('', faq.data.filter((_: any, j: number) => j !== i))} />
+              </div>
+            </div>
+          ))}
+        </div>
+        <SaveBtn onSave={faq.handleSave} saving={faq.saving} success={faq.success} error={faq.error} />
+      </Card>
+
       {/* CTA */}
       <Card title="CTA Banner">
-        <div><Label text="Başlık" /><Input value={cta.data?.title} onChange={v => cta.set('title', v)} /></div>
-        <div><Label text="Alt Başlık" /><Input value={cta.data?.subtitle} onChange={v => cta.set('subtitle', v)} /></div>
-        <div><Label text="Buton Metni" /><Input value={cta.data?.buttonText} onChange={v => cta.set('buttonText', v)} /></div>
+        <div><Label text="Başlık" /><Input value={cta.data?.title} onChange={v => cta.set('title', v)} placeholder="Hemen Başla" /></div>
+        <div><Label text="Alt Başlık" /><Input value={cta.data?.subtitle} onChange={v => cta.set('subtitle', v)} placeholder="AdorelGo ile gönderime başla." /></div>
+        <div><Label text="Buton Metni" /><Input value={cta.data?.buttonText} onChange={v => cta.set('buttonText', v)} placeholder="Ücretsiz Üye Ol" /></div>
         <SaveBtn onSave={cta.handleSave} saving={cta.saving} success={cta.success} error={cta.error} />
       </Card>
 

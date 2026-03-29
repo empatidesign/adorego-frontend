@@ -6,6 +6,17 @@ import { API_BASE_URL } from '../api-config';
 
 const Partners: React.FC = () => {
   const { currentLang } = useLanguage();
+
+  const getDefaultStats = (lang: string) => [
+    { value: '50.000+', label: lang === 'tr' ? 'gönderi / ay' : 'shipments / month' },
+    { value: '220+', label: lang === 'tr' ? 'ülkeye gönderim' : 'countries served' },
+    { value: '%80', label: lang === 'tr' ? 'aktif kullanım' : 'active usage' },
+  ];
+
+  const [statsTitle, setStatsTitle] = useState(currentLang === 'tr' ? 'Binlerce satıcı' : 'Thousands of sellers');
+  const [statsHighlight, setStatsHighlight] = useState(currentLang === 'tr' ? 'AdorelGo ile gönderiyor' : 'ship with AdorelGo');
+  const [stats, setStats] = useState<any[]>(getDefaultStats(currentLang));
+
   const [carriers, setCarriers] = useState<any[]>([
     { name: "DHL", logo: "", color: "bg-gradient-to-br from-yellow-400 to-red-500" },
     { name: "FedEx", logo: "", color: "bg-gradient-to-br from-purple-500 to-orange-500" },
@@ -38,6 +49,15 @@ const Partners: React.FC = () => {
         if (raw?.socialProof?.title) setSocialProof(raw.socialProof);
       })
       .catch(() => {});
+
+    axios.get(`${API_BASE_URL}/content/target-audience?lang=${currentLang}`)
+      .then(res => {
+        if (res.data?.statsTitle) setStatsTitle(res.data.statsTitle);
+        if (res.data?.statsHighlight) setStatsHighlight(res.data.statsHighlight);
+        if (res.data?.stats?.length > 0) setStats(res.data.stats);
+        else setStats(getDefaultStats(currentLang));
+      })
+      .catch(() => setStats(getDefaultStats(currentLang)));
   }, [currentLang]);
 
   const marketplaceLogos = [
@@ -51,13 +71,18 @@ const Partners: React.FC = () => {
   ];
 
   return (
-    <section className="py-16 bg-white">
+    <section className="pb-16 pt-4 bg-white">
       {/* Carrier Section - API'den gelen partnerler */}
-      <div className="border-y border-gray-100/50 py-12">
+      <div className="py-1">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <p className="text-center text-sm text-gray-500 font-medium mb-8">
-            {currentLang === 'tr' ? "Dünyanın en güçlü kargo firmalarıyla çalışıyoruz" : "We work with the world's most powerful cargo companies"}
-          </p>
+          <div className="flex items-center justify-center gap-4 mb-10">
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-gray-200" />
+            <p className="text-center text-3xl lg:text-4xl font-bold tracking-tight leading-tight">
+              <span style={{ color: '#102477' }}>{currentLang === 'tr' ? "Dünyanın en güçlü kargo firmalarıyla" : "We work with the world's most powerful"}</span>
+              {' '}<span style={{ color: '#4DB848' }}>{currentLang === 'tr' ? "çalışıyoruz" : "cargo companies"}</span>
+            </p>
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-gray-200" />
+          </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {carriers.map((carrier, i) => (
               <div key={i} className="flex flex-col items-center text-center group">
@@ -90,10 +115,35 @@ const Partners: React.FC = () => {
         </div>
       </div>
 
+      {/* Sayısal Kutular - Binlerce Satıcı */}
+      <div className="pb-12 md:pb-16 pt-6 bg-white">
+        <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
+          <h2 className="text-3xl lg:text-4xl font-bold text-[#102477] mb-4 tracking-tight">
+            {statsTitle}{' '}
+            <span className="text-[#4DB848]">{statsHighlight}</span>
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+            {stats.map((stat: any, idx: number) => (
+              <div key={idx} className="bg-slate-50 rounded-2xl p-8 border border-gray-100">
+                <p className={`text-4xl lg:text-5xl font-black mb-2 ${idx === 1 ? 'text-[#4DB848]' : 'text-[#102477]'}`}>{stat.value}</p>
+                <p className="text-gray-500 text-sm font-medium">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Marketplace Section */}
-      <div className="py-12 overflow-hidden">
+      <div className="pb-12 pt-4 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <p className="text-center text-sm text-gray-500 font-medium mb-8">E-Ticaret Entegrasyonları</p>
+          <div className="flex items-center justify-center gap-4 mb-10">
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-gray-200" />
+            <p className="text-center text-3xl lg:text-4xl font-bold tracking-tight leading-tight">
+              <span style={{ color: '#102477' }}>E-Ticaret</span>
+              {' '}<span style={{ color: '#4DB848' }}>Entegrasyonları</span>
+            </p>
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-gray-200" />
+          </div>
           <div className="relative flex overflow-x-hidden">
             <div className="flex animate-marquee whitespace-nowrap items-center">
               {marketplaceLogos.map((p, i) => (

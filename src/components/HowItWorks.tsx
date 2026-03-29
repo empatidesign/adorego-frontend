@@ -120,7 +120,7 @@ const HowItWorks: React.FC = () => {
   }, [currentLang]);
 
   return (
-    <section id="nasil-calisir" className="py-8 md:py-24 bg-white">
+    <section id="nasil-calisir" className="py-8 md:py-12 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="mb-16 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold text-[#102477] tracking-tight">

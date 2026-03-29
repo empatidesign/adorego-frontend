@@ -22,7 +22,7 @@ function deepMerge(defaults: any, override: any): any {
 
 const DEFAULT_CONTENT = {
     pageTitle: 'İletişim', breadcrumb: 'İletişim',
-    mapUrl: '',
+    mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d245.294717533184!2d32.82214850442983!3d39.76911265077443!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14d345e33d97fc47%3A0xd4b2a2f7ce3c8e2b!2sAdorel!5e1!3m2!1sen!2str!4v1774722441289!5m2!1sen!2str',
     sendMessageTitle: 'Bize mesaj gönderin',
     sendMessageDesc: 'Aşağıdaki formu doldurarak bizimle hızlıca iletişime geçebilirsiniz.',
     formNameLabel: 'Adınız soyadınız', formEmailLabel: 'E-posta adresiniz',
