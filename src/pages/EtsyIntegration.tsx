@@ -9,30 +9,60 @@ import { API_BASE_URL } from '../api-config';
 import { useLanguage } from '../contexts/LanguageContext';
 import { CmsSections } from './_CmsSections';
 
+const getEtsyIntegrationDefaults = (lang: 'tr' | 'en') => (
+    lang === 'tr'
+        ? {
+            title: 'Etsy Entegrasyonu',
+            description: 'Etsy mağazanızdaki siparişleri AdorelGo ile otomatik yönetin.',
+            breadcrumbLabel: 'Anasayfa',
+            ctaTitle: 'Etsy Mağazanızı Hemen Bağlayın',
+            ctaDescription: 'Ücretsiz üye olun ve Etsy entegrasyonunu dakikalar içinde aktif edin.',
+            ctaButtonText: 'Ücretsiz Üye Ol',
+            seoTitle: 'Etsy Kargo Entegrasyonu | AdorelGo',
+            seoDescription: 'Etsy mağazanızdaki siparişleri AdorelGo ile otomatik yönetin.',
+            features: [
+                { icon: 'fa-sync-alt', title: 'Otomatik Sipariş Senkronizasyonu', desc: 'Etsy mağazanızdaki siparişler otomatik olarak AdorelGo paneline aktarılır.' },
+                { icon: 'fa-mouse-pointer', title: 'Tek Tıkla Gönderi Oluşturma', desc: 'Siparişlerinizi tek bir tıklamayla kargoya verin.' },
+                { icon: 'fa-truck', title: 'Takip Numarası Otomatik Güncelleme', desc: 'Kargo takip numaraları otomatik olarak Etsy mağazanıza iletilir.' },
+            ],
+        }
+        : {
+            title: 'Etsy Integration',
+            description: 'Manage your Etsy store orders automatically with AdorelGo.',
+            breadcrumbLabel: 'Home',
+            ctaTitle: 'Connect Your Etsy Store Today',
+            ctaDescription: 'Sign up for free and activate your Etsy integration in minutes.',
+            ctaButtonText: 'Sign Up Free',
+            seoTitle: 'Etsy Shipping Integration | AdorelGo',
+            seoDescription: 'Manage your Etsy store orders automatically with AdorelGo.',
+            features: [
+                { icon: 'fa-sync-alt', title: 'Automatic Order Sync', desc: 'Orders from your Etsy store are automatically transferred to the AdorelGo panel.' },
+                { icon: 'fa-mouse-pointer', title: 'One-Click Shipment Creation', desc: 'Send your orders to shipping with a single click.' },
+                { icon: 'fa-truck', title: 'Automatic Tracking Updates', desc: 'Tracking numbers are automatically sent back to your Etsy store.' },
+            ],
+        }
+);
+
 const EtsyIntegration: React.FC = () => {
     const { currentLang } = useLanguage();
     const [cms, setCms] = useState<any>(null);
     useEffect(() => { axios.get(`${API_BASE_URL}/content/page/etsy-entegrasyonu?lang=${currentLang}`).then(r => { if (r.data && Object.keys(r.data).length > 0) setCms(r.data); }).catch(() => {}); }, [currentLang]);
 
-    const title = cms?.title || 'Etsy Entegrasyonu';
-    const subtitle = cms?.description || 'Etsy mağazanızdaki siparişleri AdorelGo ile otomatik yönetin.';
+    const defaults = getEtsyIntegrationDefaults(currentLang);
+    const title = cms?.title || defaults.title;
+    const subtitle = cms?.description || defaults.description;
     const sections = cms?.sections;
-
-    const defaultFeatures = [
-        { icon: 'fa-sync-alt', title: 'Otomatik Sipariş Senkronizasyonu', desc: 'Etsy mağazanızdaki siparişler otomatik olarak AdorelGo paneline aktarılır.' },
-        { icon: 'fa-mouse-pointer', title: 'Tek Tıkla Gönderi Oluşturma', desc: 'Siparişlerinizi tek bir tıklamayla kargoya verin.' },
-        { icon: 'fa-truck', title: 'Takip Numarası Otomatik Güncelleme', desc: 'Kargo takip numaraları otomatik olarak Etsy mağazanıza iletilir.' },
-    ];
+    const defaultFeatures = defaults.features;
 
     return (
         <div className="flex flex-col min-h-screen overflow-x-hidden">
-            <SEO page="etsy-entegrasyonu" />
+            <SEO page="etsy-entegrasyonu" customTitle={defaults.seoTitle} customDescription={defaults.seoDescription} />
             <Navbar />
             <main className="flex-grow pt-20">
                 <section className="text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #102477 0%, #1a3a9e 50%, #102477 100%)', paddingTop: '28px', paddingBottom: '24px' }}>
                     <div className="absolute inset-0 opacity-10"><div className="absolute top-0 right-0 w-96 h-96 bg-[#4DB848] rounded-full blur-[120px] -mr-48 -mt-48"></div></div>
                     <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
-                        <nav className="flex items-center gap-2 text-sm opacity-60 mb-6"><Link to="/" className="hover:opacity-100">Anasayfa</Link><span>/</span><span>{title}</span></nav>
+                        <nav className="flex items-center gap-2 text-sm opacity-60 mb-6"><Link to="/" className="hover:opacity-100">{defaults.breadcrumbLabel}</Link><span>/</span><span>{title}</span></nav>
                         <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-4">{title}</h1>
                         <p className="text-white/70 text-lg max-w-2xl">{subtitle}</p>
                     </div>
@@ -58,9 +88,9 @@ const EtsyIntegration: React.FC = () => {
                 <section className="py-6 bg-gradient-to-r from-[#102477] to-[#1a3a9e] text-white">
                     <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
                         <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-8"><i className="fab fa-etsy text-[#4DB848] text-2xl"></i></div>
-                        <h2 className="text-3xl font-bold tracking-tight mb-4">Etsy Mağazanızı Hemen Bağlayın</h2>
-                        <p className="text-white/70 text-lg max-w-2xl mx-auto mb-8">Ücretsiz üye olun ve Etsy entegrasyonunu dakikalar içinde aktif edin.</p>
-                        <a href="https://app.adorelgo.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#4DB848] hover:bg-[#3da33a] text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:scale-105">Ücretsiz Üye Ol<i className="fas fa-arrow-right"></i></a>
+                        <h2 className="text-3xl font-bold tracking-tight mb-4">{defaults.ctaTitle}</h2>
+                        <p className="text-white/70 text-lg max-w-2xl mx-auto mb-8">{defaults.ctaDescription}</p>
+                        <a href="https://app.adorelgo.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#4DB848] hover:bg-[#3da33a] text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:scale-105">{defaults.ctaButtonText}<i className="fas fa-arrow-right"></i></a>
                     </div>
                 </section>
             </main>

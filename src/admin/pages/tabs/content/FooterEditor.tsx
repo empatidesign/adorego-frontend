@@ -1,86 +1,179 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { contentAPI } from '../../../services/api';
 import { useEditor, Loader, Card, SaveBtn, Label, Input, AddBtn, RemoveBtn, ImageUpload } from './shared';
 
-const DEFAULT_FOOTER = {
-  cta: {
-    title: 'Sorun mu var? Kararsız mı kaldın?',
-    subtitle: 'Destek ekibimiz yardımcı olsun.',
-    button1Text: 'İletişime Geç',
-    button1Link: '/iletisim',
-    button2Text: 'Ücretsiz Üye Ol',
-    button2Link: 'https://app.adorelgo.com',
-  },
-  bottomSection: {
-    logoUrl: '',
-    tagline: 'Yeni Nesil Akıllı Lojistik Teknolojileri Platformu',
-    socialLinks: [
-      { platform: 'instagram', url: '#', icon: 'fa-instagram' },
-      { platform: 'linkedin', url: '#', icon: 'fa-linkedin-in' },
-    ],
-    corporateTitle: 'Kurumsal',
-    corporateLinks: [
-      { name: 'Hakkımızda', url: '/hakkimizda' },
-      { name: 'İletişim', url: '/iletisim' },
-      { name: 'Destek', url: '/iletisim' },
-      { name: 'KVKK Aydınlatma Metni', url: '/kvkk' },
-    ],
-    copyrightText: '© 2024 AdorelGo. Site kargo firması vitrini değil, teknoloji lojistik platformudur.',
-    paymentMethods: [],
-  },
-  sections: [
-    {
-      title: 'Hizmetlerimiz',
-      links: [
-        { n: 'Yurtdışı Kargo', h: '/yurtdisi-kargo' },
-        { n: 'Yurtiçi Kargo', h: '/yurtici-kargo' },
-        { n: "Yurtdışından Türkiye'ye Kargo", h: '/yurtdisindan-turkiye' },
-        { n: 'Alıcı Ödemeli Lojistik', h: '/yurtici-kargo#alici-odemeli' },
-      ],
-    },
-    {
-      title: 'Nasıl Gönderirim?',
-      links: [
-        { n: 'Nasıl Gönderirim?', h: '/nasil-gonderirim' },
-        { n: 'Kapıdan Alım – Kapıya Teslim', h: '/kapidan-alim-kapiya-teslimat' },
-        { n: 'İlk Kez Yurtdışına Gönderenler', h: '/ilk-kez-yurtdisina-gondermek' },
-        { n: 'Gümrük & Evrak Rehberi', h: '/gumruk-evrak-rehberi' },
-        { n: 'Yurtdışı İade & Geri Gönderim', h: '/yurtdisi-iade-geri-gonderi' },
-      ],
-    },
-    {
-      title: 'Gönderi & Araçlar',
-      links: [
-        { n: 'Gönderi Oluştur', h: '/iletisim' },
-        { n: 'Gönderi Takip', h: '/gonderi-takibi' },
-        { n: "Almanya'ya Kargo", h: '/almanyaya-kargo' },
-        { n: "Amerika'ya Kargo", h: '/amerikaya-kargo' },
-        { n: 'Yurtdışı Kargo Fiyatları', h: '/yurtdisi-kargo-fiyatlari' },
-      ],
-    },
-    {
-      title: 'Kaynaklar',
-      links: [
-        { n: 'Blog', h: '/blog' },
-        { n: 'Sıkça Sorulan Sorular', h: '/sikca-sorulan-sorular' },
-        { n: 'Yurtdışı Gönderim Rehberi', h: '/yurtdisi-gonderim-rehberi' },
-      ],
-    },
-    {
-      title: 'Entegrasyonlar',
-      links: [
-        { n: 'Shopify Entegrasyonu', h: '/shopify-entegrasyonu' },
-        { n: 'Etsy Entegrasyonu', h: '/etsy-entegrasyonu' },
-        { n: 'Amazon Entegrasyonu', h: '/amazon-entegrasyonu' },
-        { n: 'WooCommerce', h: '/woocommerce-entegrasyonu' },
-        { n: 'Özel Site Entegrasyonu (API)', h: '/ozel-site-api' },
-      ],
-    },
-  ],
-};
+const LangToggle: React.FC<{ lang: string; onChange: (l: 'tr' | 'en') => void }> = ({ lang, onChange }) => (
+  <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl p-1 w-fit">
+    {(['tr', 'en'] as const).map(l => (
+      <button
+        key={l}
+        onClick={() => onChange(l)}
+        className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors ${lang === l ? 'bg-blue-600 text-white' : 'text-gray-500 hover:text-gray-700'}`}
+      >
+        {l === 'tr' ? '🇹🇷 Türkçe' : '🇬🇧 English'}
+      </button>
+    ))}
+  </div>
+);
 
-const FooterEditor: React.FC = () => {
-  const footer = useEditor(() => contentAPI.getFooter(), d => contentAPI.updateFooter(d), DEFAULT_FOOTER);
+const getDefaultFooter = (lang: 'tr' | 'en') => (
+  lang === 'tr'
+    ? {
+        cta: {
+          title: 'Sorun mu var? Kararsız mı kaldın?',
+          subtitle: 'Destek ekibimiz yardımcı olsun.',
+          button1Text: 'İletişime Geç',
+          button1Link: '/iletisim',
+          button2Text: 'Ücretsiz Üye Ol',
+          button2Link: 'https://app.adorelgo.com',
+        },
+        bottomSection: {
+          logoUrl: '',
+          tagline: 'Yeni Nesil Akıllı Lojistik Teknolojileri Platformu',
+          socialLinks: [
+            { platform: 'instagram', url: '#', icon: 'fa-instagram' },
+            { platform: 'linkedin', url: '#', icon: 'fa-linkedin-in' },
+          ],
+          corporateTitle: 'Kurumsal',
+          corporateLinks: [
+            { name: 'Hakkımızda', url: '/hakkimizda' },
+            { name: 'İletişim', url: '/iletisim' },
+            { name: 'Destek', url: '/iletisim' },
+            { name: 'KVKK Aydınlatma Metni', url: '/kvkk' },
+          ],
+          copyrightText: '© 2024 AdorelGo. Site kargo firması vitrini değil, teknoloji lojistik platformudur.',
+          paymentMethods: [],
+        },
+        sections: [
+          {
+            title: 'Hizmetlerimiz',
+            links: [
+              { n: 'Yurtdışı Kargo', h: '/yurtdisi-kargo' },
+              { n: 'Yurtiçi Kargo', h: '/yurtici-kargo' },
+              { n: "Yurtdışından Türkiye'ye Kargo", h: '/yurtdisindan-turkiye' },
+              { n: 'Alıcı Ödemeli Lojistik', h: '/yurtici-kargo#alici-odemeli' },
+            ],
+          },
+          {
+            title: 'Nasıl Gönderirim?',
+            links: [
+              { n: 'Nasıl Gönderirim?', h: '/nasil-gonderirim' },
+              { n: 'Kapıdan Alım – Kapıya Teslim', h: '/kapidan-alim-kapiya-teslimat' },
+              { n: 'İlk Kez Yurtdışına Gönderenler', h: '/ilk-kez-yurtdisina-gondermek' },
+              { n: 'Gümrük & Evrak Rehberi', h: '/gumruk-evrak-rehberi' },
+              { n: 'Yurtdışı İade & Geri Gönderim', h: '/yurtdisi-iade-geri-gonderi' },
+            ],
+          },
+          {
+            title: 'Gönderi & Araçlar',
+            links: [
+              { n: 'Gönderi Oluştur', h: '/iletisim' },
+              { n: 'Gönderi Takip', h: '/gonderi-takibi' },
+              { n: "Almanya'ya Kargo", h: '/almanyaya-kargo' },
+              { n: "Amerika'ya Kargo", h: '/amerikaya-kargo' },
+              { n: 'Yurtdışı Kargo Fiyatları', h: '/yurtdisi-kargo-fiyatlari' },
+            ],
+          },
+          {
+            title: 'Kaynaklar',
+            links: [
+              { n: 'Blog', h: '/blog' },
+              { n: 'Sıkça Sorulan Sorular', h: '/sikca-sorulan-sorular' },
+              { n: 'Yurtdışı Gönderim Rehberi', h: '/yurtdisi-gonderim-rehberi' },
+            ],
+          },
+          {
+            title: 'Entegrasyonlar',
+            links: [
+              { n: 'Shopify Entegrasyonu', h: '/shopify-entegrasyonu' },
+              { n: 'Etsy Entegrasyonu', h: '/etsy-entegrasyonu' },
+              { n: 'Amazon Entegrasyonu', h: '/amazon-entegrasyonu' },
+              { n: 'WooCommerce', h: '/woocommerce-entegrasyonu' },
+              { n: 'Özel Site Entegrasyonu (API)', h: '/ozel-site-api' },
+            ],
+          },
+        ],
+      }
+    : {
+        cta: {
+          title: 'Having problems? Undecided?',
+          subtitle: 'Let our support team help you.',
+          button1Text: 'Contact Us',
+          button1Link: '/iletisim',
+          button2Text: 'Free Sign Up',
+          button2Link: 'https://app.adorelgo.com',
+        },
+        bottomSection: {
+          logoUrl: '',
+          tagline: 'Next Generation Smart Logistics Technology Platform',
+          socialLinks: [
+            { platform: 'instagram', url: '#', icon: 'fa-instagram' },
+            { platform: 'linkedin', url: '#', icon: 'fa-linkedin-in' },
+          ],
+          corporateTitle: 'Corporate',
+          corporateLinks: [
+            { name: 'About Us', url: '/hakkimizda' },
+            { name: 'Contact', url: '/iletisim' },
+            { name: 'Support', url: '/iletisim' },
+            { name: 'GDPR Notice', url: '/kvkk' },
+          ],
+          copyrightText: '© 2024 AdorelGo. This site is not a cargo company showcase, but a technology logistics platform.',
+          paymentMethods: [],
+        },
+        sections: [
+          {
+            title: 'Our Services',
+            links: [
+              { n: 'International Shipping', h: '/yurtdisi-kargo' },
+              { n: 'Domestic Shipping', h: '/yurtici-kargo' },
+              { n: 'From Abroad to Turkey', h: '/yurtdisindan-turkiye' },
+              { n: 'Receiver Payment Logistics', h: '/alici-odemeli-kargo' },
+            ],
+          },
+          {
+            title: 'How to Send?',
+            links: [
+              { n: 'How to Send?', h: '/nasil-gonderirim' },
+              { n: 'Door Pickup - Door Delivery', h: '/kapidan-alim-kapiya-teslimat' },
+              { n: 'First-Time International Shippers', h: '/ilk-kez-yurtdisina-gondermek' },
+              { n: 'Customs & Documents', h: '/gumruk-evrak-rehberi' },
+              { n: 'International Returns', h: '/yurtdisi-iade-geri-gonderi' },
+            ],
+          },
+          {
+            title: 'Shipping & Tools',
+            links: [
+              { n: 'Create Shipment', h: '/iletisim' },
+              { n: 'Track Shipment', h: '/gonderi-takibi' },
+              { n: 'Ship to Germany', h: '/almanyaya-kargo' },
+              { n: 'Ship to USA', h: '/amerikaya-kargo' },
+              { n: 'International Shipping Prices', h: '/yurtdisi-kargo-fiyatlari' },
+            ],
+          },
+          {
+            title: 'Resources',
+            links: [
+              { n: 'Blog', h: '/blog' },
+              { n: 'FAQ', h: '/sikca-sorulan-sorular' },
+              { n: 'International Shipping Guide', h: '/yurtdisi-gonderim-rehberi' },
+            ],
+          },
+          {
+            title: 'Integrations',
+            links: [
+              { n: 'Shopify Integration', h: '/shopify-entegrasyonu' },
+              { n: 'Etsy Integration', h: '/etsy-entegrasyonu' },
+              { n: 'Amazon Integration', h: '/amazon-entegrasyonu' },
+              { n: 'WooCommerce', h: '/woocommerce-entegrasyonu' },
+              { n: 'Custom Website API', h: '/ozel-site-api' },
+            ],
+          },
+        ],
+      }
+);
+
+const FooterEditorInner: React.FC<{ lang: 'tr' | 'en' }> = ({ lang }) => {
+  const footer = useEditor(() => contentAPI.getFooter(lang), d => contentAPI.updateFooter(d, lang), getDefaultFooter(lang));
 
   if (footer.loading) return <Loader />;
 
@@ -198,6 +291,20 @@ const FooterEditor: React.FC = () => {
         + Yeni Link Grubu Ekle
       </button>
 
+    </div>
+  );
+};
+
+const FooterEditor: React.FC = () => {
+  const [lang, setLang] = useState<'tr' | 'en'>('tr');
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-gray-400">Seçili dil için içerik yüklenip kaydedilir.</p>
+        <LangToggle lang={lang} onChange={setLang} />
+      </div>
+      <FooterEditorInner key={lang} lang={lang} />
     </div>
   );
 };

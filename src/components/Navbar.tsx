@@ -48,20 +48,40 @@ const UserPlusIcon = () => (
   </svg>
 );
 
-// Default fallback menu items if API returns nothing
-const defaultMenuItems = [
-  {
-    id: 'd1', label: 'Hizmetlerimiz', type: 'dropdown', order: 0, isActive: true,
-    children: [
-      { id: 'c1', label: 'Yurtdışı Kargo', link: '/yurtdisi-kargo' },
-      { id: 'c2', label: 'Yurtiçi Kargo', link: '/yurtici-kargo' },
-      { id: 'c3', label: 'Alıcı Ödemeli Lojistik', link: '/alici-odemeli-kargo' },
-    ],
-  },
-  { id: 'd2', label: 'Nasıl Gönderirim?', link: '/nasil-gonderirim', type: 'link', order: 1, isActive: true },
-  { id: 'd3', label: 'Gönderi Takip', link: '/gonderi-takibi', type: 'link', order: 2, isActive: true },
-  { id: 'd4', label: 'İletişim', link: '/iletisim', type: 'link', order: 3, isActive: true },
-];
+const getDefaultNavbarData = (lang: 'tr' | 'en') => ({
+  logo: '',
+  brandName: 'AdorelGo',
+  menuItems: lang === 'tr'
+    ? [
+        {
+          id: 'd1', label: 'Hizmetlerimiz', type: 'dropdown', order: 0, isActive: true,
+          children: [
+            { id: 'c1', label: 'Yurtdışı Kargo', link: '/yurtdisi-kargo' },
+            { id: 'c2', label: 'Yurtiçi Kargo', link: '/yurtici-kargo' },
+            { id: 'c3', label: 'Alıcı Ödemeli Lojistik', link: '/alici-odemeli-kargo' },
+          ],
+        },
+        { id: 'd2', label: 'Nasıl Gönderirim?', link: '/nasil-gonderirim', type: 'link', order: 1, isActive: true },
+        { id: 'd3', label: 'Gönderi Takip', link: '/gonderi-takibi', type: 'link', order: 2, isActive: true },
+        { id: 'd4', label: 'İletişim', link: '/iletisim', type: 'link', order: 3, isActive: true },
+      ]
+    : [
+        {
+          id: 'd1', label: 'Our Services', type: 'dropdown', order: 0, isActive: true,
+          children: [
+            { id: 'c1', label: 'International Shipping', link: '/yurtdisi-kargo' },
+            { id: 'c2', label: 'Domestic Shipping', link: '/yurtici-kargo' },
+            { id: 'c3', label: 'Receiver Payment Logistics', link: '/alici-odemeli-kargo' },
+          ],
+        },
+        { id: 'd2', label: 'How to Send?', link: '/nasil-gonderirim', type: 'link', order: 1, isActive: true },
+        { id: 'd3', label: 'Track Shipment', link: '/gonderi-takibi', type: 'link', order: 2, isActive: true },
+        { id: 'd4', label: 'Contact', link: '/iletisim', type: 'link', order: 3, isActive: true },
+      ],
+  ctaButtons: [
+    { id: '2', label: lang === 'tr' ? 'Üye Ol / Giriş' : 'Sign Up / Login', link: 'https://app.adorelgo.com/', style: 'primary' },
+  ],
+});
 
 const Navbar: React.FC = () => {
   const { language, setLanguage } = useLanguage();
@@ -74,28 +94,24 @@ const Navbar: React.FC = () => {
   const [mobileHizmetlerOpen, setMobileHizmetlerOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const [navbarData, setNavbarData] = useState<any>({
-    logo: "",
-    brandName: "AdorelGo",
-    menuItems: [],
-    ctaButtons: [
-      { id: "2", label: "Üye Ol / Giriş", link: "https://app.adorelgo.com/", style: "primary" },
-    ]
-  });
+  const defaults = getDefaultNavbarData(language);
+  const [navbarData, setNavbarData] = useState<any>(defaults);
 
   useEffect(() => {
     const token = localStorage.getItem('admin_token');
     const role = localStorage.getItem('user_role');
     setIsAdmin(!!token && role === 'admin');
+    setNavbarData(defaults);
 
     axios.get(`${API_BASE_URL}/content/navbar?lang=${language}`)
       .then(res => {
         if (res.data && Object.keys(res.data).length > 0) {
           setNavbarData((prev: any) => ({
+            ...defaults,
             ...prev,
             logo: res.data.logo ? (res.data.logo.startsWith('http') ? res.data.logo : `${API_BASE_URL}${res.data.logo}`) : prev.logo,
-            menuItems: res.data.menuItems || prev.menuItems,
-            ctaButtons: res.data.ctaButtons || prev.ctaButtons
+            menuItems: Array.isArray(res.data.menuItems) && res.data.menuItems.length > 0 ? res.data.menuItems : prev.menuItems,
+            ctaButtons: Array.isArray(res.data.ctaButtons) && res.data.ctaButtons.length > 0 ? res.data.ctaButtons : prev.ctaButtons
           }));
         }
       })
@@ -183,11 +199,11 @@ const Navbar: React.FC = () => {
     }
   };
 
-  const menuItems = ((navbarData?.menuItems?.length ? navbarData.menuItems : defaultMenuItems) as any[])
+  const menuItems = ((navbarData?.menuItems?.length ? navbarData.menuItems : defaults.menuItems) as any[])
     .filter((item: any) => item.isActive !== false)
     .sort((a: any, b: any) => (a.order || 0) - (b.order || 0));
 
-  const ctaButtons = (navbarData?.ctaButtons || [])
+  const ctaButtons = ((navbarData?.ctaButtons?.length ? navbarData.ctaButtons : defaults.ctaButtons) || [])
     .filter((btn: any) => {
       if (btn.label?.toUpperCase() === 'PANEL') return isAdmin;
       return true;

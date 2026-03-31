@@ -2,8 +2,70 @@ import React, { useState } from 'react';
 import { contentAPI } from '../../../services/api';
 import { useEditor, Loader, Card, SaveBtn, Label, Input, AddBtn, RemoveBtn, ImageUpload } from './shared';
 
-const NavbarEditor: React.FC = () => {
-  const navbar = useEditor(() => contentAPI.getNavbar(), d => contentAPI.updateNavbar(d));
+const LangToggle: React.FC<{ lang: string; onChange: (l: 'tr' | 'en') => void }> = ({ lang, onChange }) => (
+  <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl p-1 w-fit">
+    {(['tr', 'en'] as const).map(l => (
+      <button
+        key={l}
+        onClick={() => onChange(l)}
+        className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors ${lang === l ? 'bg-blue-600 text-white' : 'text-gray-500 hover:text-gray-700'}`}
+      >
+        {l === 'tr' ? '🇹🇷 Türkçe' : '🇬🇧 English'}
+      </button>
+    ))}
+  </div>
+);
+
+const getDefaultNavbar = (lang: 'tr' | 'en') => ({
+  logo: '',
+  menuItems: lang === 'tr'
+    ? [
+        {
+          id: 'd1',
+          label: 'Hizmetlerimiz',
+          link: '/',
+          type: 'dropdown',
+          isActive: true,
+          order: 0,
+          position: 'header',
+          mobileVisible: true,
+          children: [
+            { id: 'c1', label: 'Yurtdışı Kargo', link: '/yurtdisi-kargo' },
+            { id: 'c2', label: 'Yurtiçi Kargo', link: '/yurtici-kargo' },
+            { id: 'c3', label: 'Alıcı Ödemeli Lojistik', link: '/alici-odemeli-kargo' },
+          ],
+        },
+        { id: 'd2', label: 'Nasıl Gönderirim?', link: '/nasil-gonderirim', type: 'link', isActive: true, order: 1, position: 'header', mobileVisible: true, children: [] },
+        { id: 'd3', label: 'Gönderi Takip', link: '/gonderi-takibi', type: 'link', isActive: true, order: 2, position: 'header', mobileVisible: true, children: [] },
+        { id: 'd4', label: 'İletişim', link: '/iletisim', type: 'link', isActive: true, order: 3, position: 'header', mobileVisible: true, children: [] },
+      ]
+    : [
+        {
+          id: 'd1',
+          label: 'Our Services',
+          link: '/',
+          type: 'dropdown',
+          isActive: true,
+          order: 0,
+          position: 'header',
+          mobileVisible: true,
+          children: [
+            { id: 'c1', label: 'International Shipping', link: '/yurtdisi-kargo' },
+            { id: 'c2', label: 'Domestic Shipping', link: '/yurtici-kargo' },
+            { id: 'c3', label: 'Receiver Payment Logistics', link: '/alici-odemeli-kargo' },
+          ],
+        },
+        { id: 'd2', label: 'How to Send?', link: '/nasil-gonderirim', type: 'link', isActive: true, order: 1, position: 'header', mobileVisible: true, children: [] },
+        { id: 'd3', label: 'Track Shipment', link: '/gonderi-takibi', type: 'link', isActive: true, order: 2, position: 'header', mobileVisible: true, children: [] },
+        { id: 'd4', label: 'Contact', link: '/iletisim', type: 'link', isActive: true, order: 3, position: 'header', mobileVisible: true, children: [] },
+      ],
+  ctaButtons: [
+    { id: '2', label: lang === 'tr' ? 'Üye Ol / Giriş' : 'Sign Up / Login', link: 'https://app.adorelgo.com/', style: 'primary' }
+  ]
+});
+
+const NavbarEditorInner: React.FC<{ lang: 'tr' | 'en' }> = ({ lang }) => {
+  const navbar = useEditor(() => contentAPI.getNavbar(lang), d => contentAPI.updateNavbar(d, lang), getDefaultNavbar(lang));
   const [expandedDropdown, setExpandedDropdown] = useState<number | null>(null);
 
   if (navbar.loading) return <Loader />;
@@ -170,6 +232,20 @@ const NavbarEditor: React.FC = () => {
         </div>
         <SaveBtn onSave={navbar.handleSave} saving={navbar.saving} success={navbar.success} error={navbar.error} />
       </Card>
+    </div>
+  );
+};
+
+const NavbarEditor: React.FC = () => {
+  const [lang, setLang] = useState<'tr' | 'en'>('tr');
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-gray-400">Seçili dil için içerik yüklenip kaydedilir.</p>
+        <LangToggle lang={lang} onChange={setLang} />
+      </div>
+      <NavbarEditorInner key={lang} lang={lang} />
     </div>
   );
 };

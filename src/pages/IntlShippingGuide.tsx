@@ -9,21 +9,55 @@ import { API_BASE_URL } from '../api-config';
 import { useLanguage } from '../contexts/LanguageContext';
 import { CmsSections } from './_CmsSections';
 
-const DEFAULT_SECTIONS = [
-    {
-        type: 'text',
-        content: `<h2>Yurtdışına Kargo Nasıl Gönderilir?</h2>`
-    },
-    {
-        type: 'card-grid',
-        cards: [
-            { icon: 'fa-user-plus', title: 'Adım 1: Ücretsiz Üye Olun', description: 'AdorelGo paneline ücretsiz kayıt olun.' },
-            { icon: 'fa-edit', title: 'Adım 2: Gönderi Bilgilerini Girin', description: 'Alıcı adres bilgileri, paket boyutu ve ağırlığını girin.' },
-            { icon: 'fa-balance-scale', title: 'Adım 3: Kargo Firmasını Seçin', description: 'Size en uygun fiyat ve süre seçeneğini seçin.' },
-            { icon: 'fa-truck', title: 'Adım 4: Kargonuzu Gönderin', description: 'Kapıdan alım ile gönderiminizi başlatın.' },
-        ]
-    },
-];
+const getIntlShippingGuideDefaults = (lang: 'tr' | 'en') => (
+    lang === 'tr'
+        ? {
+            title: 'Yurtdışı Gönderim Rehberi',
+            description: 'Yurtdışı Kargo Nasıl Gönderilir? (2026 Güncel Rehber)',
+            breadcrumbLabel: 'Anasayfa',
+            ctaTitle: 'En Kolay Yurtdışı Kargo Yöntemi',
+            ctaDescription: 'AdorelGo ile yurtdışı kargo göndermek hiç bu kadar kolay olmamıştı.',
+            ctaButtonText: 'Hemen Başla',
+            sections: [
+                {
+                    type: 'text',
+                    content: `<h2>Yurtdışına Kargo Nasıl Gönderilir?</h2>`
+                },
+                {
+                    type: 'card-grid',
+                    cards: [
+                        { icon: 'fa-user-plus', title: 'Adım 1: Ücretsiz Üye Olun', description: 'AdorelGo paneline ücretsiz kayıt olun.' },
+                        { icon: 'fa-edit', title: 'Adım 2: Gönderi Bilgilerini Girin', description: 'Alıcı adres bilgileri, paket boyutu ve ağırlığını girin.' },
+                        { icon: 'fa-balance-scale', title: 'Adım 3: Kargo Firmasını Seçin', description: 'Size en uygun fiyat ve süre seçeneğini seçin.' },
+                        { icon: 'fa-truck', title: 'Adım 4: Kargonuzu Gönderin', description: 'Kapıdan alım ile gönderiminizi başlatın.' },
+                    ]
+                },
+            ],
+        }
+        : {
+            title: 'International Shipping Guide',
+            description: 'How to Send Cargo Abroad? (2026 Updated Guide)',
+            breadcrumbLabel: 'Home',
+            ctaTitle: 'The Easiest Way to Ship Internationally',
+            ctaDescription: 'Sending cargo abroad has never been this easy with AdorelGo.',
+            ctaButtonText: 'Get Started',
+            sections: [
+                {
+                    type: 'text',
+                    content: `<h2>How to Send Cargo Abroad?</h2>`
+                },
+                {
+                    type: 'card-grid',
+                    cards: [
+                        { icon: 'fa-user-plus', title: 'Step 1: Sign Up for Free', description: 'Create your AdorelGo account for free.' },
+                        { icon: 'fa-edit', title: 'Step 2: Enter Shipment Details', description: 'Enter the recipient address, package dimensions, and weight.' },
+                        { icon: 'fa-balance-scale', title: 'Step 3: Choose the Carrier', description: 'Select the best option for your price and delivery needs.' },
+                        { icon: 'fa-truck', title: 'Step 4: Send Your Shipment', description: 'Start your shipment with door pickup.' },
+                    ]
+                },
+            ],
+        }
+);
 
 const IntlShippingGuide: React.FC = () => {
     const { currentLang } = useLanguage();
@@ -37,9 +71,10 @@ const IntlShippingGuide: React.FC = () => {
             .finally(() => setLoading(false));
     }, [currentLang]);
 
-    const title = cms?.title || 'Yurtdışı Gönderim Rehberi';
-    const subtitle = cms?.description || 'Yurtdışı Kargo Nasıl Gönderilir? (2026 Güncel Rehber)';
-    const sections: any[] = (cms?.sections && cms.sections.length > 0) ? cms.sections : DEFAULT_SECTIONS;
+    const defaults = getIntlShippingGuideDefaults(currentLang);
+    const title = cms?.title || defaults.title;
+    const subtitle = cms?.description || defaults.description;
+    const sections: any[] = (cms?.sections && cms.sections.length > 0) ? cms.sections : defaults.sections;
 
     return (
         <div className="flex flex-col min-h-screen overflow-x-hidden">
@@ -49,7 +84,7 @@ const IntlShippingGuide: React.FC = () => {
                 <section className="text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #102477 0%, #1a3a9e 50%, #102477 100%)', paddingTop: '28px', paddingBottom: '24px' }}>
                     <div className="absolute inset-0 opacity-10"><div className="absolute top-0 right-0 w-96 h-96 bg-[#4DB848] rounded-full blur-[120px] -mr-48 -mt-48"></div></div>
                     <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
-                        <nav className="flex items-center gap-2 text-sm opacity-60 mb-6"><Link to="/" className="hover:opacity-100">Anasayfa</Link><span>/</span><span>{title}</span></nav>
+                        <nav className="flex items-center gap-2 text-sm opacity-60 mb-6"><Link to="/" className="hover:opacity-100">{defaults.breadcrumbLabel}</Link><span>/</span><span>{title}</span></nav>
                         <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-4">{title}</h1>
                         <p className="text-white/70 text-lg max-w-2xl">{subtitle}</p>
                     </div>
@@ -67,9 +102,9 @@ const IntlShippingGuide: React.FC = () => {
                 </section>
                 <section className="py-6 bg-gradient-to-r from-[#102477] to-[#1a3a9e] text-white">
                     <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
-                        <h2 className="text-3xl font-bold tracking-tight mb-4">En Kolay Yurtdışı Kargo Yöntemi</h2>
-                        <p className="text-white/70 text-lg max-w-2xl mx-auto mb-8">AdorelGo ile yurtdışı kargo göndermek hiç bu kadar kolay olmamıştı.</p>
-                        <a href="https://app.adorelgo.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#4DB848] hover:bg-[#3da33a] text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:scale-105">Hemen Başla<i className="fas fa-arrow-right"></i></a>
+                        <h2 className="text-3xl font-bold tracking-tight mb-4">{defaults.ctaTitle}</h2>
+                        <p className="text-white/70 text-lg max-w-2xl mx-auto mb-8">{defaults.ctaDescription}</p>
+                        <a href="https://app.adorelgo.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#4DB848] hover:bg-[#3da33a] text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:scale-105">{defaults.ctaButtonText}<i className="fas fa-arrow-right"></i></a>
                     </div>
                 </section>
             </main>

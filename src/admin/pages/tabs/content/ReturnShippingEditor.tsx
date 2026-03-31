@@ -1,55 +1,114 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { contentAPI } from '../../../services/api';
 import { useEditor, Loader, Card, SaveBtn, Label, Input, Textarea, AddBtn, RemoveBtn, SeoCard, IconPicker } from './shared';
 
-const DEFAULT = {
-  hero: {
-    title: 'Yurtdışı İade & Geri Gönderim',
-    subtitle: 'Teslim edilemeyen ya da iade edilen yurtdışı gönderilerinde süreci biz yönetiriz.',
-  },
-  intro: {
-    title: 'İade Süreci Kontrol Altında',
-    text: 'Teslim edilemeyen yurtdışı gönderilerde iade ve geri gönderim süreci adım adım takip edilir. İade veya geri dönüş durumları panelden görülebilir.',
-  },
-  scenarios: {
-    title: 'Hangi Durumlarda İade Olur?',
-    items: [
-      { icon: 'fa-user-xmark', title: 'Alıcı Bulunamadı', desc: 'Alıcıya ulaşılamaz ya da teslim almazsa, kargo belirli süre sonra iade edilir.' },
-      { icon: 'fa-ban', title: 'Gümrükte Ret', desc: 'Hedef ülke gümrüğünde kargo kabul edilmezse sistem seni bilgilendirir ve iade sürecini başlatır.' },
-      { icon: 'fa-house-circle-xmark', title: 'Yanlış Adres', desc: 'Adres hatalıysa kargo teslim edilemez. Adres düzeltme veya iade seçenekleri sunulur.' },
-      { icon: 'fa-rotate-left', title: 'Alıcı İadesi', desc: 'Alıcı ürünü iade etmek isterse, yurtdışından Türkiye\'ye geri gönderim süreci panelden yönetilir.' },
-    ],
-  },
-  process: {
-    title: 'İade Süreci Nasıl İşler?',
-    steps: [
-      { icon: 'fa-bell', title: 'Bildirim Al', desc: 'Kargon teslim edilemediğinde sana otomatik bildirim gönderilir.' },
-      { icon: 'fa-list-check', title: 'Seçenek Sun', desc: 'Yeni adrese yönlendirme, bekleme süresi uzatma veya iade — seçenekler sunulur.' },
-      { icon: 'fa-map-location-dot', title: 'Takip Et', desc: 'İade kargosu yola çıktığında panelden anlık olarak takip edebilirsin.' },
-      { icon: 'fa-box-open', title: 'Teslim Al', desc: 'Kargo Türkiye\'deki adresine ulaştığında bildirim alırsın.' },
-    ],
-  },
-  guarantees: {
-    title: 'Güvenceler',
-    items: [
-      { icon: 'fa-shield-halved', title: 'Sigorta Kapsamı', desc: 'Tüm gönderiler sigortalıdır. İade sürecinde de sigorta geçerliliğini korur.' },
-      { icon: 'fa-headset', title: '7/24 Destek', desc: 'İade sürecinde sorularını 7/24 destek hattımıza iletebilirsin.' },
-      { icon: 'fa-clock-rotate-left', title: 'Hızlı İşlem', desc: 'İade taleplerinde en hızlı şekilde işlem başlatılır.' },
-    ],
-  },
-  cta: {
-    title: 'Sorun Çıkarsa Biz Varız',
-    subtitle: 'İade ve geri gönderim süreçlerinde destek almak için bize ulaş.',
-    buttonText: 'Panele Git',
-    buttonUrl: 'https://app.adorelgo.com',
-  },
-};
+const LangToggle: React.FC<{ lang: string; onChange: (l: 'tr' | 'en') => void }> = ({ lang, onChange }) => (
+  <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl p-1 w-fit">
+    {(['tr', 'en'] as const).map(l => (
+      <button
+        key={l}
+        onClick={() => onChange(l)}
+        className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors ${lang === l ? 'bg-blue-600 text-white' : 'text-gray-500 hover:text-gray-700'}`}
+      >
+        {l === 'tr' ? '🇹🇷 Türkçe' : '🇬🇧 English'}
+      </button>
+    ))}
+  </div>
+);
 
-const ReturnShippingEditor: React.FC = () => {
+const getReturnShippingDefaults = (lang: 'tr' | 'en') => (
+  lang === 'tr'
+    ? {
+        hero: {
+          title: 'Yurtdışı İade & Geri Gönderim',
+          subtitle: 'Teslim edilemeyen ya da iade edilen yurtdışı gönderilerinde süreci biz yönetiriz.',
+        },
+        intro: {
+          title: 'İade Süreci Kontrol Altında',
+          text: 'Teslim edilemeyen yurtdışı gönderilerde iade ve geri gönderim süreci adım adım takip edilir. İade veya geri dönüş durumları panelden görülebilir.',
+        },
+        scenarios: {
+          title: 'Hangi Durumlarda İade Olur?',
+          items: [
+            { icon: 'fa-user-xmark', title: 'Alıcı Bulunamadı', desc: 'Alıcıya ulaşılamaz ya da teslim almazsa, kargo belirli süre sonra iade edilir.' },
+            { icon: 'fa-ban', title: 'Gümrükte Ret', desc: 'Hedef ülke gümrüğünde kargo kabul edilmezse sistem seni bilgilendirir ve iade sürecini başlatır.' },
+            { icon: 'fa-house-circle-xmark', title: 'Yanlış Adres', desc: 'Adres hatalıysa kargo teslim edilemez. Adres düzeltme veya iade seçenekleri sunulur.' },
+            { icon: 'fa-rotate-left', title: 'Alıcı İadesi', desc: 'Alıcı ürünü iade etmek isterse, yurtdışından Türkiye\'ye geri gönderim süreci panelden yönetilir.' },
+          ],
+        },
+        process: {
+          title: 'İade Süreci Nasıl İşler?',
+          steps: [
+            { icon: 'fa-bell', title: 'Bildirim Al', desc: 'Kargon teslim edilemediğinde sana otomatik bildirim gönderilir.' },
+            { icon: 'fa-list-check', title: 'Seçenek Sun', desc: 'Yeni adrese yönlendirme, bekleme süresi uzatma veya iade — seçenekler sunulur.' },
+            { icon: 'fa-map-location-dot', title: 'Takip Et', desc: 'İade kargosu yola çıktığında panelden anlık olarak takip edebilirsin.' },
+            { icon: 'fa-box-open', title: 'Teslim Al', desc: 'Kargo Türkiye\'deki adresine ulaştığında bildirim alırsın.' },
+          ],
+        },
+        guarantees: {
+          title: 'Güvenceler',
+          items: [
+            { icon: 'fa-shield-halved', title: 'Sigorta Kapsamı', desc: 'Tüm gönderiler sigortalıdır. İade sürecinde de sigorta geçerliliğini korur.' },
+            { icon: 'fa-headset', title: '7/24 Destek', desc: 'İade sürecinde sorularını 7/24 destek hattımıza iletebilirsin.' },
+            { icon: 'fa-clock-rotate-left', title: 'Hızlı İşlem', desc: 'İade taleplerinde en hızlı şekilde işlem başlatılır.' },
+          ],
+        },
+        cta: {
+          title: 'Sorun Çıkarsa Biz Varız',
+          subtitle: 'İade ve geri gönderim süreçlerinde destek almak için bize ulaş.',
+          buttonText: 'Panele Git',
+          buttonUrl: 'https://app.adorelgo.com',
+        },
+      }
+    : {
+        hero: {
+          title: 'International Returns & Return Shipping',
+          subtitle: 'We manage the process for undelivered or returned international shipments.',
+        },
+        intro: {
+          title: 'Keep the Return Process Under Control',
+          text: 'The return shipping process for undelivered international shipments can be tracked step by step. Return and reverse-shipment updates can be viewed in the panel.',
+        },
+        scenarios: {
+          title: 'When Does a Return Happen?',
+          items: [
+            { icon: 'fa-user-xmark', title: 'Recipient Not Available', desc: 'If the recipient cannot be reached or does not accept delivery, the shipment is returned after a certain period.' },
+            { icon: 'fa-ban', title: 'Rejected by Customs', desc: 'If the shipment is not accepted by the destination country’s customs, the system informs you and starts the return process.' },
+            { icon: 'fa-house-circle-xmark', title: 'Incorrect Address', desc: 'If the address is incorrect, the shipment cannot be delivered. Address correction or return options are provided.' },
+            { icon: 'fa-rotate-left', title: 'Recipient Return', desc: 'If the recipient wants to return the item, the reverse shipping process back to Turkey can be managed through the panel.' },
+          ],
+        },
+        process: {
+          title: 'How Does the Return Process Work?',
+          steps: [
+            { icon: 'fa-bell', title: 'Receive a Notification', desc: 'You automatically receive a notification when your shipment cannot be delivered.' },
+            { icon: 'fa-list-check', title: 'Choose an Option', desc: 'Options such as redirecting to a new address, extending the holding period, or returning the shipment are offered.' },
+            { icon: 'fa-map-location-dot', title: 'Track It', desc: 'Once the return shipment is on the way, you can track it live from the panel.' },
+            { icon: 'fa-box-open', title: 'Receive It Back', desc: 'You are notified once the shipment reaches your address in Turkey.' },
+          ],
+        },
+        guarantees: {
+          title: 'Your Assurances',
+          items: [
+            { icon: 'fa-shield-halved', title: 'Insurance Coverage', desc: 'All shipments are insured. Coverage remains valid during the return process as well.' },
+            { icon: 'fa-headset', title: '24/7 Support', desc: 'You can contact our support team at any time during the return process.' },
+            { icon: 'fa-clock-rotate-left', title: 'Fast Handling', desc: 'Return requests are processed as quickly as possible.' },
+          ],
+        },
+        cta: {
+          title: 'We Are Here If Something Goes Wrong',
+          subtitle: 'Contact us if you need support with return and reverse shipping processes.',
+          buttonText: 'Go to Panel',
+          buttonUrl: 'https://app.adorelgo.com',
+        },
+      }
+);
+
+const ReturnShippingEditorInner: React.FC<{ lang: 'tr' | 'en' }> = ({ lang }) => {
   const ed = useEditor(
-    () => contentAPI.getContentPage('yurtdisi-iade-geri-gonderi'),
-    (d) => contentAPI.updateContentPage('yurtdisi-iade-geri-gonderi', d),
-    DEFAULT
+    () => contentAPI.getContentPage('yurtdisi-iade-geri-gonderi', lang),
+    (d) => contentAPI.updateContentPage('yurtdisi-iade-geri-gonderi', d, lang),
+    getReturnShippingDefaults(lang)
   );
 
   if (ed.loading) return <Loader />;
@@ -133,8 +192,28 @@ const ReturnShippingEditor: React.FC = () => {
         <SaveBtn onSave={ed.handleSave} saving={ed.saving} success={ed.success} error={ed.error} />
       </Card>
 
-      <SeoCard slug="yurtdisi-iade-geri-gonderi" defaultSeo={{ metaTitle: 'Yurtdışı İade & Geri Gönderim | AdorelGo', metaDescription: 'Teslim edilemeyen veya iade edilen yurtdışı kargolarınızı kolayca yönetin.', keywords: 'yurtdışı iade kargo, geri gönderim, kargo iade süreci', canonical: 'https://adorelgo.com/yurtdisi-iade-geri-gonderi' }} />
+      <SeoCard
+        slug="yurtdisi-iade-geri-gonderi"
+        lang={lang}
+        defaultSeo={lang === 'tr'
+          ? { metaTitle: 'Yurtdışı İade & Geri Gönderim | AdorelGo', metaDescription: 'Teslim edilemeyen veya iade edilen yurtdışı kargolarınızı kolayca yönetin.', keywords: 'yurtdışı iade kargo, geri gönderim, kargo iade süreci', canonical: 'https://adorelgo.com/yurtdisi-iade-geri-gonderi' }
+          : { metaTitle: 'International Returns & Return Shipping | AdorelGo', metaDescription: 'Manage undelivered and returned international shipments easily with AdorelGo.', keywords: 'international returns, return shipping, undelivered shipment support', canonical: 'https://adorelgo.com/yurtdisi-iade-geri-gonderi' }}
+      />
 
+    </div>
+  );
+};
+
+const ReturnShippingEditor: React.FC = () => {
+  const [lang, setLang] = useState<'tr' | 'en'>('tr');
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-gray-400">Seçili dil için içerik ve SEO yüklenip kaydedilir.</p>
+        <LangToggle lang={lang} onChange={setLang} />
+      </div>
+      <ReturnShippingEditorInner key={lang} lang={lang} />
     </div>
   );
 };

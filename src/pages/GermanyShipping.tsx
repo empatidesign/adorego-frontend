@@ -9,20 +9,57 @@ import { API_BASE_URL } from '../api-config';
 import { useLanguage } from '../contexts/LanguageContext';
 import { CmsSections } from './_CmsSections';
 
-const DEFAULT_SECTIONS = [
-    {
-        type: 'text',
-        content: `<h2>Almanya'ya Kargo Nasıl Gönderilir? <span style="color:#4DB848">(2026 Güncel)</span></h2><p>Almanya, Türkiye'den en çok kargo gönderilen ülkelerin başında gelir. İster kişisel paket gönderin, ister e-ticaret siparişlerinizi kargoyla ulaştırın — AdorelGo ile Almanya'ya kargo göndermek artık çok kolay.</p><p>Tek yapmanız gereken ücretsiz üye olmak, gönderi bilgilerini girmek ve size sunulan en uygun seçeneği seçmek. Gerisini biz hallederiz.</p>`
-    },
-    {
-        type: 'list',
-        items: [
-            "Kapıdan alım hizmeti: Kargonuz bulunduğunuz adresten alınır, Almanya'daki alıcıya teslim edilir.",
-            '2–7 gün arası teslimat: Seçtiğiniz kargo firmasına ve hizmet türüne göre teslimat süresi değişir.',
-            'Ekonomik ve express seçenekler: Bütçenize ve aciliyetinize göre farklı kargo seçeneklerini karşılaştırın.',
-        ]
-    },
-];
+const getGermanyShippingDefaults = (lang: 'tr' | 'en') => (
+    lang === 'tr'
+        ? {
+            title: "Almanya'ya Kargo",
+            description: "Türkiye'den Almanya'ya güvenli, hızlı ve uygun fiyatlı kargo gönderimi",
+            breadcrumbLabel: 'Anasayfa',
+            ctaTitle: "Almanya'ya kargo göndermek için hemen başlayın",
+            ctaDescription: 'Ücretsiz üye olun, en uygun fiyatları karşılaştırın ve kargonuzu gönderin.',
+            ctaButtonText: 'Ücretsiz Üye Ol',
+            seoTitle: "Almanya'ya Kargo Gönderimi | AdorelGo",
+            seoDescription: "Almanya'ya kargo nasıl gönderilir? Kapıdan alım, 2-7 gün teslimat, ekonomik ve express seçenekler. 2026 güncel fiyatlar.",
+            sections: [
+                {
+                    type: 'text',
+                    content: `<h2>Almanya'ya Kargo Nasıl Gönderilir? <span style="color:#4DB848">(2026 Güncel)</span></h2><p>Almanya, Türkiye'den en çok kargo gönderilen ülkelerin başında gelir. İster kişisel paket gönderin, ister e-ticaret siparişlerinizi kargoyla ulaştırın — AdorelGo ile Almanya'ya kargo göndermek artık çok kolay.</p><p>Tek yapmanız gereken ücretsiz üye olmak, gönderi bilgilerini girmek ve size sunulan en uygun seçeneği seçmek. Gerisini biz hallederiz.</p>`
+                },
+                {
+                    type: 'list',
+                    items: [
+                        "Kapıdan alım hizmeti: Kargonuz bulunduğunuz adresten alınır, Almanya'daki alıcıya teslim edilir.",
+                        '2–7 gün arası teslimat: Seçtiğiniz kargo firmasına ve hizmet türüne göre teslimat süresi değişir.',
+                        'Ekonomik ve express seçenekler: Bütçenize ve aciliyetinize göre farklı kargo seçeneklerini karşılaştırın.',
+                    ]
+                },
+            ],
+        }
+        : {
+            title: 'Shipping to Germany',
+            description: 'Secure, fast, and affordable shipping from Turkey to Germany',
+            breadcrumbLabel: 'Home',
+            ctaTitle: 'Start shipping to Germany today',
+            ctaDescription: 'Sign up for free, compare the best prices, and send your shipment.',
+            ctaButtonText: 'Sign Up Free',
+            seoTitle: 'Shipping to Germany | AdorelGo',
+            seoDescription: 'How can you send cargo to Germany? Compare door pickup, 2-7 day delivery, economy and express options with AdorelGo.',
+            sections: [
+                {
+                    type: 'text',
+                    content: `<h2>How to Ship to Germany? <span style="color:#4DB848">(2026 Updated)</span></h2><p>Germany is one of the top destinations for shipments from Turkey. Whether you are sending a personal package or e-commerce orders, shipping to Germany is now much easier with AdorelGo.</p><p>All you need to do is sign up for free, enter your shipment details, and choose the best option shown to you. We take care of the rest.</p>`
+                },
+                {
+                    type: 'list',
+                    items: [
+                        'Door pickup service: Your shipment is collected from your address and delivered to the recipient in Germany.',
+                        'Delivery in 2-7 days: Delivery times vary depending on the carrier and service type you choose.',
+                        'Economy and express options: Compare different shipping options based on your budget and urgency.',
+                    ]
+                },
+            ],
+        }
+);
 
 const GermanyShipping: React.FC = () => {
     const { currentLang } = useLanguage();
@@ -36,19 +73,20 @@ const GermanyShipping: React.FC = () => {
             .finally(() => setLoading(false));
     }, [currentLang]);
 
-    const title = cms?.title || "Almanya'ya Kargo";
-    const subtitle = cms?.description || "Türkiye'den Almanya'ya güvenli, hızlı ve uygun fiyatlı kargo gönderimi";
-    const sections: any[] = (cms?.sections && cms.sections.length > 0) ? cms.sections : DEFAULT_SECTIONS;
+    const defaults = getGermanyShippingDefaults(currentLang);
+    const title = cms?.title || defaults.title;
+    const subtitle = cms?.description || defaults.description;
+    const sections: any[] = (cms?.sections && cms.sections.length > 0) ? cms.sections : defaults.sections;
 
     return (
         <div className="flex flex-col min-h-screen overflow-x-hidden">
-            <SEO page="almanyaya-kargo" customTitle="Almanya'ya Kargo Gönderimi | AdorelGo" customDescription="Almanya'ya kargo nasıl gönderilir? Kapıdan alım, 2-7 gün teslimat, ekonomik ve express seçenekler. 2026 güncel fiyatlar." />
+            <SEO page="almanyaya-kargo" customTitle={defaults.seoTitle} customDescription={defaults.seoDescription} />
             <Navbar />
             <main className="flex-grow pt-20">
                 <section className="text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #102477 0%, #1a3a9e 50%, #102477 100%)', paddingTop: '28px', paddingBottom: '24px' }}>
                     <div className="absolute inset-0 opacity-10"><div className="absolute top-0 right-0 w-96 h-96 bg-[#4DB848] rounded-full blur-[120px] -mr-48 -mt-48"></div></div>
                     <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
-                        <nav className="flex items-center gap-2 text-sm opacity-60 mb-6"><Link to="/" className="hover:opacity-100">Anasayfa</Link><span>/</span><span>{title}</span></nav>
+                        <nav className="flex items-center gap-2 text-sm opacity-60 mb-6"><Link to="/" className="hover:opacity-100">{defaults.breadcrumbLabel}</Link><span>/</span><span>{title}</span></nav>
                         <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-4">{title}</h1>
                         <p className="text-white/70 text-lg max-w-2xl">{subtitle}</p>
                     </div>
@@ -68,9 +106,9 @@ const GermanyShipping: React.FC = () => {
                 </section>
                 <section className="py-6 bg-gradient-to-r from-[#102477] to-[#1a3a9e] text-white">
                     <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
-                        <h2 className="text-3xl lg:text-4xl font-bold mb-4 tracking-tight">Almanya'ya kargo göndermek için hemen başlayın</h2>
-                        <p className="text-white/70 text-lg max-w-2xl mx-auto leading-relaxed mb-8">Ücretsiz üye olun, en uygun fiyatları karşılaştırın ve kargonuzu gönderin.</p>
-                        <a href="https://app.adorelgo.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-[#4DB848] text-white font-bold px-10 py-4 rounded-xl hover:bg-[#3da03a] transition-all hover:-translate-y-1 shadow-lg text-base">Ücretsiz Üye Ol<i className="fas fa-arrow-right"></i></a>
+                        <h2 className="text-3xl lg:text-4xl font-bold mb-4 tracking-tight">{defaults.ctaTitle}</h2>
+                        <p className="text-white/70 text-lg max-w-2xl mx-auto leading-relaxed mb-8">{defaults.ctaDescription}</p>
+                        <a href="https://app.adorelgo.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-[#4DB848] text-white font-bold px-10 py-4 rounded-xl hover:bg-[#3da03a] transition-all hover:-translate-y-1 shadow-lg text-base">{defaults.ctaButtonText}<i className="fas fa-arrow-right"></i></a>
                     </div>
                 </section>
             </main>

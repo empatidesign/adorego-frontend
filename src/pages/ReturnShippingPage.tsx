@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import SEO from '../components/SEO';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { API_BASE_URL } from '../api-config';
+import { useLanguage } from '../contexts/LanguageContext';
 
 function deepMerge(defaults: any, override: any): any {
   if (override === null || override === undefined) return defaults;
@@ -21,61 +22,117 @@ function deepMerge(defaults: any, override: any): any {
   return result;
 }
 
-const DEFAULT = {
-  hero: {
-    title: 'Yurtdışı İade & Geri Gönderim',
-    subtitle: 'Teslim edilemeyen ya da iade edilen yurtdışı gönderilerinde süreci biz yönetiriz. Paniklemene gerek yok.',
-  },
-  intro: {
-    title: 'İade Süreci Kontrol Altında',
-    text: 'Teslim edilemeyen yurtdışı gönderilerde iade ve geri gönderim süreci adım adım takip edilir. İade veya geri dönüş durumları panelden görülebilir.',
-  },
-  scenarios: {
-    title: 'Hangi Durumlarda İade Olur?',
-    items: [
-      { icon: 'fa-user-xmark', title: 'Alıcı Bulunamadı', desc: 'Alıcıya ulaşılamaz ya da teslim almazsa, kargo belirli süre sonra iade edilir.' },
-      { icon: 'fa-ban', title: 'Gümrükte Ret', desc: 'Hedef ülke gümrüğünde kargo kabul edilmezse sistem seni bilgilendirir ve iade sürecini başlatır.' },
-      { icon: 'fa-house-circle-xmark', title: 'Yanlış Adres', desc: 'Adres hatalıysa kargo teslim edilemez. Adres düzeltme veya iade seçenekleri sunulur.' },
-      { icon: 'fa-rotate-left', title: 'Alıcı İadesi', desc: 'Alıcı ürünü iade etmek isterse, yurtdışından Türkiye\'ye geri gönderim süreci panelden yönetilir.' },
-    ],
-  },
-  process: {
-    title: 'İade Süreci Nasıl İşler?',
-    steps: [
-      { icon: 'fa-bell', title: 'Bildirim Al', desc: 'Kargon teslim edilemediğinde sana otomatik bildirim gönderilir.' },
-      { icon: 'fa-list-check', title: 'Seçenek Sun', desc: 'Yeni adrese yönlendirme, bekleme süresi uzatma veya iade — seçenekler sunulur.' },
-      { icon: 'fa-map-location-dot', title: 'Takip Et', desc: 'İade kargosu yola çıktığında panelden anlık olarak takip edebilirsin.' },
-      { icon: 'fa-box-open', title: 'Teslim Al', desc: 'Kargo Türkiye\'deki adresine ulaştığında bildirim alırsın.' },
-    ],
-  },
-  guarantees: {
-    title: 'Güvenceler',
-    items: [
-      { icon: 'fa-shield-halved', title: 'Sigorta Kapsamı', desc: 'Tüm gönderiler sigortalıdır. İade sürecinde de sigorta geçerliliğini korur.' },
-      { icon: 'fa-headset', title: '7/24 Destek', desc: 'İade sürecinde sorularını 7/24 destek hattımıza iletebilirsin.' },
-      { icon: 'fa-clock-rotate-left', title: 'Hızlı İşlem', desc: 'İade taleplerinde en hızlı şekilde işlem başlatılır.' },
-    ],
-  },
-  cta: {
-    title: 'Sorun Çıkarsa Biz Varız',
-    subtitle: 'İade ve geri gönderim süreçlerinde destek almak için bize ulaş.',
-    buttonText: 'Panele Git',
-    buttonUrl: 'https://app.adorelgo.com',
-  },
-};
+const getReturnShippingDefaults = (lang: 'tr' | 'en') => (
+  lang === 'tr'
+    ? {
+        breadcrumbHome: 'Anasayfa',
+        breadcrumbParent: 'Yurtdışı Kargo',
+        stepLabel: 'Adım',
+        contactButtonText: 'İletişime Geç',
+        hero: {
+          title: 'Yurtdışı İade & Geri Gönderim',
+          subtitle: 'Teslim edilemeyen ya da iade edilen yurtdışı gönderilerinde süreci biz yönetiriz. Paniklemene gerek yok.',
+        },
+        intro: {
+          title: 'İade Süreci Kontrol Altında',
+          text: 'Teslim edilemeyen yurtdışı gönderilerde iade ve geri gönderim süreci adım adım takip edilir. İade veya geri dönüş durumları panelden görülebilir.',
+        },
+        scenarios: {
+          title: 'Hangi Durumlarda İade Olur?',
+          items: [
+            { icon: 'fa-user-xmark', title: 'Alıcı Bulunamadı', desc: 'Alıcıya ulaşılamaz ya da teslim almazsa, kargo belirli süre sonra iade edilir.' },
+            { icon: 'fa-ban', title: 'Gümrükte Ret', desc: 'Hedef ülke gümrüğünde kargo kabul edilmezse sistem seni bilgilendirir ve iade sürecini başlatır.' },
+            { icon: 'fa-house-circle-xmark', title: 'Yanlış Adres', desc: 'Adres hatalıysa kargo teslim edilemez. Adres düzeltme veya iade seçenekleri sunulur.' },
+            { icon: 'fa-rotate-left', title: 'Alıcı İadesi', desc: 'Alıcı ürünü iade etmek isterse, yurtdışından Türkiye\'ye geri gönderim süreci panelden yönetilir.' },
+          ],
+        },
+        process: {
+          title: 'İade Süreci Nasıl İşler?',
+          steps: [
+            { icon: 'fa-bell', title: 'Bildirim Al', desc: 'Kargon teslim edilemediğinde sana otomatik bildirim gönderilir.' },
+            { icon: 'fa-list-check', title: 'Seçenek Sun', desc: 'Yeni adrese yönlendirme, bekleme süresi uzatma veya iade — seçenekler sunulur.' },
+            { icon: 'fa-map-location-dot', title: 'Takip Et', desc: 'İade kargosu yola çıktığında panelden anlık olarak takip edebilirsin.' },
+            { icon: 'fa-box-open', title: 'Teslim Al', desc: 'Kargo Türkiye\'deki adresine ulaştığında bildirim alırsın.' },
+          ],
+        },
+        guarantees: {
+          title: 'Güvenceler',
+          items: [
+            { icon: 'fa-shield-halved', title: 'Sigorta Kapsamı', desc: 'Tüm gönderiler sigortalıdır. İade sürecinde de sigorta geçerliliğini korur.' },
+            { icon: 'fa-headset', title: '7/24 Destek', desc: 'İade sürecinde sorularını 7/24 destek hattımıza iletebilirsin.' },
+            { icon: 'fa-clock-rotate-left', title: 'Hızlı İşlem', desc: 'İade taleplerinde en hızlı şekilde işlem başlatılır.' },
+          ],
+        },
+        cta: {
+          title: 'Sorun Çıkarsa Biz Varız',
+          subtitle: 'İade ve geri gönderim süreçlerinde destek almak için bize ulaş.',
+          buttonText: 'Panele Git',
+          buttonUrl: 'https://app.adorelgo.com',
+        },
+      }
+    : {
+        breadcrumbHome: 'Home',
+        breadcrumbParent: 'International Shipping',
+        stepLabel: 'Step',
+        contactButtonText: 'Contact Us',
+        hero: {
+          title: 'International Returns & Return Shipping',
+          subtitle: 'We manage the process for undelivered or returned international shipments. No need to panic.',
+        },
+        intro: {
+          title: 'Keep the Return Process Under Control',
+          text: 'The return shipping process for undelivered international shipments can be tracked step by step. Return and reverse-shipment updates can be viewed in the panel.',
+        },
+        scenarios: {
+          title: 'When Does a Return Happen?',
+          items: [
+            { icon: 'fa-user-xmark', title: 'Recipient Not Available', desc: 'If the recipient cannot be reached or does not accept delivery, the shipment is returned after a certain period.' },
+            { icon: 'fa-ban', title: 'Rejected by Customs', desc: 'If the shipment is not accepted by the destination country’s customs, the system informs you and starts the return process.' },
+            { icon: 'fa-house-circle-xmark', title: 'Incorrect Address', desc: 'If the address is incorrect, the shipment cannot be delivered. Address correction or return options are provided.' },
+            { icon: 'fa-rotate-left', title: 'Recipient Return', desc: 'If the recipient wants to return the item, the reverse shipping process back to Turkey can be managed through the panel.' },
+          ],
+        },
+        process: {
+          title: 'How Does the Return Process Work?',
+          steps: [
+            { icon: 'fa-bell', title: 'Receive a Notification', desc: 'You automatically receive a notification when your shipment cannot be delivered.' },
+            { icon: 'fa-list-check', title: 'Choose an Option', desc: 'Options such as redirecting to a new address, extending the holding period, or returning the shipment are offered.' },
+            { icon: 'fa-map-location-dot', title: 'Track It', desc: 'Once the return shipment is on the way, you can track it live from the panel.' },
+            { icon: 'fa-box-open', title: 'Receive It Back', desc: 'You are notified once the shipment reaches your address in Turkey.' },
+          ],
+        },
+        guarantees: {
+          title: 'Your Assurances',
+          items: [
+            { icon: 'fa-shield-halved', title: 'Insurance Coverage', desc: 'All shipments are insured. Coverage remains valid during the return process as well.' },
+            { icon: 'fa-headset', title: '24/7 Support', desc: 'You can contact our support team at any time during the return process.' },
+            { icon: 'fa-clock-rotate-left', title: 'Fast Handling', desc: 'Return requests are processed as quickly as possible.' },
+          ],
+        },
+        cta: {
+          title: 'We Are Here If Something Goes Wrong',
+          subtitle: 'Contact us if you need support with return and reverse shipping processes.',
+          buttonText: 'Go to Panel',
+          buttonUrl: 'https://app.adorelgo.com',
+        },
+      }
+);
 
 const scenarioColors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-purple-500'];
 const processColors = ['bg-blue-500', 'bg-green-500', 'bg-orange-500', 'bg-purple-500'];
 const guaranteeColors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500'];
 
 const ReturnShippingPage: React.FC = () => {
-  const [data, setData] = useState<any>(DEFAULT);
+  const { currentLang } = useLanguage();
+  const defaults = getReturnShippingDefaults(currentLang);
+  const [data, setData] = useState<any>(defaults);
 
   useEffect(() => {
-    axios.get(`${API_BASE_URL}/content/page/yurtdisi-iade-geri-gonderi`)
-      .then(res => { if (res.data) setData(deepMerge(DEFAULT, res.data)); })
+    setData(defaults);
+    axios.get(`${API_BASE_URL}/content/page/yurtdisi-iade-geri-gonderi?lang=${currentLang}`)
+      .then(res => { if (res.data) setData(deepMerge(defaults, res.data)); })
       .catch(() => {});
-  }, []);
+  }, [currentLang]);
 
   return (
     <div className="flex flex-col min-h-screen overflow-x-hidden">
@@ -90,9 +147,9 @@ const ReturnShippingPage: React.FC = () => {
           </div>
           <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
             <nav className="flex items-center gap-2 text-sm opacity-60 mb-6">
-              <Link to="/" className="hover:opacity-100">Anasayfa</Link>
+              <Link to="/" className="hover:opacity-100">{defaults.breadcrumbHome}</Link>
               <span>/</span>
-              <Link to="/yurtdisi-kargo" className="hover:opacity-100">Yurtdışı Kargo</Link>
+              <Link to="/yurtdisi-kargo" className="hover:opacity-100">{defaults.breadcrumbParent}</Link>
               <span>/</span>
               <span>{data.hero.title}</span>
             </nav>
@@ -143,7 +200,7 @@ const ReturnShippingPage: React.FC = () => {
                     <i className={`fas ${item.icon} text-white text-lg`}></i>
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Adım {i + 1}</div>
+                    <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">{defaults.stepLabel} {i + 1}</div>
                     <h3 className="font-bold text-[#102477] text-lg mb-2">{item.title}</h3>
                     <p className="text-gray-600 text-sm leading-relaxed">{item.desc}</p>
                   </div>
@@ -184,7 +241,7 @@ const ReturnShippingPage: React.FC = () => {
               </a>
               <Link to="/iletisim"
                 className="inline-flex items-center justify-center gap-3 bg-white/10 text-white font-bold px-10 py-4 rounded-xl hover:bg-white/20 transition-all text-base">
-                İletişime Geç
+                {defaults.contactButtonText}
               </Link>
             </div>
           </div>

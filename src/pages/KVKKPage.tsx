@@ -8,36 +8,83 @@ import WhatsAppButton from '../components/WhatsAppButton';
 import { API_BASE_URL } from '../api-config';
 import { useLanguage } from '../contexts/LanguageContext';
 
-const DEFAULT_SECTIONS = [
-    {
-        type: 'text',
-        content: `<p>İşbu metin, ADOREL LOJİSTİK KARGO TELEKOMÜNİKASYON BİLİŞİM YAZILIM İÇ VE DIŞ TİCARET A.Ş. – "app.adorelgo.com" kullanıcılarının KVKK'ya uygun olarak kişisel verilerinin işlenmesine ilişkin açık rızalarını almak amacıyla hazırlanmıştır.</p>`
-    },
-    { type: 'heading', content: '1. KİŞİSEL VERİLERİN KORUNMASI' },
-    { type: 'heading', content: '1.1 Veri Sorumlusu' },
-    { type: 'text', content: `<p>6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, kişisel verileriniz veri sorumlusu olarak ADOREL LOJİSTİK KARGO TELEKOMÜNİKASYON BİLİŞİM YAZILIM İÇ VE DIŞ TİCARET A.Ş. tarafından aşağıda açıklanan kapsamda işlenebilecektir.</p>` },
-    { type: 'heading', content: '1.2 Kişisel Verilerin İşlenme Amacı' },
-    { type: 'text', content: `<p>Kişisel verileriniz; hizmetlerimizin sunulması, sözleşme süreçlerinin yürütülmesi, müşteri ilişkileri yönetimi, lojistik ve kargo operasyonlarının gerçekleştirilmesi, yasal yükümlülüklerin yerine getirilmesi, fatura ve ödeme işlemlerinin yürütülmesi, iletişim faaliyetlerinin gerçekleştirilmesi amaçlarıyla işlenmektedir.</p>` },
-    { type: 'heading', content: '1.3 İşlenen Kişisel Veriler' },
-    { type: 'text', content: `<p>Ad, soyad, T.C. kimlik numarası, adres, telefon numarası, e-posta adresi, vergi numarası, banka hesap bilgileri, gönderi bilgileri, IP adresi, çerez verileri ve platform üzerindeki kullanım verileri işlenebilmektedir.</p>` },
-    { type: 'heading', content: '1.4 Kişisel Verilerin Toplanma Yöntemi ve Hukuki Sebebi' },
-    { type: 'text', content: `<p>Kişisel verileriniz; web sitemiz, mobil uygulamamız, çağrı merkezimiz, e-posta ve fiziksel formlar aracılığıyla toplanmaktadır. Bu veriler KVKK'nın 5. ve 6. maddelerinde belirtilen sözleşmenin ifası, hukuki yükümlülük, meşru menfaat ve açık rıza hukuki sebeplerine dayanılarak işlenmektedir.</p>` },
-    { type: 'heading', content: '1.5 Kişisel Verilerin Aktarılması' },
-    { type: 'text', content: `<p>Kişisel verileriniz; kargo ve lojistik iş ortaklarımıza, yasal zorunluluk halinde kamu kurum ve kuruluşlarına, ödeme hizmeti sağlayıcılarına, hukuki danışmanlarımıza ve denetim firmalarına KVKK'nın 8. ve 9. maddelerinde belirtilen şartlara uygun olarak aktarılabilmektedir.</p>` },
-    { type: 'heading', content: '1.6 Kişisel Verilerin Saklanma Süresi' },
-    { type: 'text', content: `<p>Kişisel verileriniz, işlenme amaçlarının gerektirdiği süre boyunca ve yasal saklama süreleri dahilinde muhafaza edilmektedir. Saklama süresinin sona ermesinin ardından kişisel veriler silinir, yok edilir veya anonim hale getirilir.</p>` },
-    { type: 'heading', content: '1.7 Veri Güvenliği' },
-    { type: 'text', content: `<p>Şirketimiz, kişisel verilerin hukuka aykırı olarak işlenmesini ve erişilmesini önlemek ile verilerin muhafazasını sağlamak amacıyla uygun güvenlik düzeyini temin etmeye yönelik gerekli teknik ve idari tedbirleri almaktadır.</p>` },
-    { type: 'heading', content: '1.8 Veri Sahibinin Hakları' },
-    { type: 'text', content: `<p>KVKK'nın 11. maddesi uyarınca; kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse buna ilişkin bilgi talep etme, işlenme amacını ve bunların amacına uygun kullanılıp kullanılmadığını öğrenme, yurt içinde veya yurt dışında kişisel verilerinizin aktarıldığı üçüncü kişileri bilme, eksik veya yanlış işlenmişse düzeltilmesini isteme, KVKK'nın 7. maddesinde öngörülen şartlar çerçevesinde silinmesini veya yok edilmesini isteme haklarına sahipsiniz.</p>` },
-    { type: 'heading', content: '1.9 Başvuru Yöntemi' },
-    { type: 'text', content: `<p>Yukarıda belirtilen haklarınızı kullanmak için kimliğinizi tespit edici gerekli bilgiler ile birlikte talebinizi yazılı olarak veya Kişisel Verileri Koruma Kurulu tarafından belirlenen diğer yöntemlerle şirketimize iletebilirsiniz.</p>` },
-    { type: 'heading', content: '2. GİZLİLİK VE SIR SAKLAMA YÜKÜMLÜLÜĞÜ' },
-    { type: 'heading', content: '2.1 Gizlilik Taahhüdü' },
-    { type: 'text', content: `<p>Şirketimiz, kullanıcılarına ait tüm kişisel ve ticari bilgileri gizli tutmayı taahhüt eder. Bu bilgiler, kullanıcının açık rızası olmaksızın üçüncü kişilerle paylaşılmaz.</p>` },
-    { type: 'heading', content: '2.9 İletişim' },
-    { type: 'text', content: `<p>KVKK kapsamındaki talepleriniz ve sorularınız için aşağıdaki iletişim bilgilerinden bize ulaşabilirsiniz.</p><br/><p><strong>ADOREL LOJİSTİK KARGO TELEKOMÜNİKASYON BİLİŞİM YAZILIM İÇ VE DIŞ TİCARET A.Ş.</strong><br/>Bahçelievler Mah. 232. Sok. No: 6 Gölbaşı / Ankara – Türkiye<br/>Tel: 0312 320 26 26<br/>E-posta: info@adorelgo.com</p>` },
-];
+const getKvkkDefaults = (lang: 'tr' | 'en') => (
+    lang === 'tr'
+        ? {
+            title: 'KVKK Aydınlatma Metni',
+            description: 'Kişisel Verilerin Korunması Kanunu kapsamında aydınlatma metni',
+            breadcrumbLabel: 'Anasayfa',
+            seoTitle: 'KVKK | AdorelGo',
+            seoDescription: 'Kişisel Verilerin Korunması Kanunu kapsamında açık rıza ve aydınlatma metni.',
+            sections: [
+                {
+                    type: 'text',
+                    content: `<p>İşbu metin, ADOREL LOJİSTİK KARGO TELEKOMÜNİKASYON BİLİŞİM YAZILIM İÇ VE DIŞ TİCARET A.Ş. – "app.adorelgo.com" kullanıcılarının KVKK'ya uygun olarak kişisel verilerinin işlenmesine ilişkin açık rızalarını almak amacıyla hazırlanmıştır.</p>`
+                },
+                { type: 'heading', content: '1. KİŞİSEL VERİLERİN KORUNMASI' },
+                { type: 'heading', content: '1.1 Veri Sorumlusu' },
+                { type: 'text', content: `<p>6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, kişisel verileriniz veri sorumlusu olarak ADOREL LOJİSTİK KARGO TELEKOMÜNİKASYON BİLİŞİM YAZILIM İÇ VE DIŞ TİCARET A.Ş. tarafından aşağıda açıklanan kapsamda işlenebilecektir.</p>` },
+                { type: 'heading', content: '1.2 Kişisel Verilerin İşlenme Amacı' },
+                { type: 'text', content: `<p>Kişisel verileriniz; hizmetlerimizin sunulması, sözleşme süreçlerinin yürütülmesi, müşteri ilişkileri yönetimi, lojistik ve kargo operasyonlarının gerçekleştirilmesi, yasal yükümlülüklerin yerine getirilmesi, fatura ve ödeme işlemlerinin yürütülmesi, iletişim faaliyetlerinin gerçekleştirilmesi amaçlarıyla işlenmektedir.</p>` },
+                { type: 'heading', content: '1.3 İşlenen Kişisel Veriler' },
+                { type: 'text', content: `<p>Ad, soyad, T.C. kimlik numarası, adres, telefon numarası, e-posta adresi, vergi numarası, banka hesap bilgileri, gönderi bilgileri, IP adresi, çerez verileri ve platform üzerindeki kullanım verileri işlenebilmektedir.</p>` },
+                { type: 'heading', content: '1.4 Kişisel Verilerin Toplanma Yöntemi ve Hukuki Sebebi' },
+                { type: 'text', content: `<p>Kişisel verileriniz; web sitemiz, mobil uygulamamız, çağrı merkezimiz, e-posta ve fiziksel formlar aracılığıyla toplanmaktadır. Bu veriler KVKK'nın 5. ve 6. maddelerinde belirtilen sözleşmenin ifası, hukuki yükümlülük, meşru menfaat ve açık rıza hukuki sebeplerine dayanılarak işlenmektedir.</p>` },
+                { type: 'heading', content: '1.5 Kişisel Verilerin Aktarılması' },
+                { type: 'text', content: `<p>Kişisel verileriniz; kargo ve lojistik iş ortaklarımıza, yasal zorunluluk halinde kamu kurum ve kuruluşlarına, ödeme hizmeti sağlayıcılarına, hukuki danışmanlarımıza ve denetim firmalarına KVKK'nın 8. ve 9. maddelerinde belirtilen şartlara uygun olarak aktarılabilmektedir.</p>` },
+                { type: 'heading', content: '1.6 Kişisel Verilerin Saklanma Süresi' },
+                { type: 'text', content: `<p>Kişisel verileriniz, işlenme amaçlarının gerektirdiği süre boyunca ve yasal saklama süreleri dahilinde muhafaza edilmektedir. Saklama süresinin sona ermesinin ardından kişisel veriler silinir, yok edilir veya anonim hale getirilir.</p>` },
+                { type: 'heading', content: '1.7 Veri Güvenliği' },
+                { type: 'text', content: `<p>Şirketimiz, kişisel verilerin hukuka aykırı olarak işlenmesini ve erişilmesini önlemek ile verilerin muhafazasını sağlamak amacıyla uygun güvenlik düzeyini temin etmeye yönelik gerekli teknik ve idari tedbirleri almaktadır.</p>` },
+                { type: 'heading', content: '1.8 Veri Sahibinin Hakları' },
+                { type: 'text', content: `<p>KVKK'nın 11. maddesi uyarınca; kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse buna ilişkin bilgi talep etme, işlenme amacını ve bunların amacına uygun kullanılıp kullanılmadığını öğrenme, yurt içinde veya yurt dışında kişisel verilerinizin aktarıldığı üçüncü kişileri bilme, eksik veya yanlış işlenmişse düzeltilmesini isteme, KVKK'nın 7. maddesinde öngörülen şartlar çerçevesinde silinmesini veya yok edilmesini isteme haklarına sahipsiniz.</p>` },
+                { type: 'heading', content: '1.9 Başvuru Yöntemi' },
+                { type: 'text', content: `<p>Yukarıda belirtilen haklarınızı kullanmak için kimliğinizi tespit edici gerekli bilgiler ile birlikte talebinizi yazılı olarak veya Kişisel Verileri Koruma Kurulu tarafından belirlenen diğer yöntemlerle şirketimize iletebilirsiniz.</p>` },
+                { type: 'heading', content: '2. GİZLİLİK VE SIR SAKLAMA YÜKÜMLÜLÜĞÜ' },
+                { type: 'heading', content: '2.1 Gizlilik Taahhüdü' },
+                { type: 'text', content: `<p>Şirketimiz, kullanıcılarına ait tüm kişisel ve ticari bilgileri gizli tutmayı taahhüt eder. Bu bilgiler, kullanıcının açık rızası olmaksızın üçüncü kişilerle paylaşılmaz.</p>` },
+                { type: 'heading', content: '2.9 İletişim' },
+                { type: 'text', content: `<p>KVKK kapsamındaki talepleriniz ve sorularınız için aşağıdaki iletişim bilgilerinden bize ulaşabilirsiniz.</p><br/><p><strong>ADOREL LOJİSTİK KARGO TELEKOMÜNİKASYON BİLİŞİM YAZILIM İÇ VE DIŞ TİCARET A.Ş.</strong><br/>Bahçelievler Mah. 232. Sok. No: 6 Gölbaşı / Ankara – Türkiye<br/>Tel: 0312 320 26 26<br/>E-posta: info@adorelgo.com</p>` },
+            ],
+        }
+        : {
+            title: 'Personal Data Protection Notice',
+            description: 'Information notice within the scope of the Personal Data Protection Law',
+            breadcrumbLabel: 'Home',
+            seoTitle: 'Personal Data Protection Notice | AdorelGo',
+            seoDescription: 'Information notice and consent text within the scope of personal data protection.',
+            sections: [
+                {
+                    type: 'text',
+                    content: `<p>This text has been prepared to obtain the explicit consent of users of ADOREL LOJISTIK KARGO TELEKOMUNIKASYON BILISIM YAZILIM IC VE DIS TICARET A.S. and "app.adorelgo.com" regarding the processing of personal data in compliance with applicable personal data protection legislation.</p>`
+                },
+                { type: 'heading', content: '1. PROTECTION OF PERSONAL DATA' },
+                { type: 'heading', content: '1.1 Data Controller' },
+                { type: 'text', content: `<p>In accordance with the Personal Data Protection Law No. 6698, your personal data may be processed by ADOREL LOJISTIK KARGO TELEKOMUNIKASYON BILISIM YAZILIM IC VE DIS TICARET A.S. as the data controller within the scope described below.</p>` },
+                { type: 'heading', content: '1.2 Purpose of Processing Personal Data' },
+                { type: 'text', content: `<p>Your personal data is processed for the purposes of providing our services, carrying out contractual processes, managing customer relations, executing logistics and cargo operations, fulfilling legal obligations, carrying out invoicing and payment transactions, and performing communication activities.</p>` },
+                { type: 'heading', content: '1.3 Processed Personal Data' },
+                { type: 'text', content: `<p>Name, surname, national identity number, address, phone number, e-mail address, tax number, bank account information, shipment information, IP address, cookie data, and usage data on the platform may be processed.</p>` },
+                { type: 'heading', content: '1.4 Method and Legal Basis for Collecting Personal Data' },
+                { type: 'text', content: `<p>Your personal data is collected through our website, mobile application, call center, e-mail, and physical forms. Such data is processed based on the legal grounds of contract performance, legal obligation, legitimate interest, and explicit consent as set forth in the relevant legislation.</p>` },
+                { type: 'heading', content: '1.5 Transfer of Personal Data' },
+                { type: 'text', content: `<p>Your personal data may be transferred to our cargo and logistics business partners, public institutions and organizations when legally required, payment service providers, legal advisors, and audit firms in accordance with the applicable legal provisions.</p>` },
+                { type: 'heading', content: '1.6 Retention Period of Personal Data' },
+                { type: 'text', content: `<p>Your personal data is retained for the period required by the purposes of processing and within legal retention periods. After the retention period expires, personal data is deleted, destroyed, or anonymized.</p>` },
+                { type: 'heading', content: '1.7 Data Security' },
+                { type: 'text', content: `<p>Our company takes the necessary technical and administrative measures to ensure an appropriate level of security in order to prevent the unlawful processing of and access to personal data and to ensure the preservation of such data.</p>` },
+                { type: 'heading', content: '1.8 Rights of the Data Subject' },
+                { type: 'text', content: `<p>Under the relevant legal provisions, you have the right to learn whether your personal data is processed, request information if it has been processed, learn the purpose of processing and whether it is used in accordance with that purpose, know the third parties to whom your personal data is transferred domestically or abroad, request correction if it has been processed incompletely or inaccurately, and request deletion or destruction within the legal framework.</p>` },
+                { type: 'heading', content: '1.9 Application Method' },
+                { type: 'text', content: `<p>To exercise the rights stated above, you may submit your request to our company in writing together with the information necessary to identify your identity or through other methods determined by the competent authority.</p>` },
+                { type: 'heading', content: '2. CONFIDENTIALITY AND NON-DISCLOSURE OBLIGATION' },
+                { type: 'heading', content: '2.1 Confidentiality Commitment' },
+                { type: 'text', content: `<p>Our company undertakes to keep all personal and commercial information belonging to its users confidential. Such information is not shared with third parties without the explicit consent of the user.</p>` },
+                { type: 'heading', content: '2.9 Contact' },
+                { type: 'text', content: `<p>You may contact us using the information below for your requests and questions regarding personal data protection.</p><br/><p><strong>ADOREL LOJISTIK KARGO TELEKOMUNIKASYON BILISIM YAZILIM IC VE DIS TICARET A.S.</strong><br/>Bahcelievler Mah. 232. Sok. No: 6 Golbasi / Ankara - Turkey<br/>Phone: 0312 320 26 26<br/>E-mail: info@adorelgo.com</p>` },
+            ],
+        }
+);
 
 const KVKKPage: React.FC = () => {
     const { currentLang } = useLanguage();
@@ -51,13 +98,14 @@ const KVKKPage: React.FC = () => {
             .finally(() => setLoading(false));
     }, [currentLang]);
 
-    const title = cms?.title || 'KVKK Aydınlatma Metni';
-    const subtitle = cms?.description || 'Kişisel Verilerin Korunması Kanunu kapsamında aydınlatma metni';
-    const sections: any[] = (cms?.sections && cms.sections.length > 0) ? cms.sections : DEFAULT_SECTIONS;
+    const defaults = getKvkkDefaults(currentLang);
+    const title = cms?.title || defaults.title;
+    const subtitle = cms?.description || defaults.description;
+    const sections: any[] = (cms?.sections && cms.sections.length > 0) ? cms.sections : defaults.sections;
 
     return (
         <div className="flex flex-col min-h-screen overflow-x-hidden">
-            <SEO page="kvkk" />
+            <SEO page="kvkk" customTitle={defaults.seoTitle} customDescription={defaults.seoDescription} />
             <Navbar />
             <main className="flex-grow pt-20">
                 {/* Hero */}
@@ -67,7 +115,7 @@ const KVKKPage: React.FC = () => {
                     </div>
                     <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
                         <nav className="flex items-center gap-2 text-sm opacity-60 mb-6">
-                            <Link to="/" className="hover:opacity-100">Anasayfa</Link>
+                            <Link to="/" className="hover:opacity-100">{defaults.breadcrumbLabel}</Link>
                             <span>/</span>
                             <span>{title}</span>
                         </nav>

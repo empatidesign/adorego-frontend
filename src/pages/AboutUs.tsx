@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import SEO from '../components/SEO';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { contentAPI } from '../admin/services/api';
+import { useLanguage } from '../contexts/LanguageContext';
 
 function deepMerge(defaults: any, override: any): any {
   if (override === null || override === undefined) return defaults;
@@ -20,66 +21,125 @@ function deepMerge(defaults: any, override: any): any {
   return override;
 }
 
-const getDefault = () => ({
-  hero: {
-    title: 'Hakkımızda',
-    subtitle: "AdorelGo'yu yakından tanıyın",
-  },
-  intro: 'AdorelGo, e-ticaret yapan işletmelerin ve bireysel kullanıcıların yurtiçi ve yurtdışı kargo süreçlerini kolaylaştırmak için geliştirilmiş bir lojistik teknolojileri platformudur.',
-  whatWeDo: {
-    title: 'Ne Yapıyoruz?',
-    items: [
-      'Yurtiçi ve yurtdışı kargo gönderimlerini tek panelden yönetiyoruz.',
-      'Farklı kargo firmalarının fiyatlarını karşılaştırıp en uygun seçeneği sunuyoruz.',
-      'E-ticaret entegrasyonları ile sipariş süreçlerini otomatikleştiriyoruz.',
-      'Mikro ihracat süreçlerini kolaylaştırıyoruz.',
-      'Kapıdan alım ve kapıya teslim hizmeti sağlıyoruz.',
-    ],
-  },
-  vision: {
-    title: 'Vizyonumuz',
-    text: 'Kargo süreçlerini herkes için erişilebilir hale getirmek.',
-  },
-  mission: {
-    title: 'Misyonumuz',
-    text: 'Kullanıcıların kargo süreçlerinde zaman, maliyet ve operasyon yükünü azaltmak.',
-  },
-  whyUs: {
-    title: 'Neden AdorelGo?',
-    items: [
-      '35+ yıl lojistik tecrübesi',
-      'Şeffaf fiyatlandırma',
-      'Tek panel ile tüm kargo süreçlerini yönetme',
-      'Güçlü e-ticaret entegrasyonları',
-      'Global kargo ortaklıkları',
-    ],
-  },
-  difference: {
-    title: 'Bizim Farkımız',
-    text: 'AdorelGo, akıllı sistemi sayesinde kullanıcıların ihtiyacına göre en doğru kargo seçeneğini otomatik olarak belirler. Fiyat, hız, güvenilirlik ve teslimat süresi gibi kriterleri analiz ederek size en uygun çözümü sunar.',
-  },
-  future: {
-    title: 'Geleceğe Bakış',
-    text: 'AdorelGo olarak, lojistik sektöründe dijital dönüşümün öncüsü olmayı hedefliyoruz. Yapay zeka destekli rota optimizasyonu, otomatik gümrük süreçleri ve genişleyen global ağımız ile kullanıcılarımıza her geçen gün daha iyi bir deneyim sunmak için çalışıyoruz.',
-  },
-  cta: {
-    text: 'Hemen Başla',
-    url: 'https://app.adorelgo.com',
-  },
-});
+const getDefault = (lang: 'tr' | 'en') => (
+  lang === 'tr'
+    ? {
+        hero: {
+          title: 'Hakkımızda',
+          subtitle: "AdorelGo'yu yakından tanıyın",
+        },
+        intro: 'AdorelGo, e-ticaret yapan işletmelerin ve bireysel kullanıcıların yurtiçi ve yurtdışı kargo süreçlerini kolaylaştırmak için geliştirilmiş bir lojistik teknolojileri platformudur.',
+        whatWeDo: {
+          title: 'Ne Yapıyoruz?',
+          items: [
+            'Yurtiçi ve yurtdışı kargo gönderimlerini tek panelden yönetiyoruz.',
+            'Farklı kargo firmalarının fiyatlarını karşılaştırıp en uygun seçeneği sunuyoruz.',
+            'E-ticaret entegrasyonları ile sipariş süreçlerini otomatikleştiriyoruz.',
+            'Mikro ihracat süreçlerini kolaylaştırıyoruz.',
+            'Kapıdan alım ve kapıya teslim hizmeti sağlıyoruz.',
+          ],
+        },
+        vision: {
+          title: 'Vizyonumuz',
+          text: 'Kargo süreçlerini herkes için erişilebilir hale getirmek.',
+        },
+        mission: {
+          title: 'Misyonumuz',
+          text: 'Kullanıcıların kargo süreçlerinde zaman, maliyet ve operasyon yükünü azaltmak.',
+        },
+        whyUs: {
+          title: 'Neden AdorelGo?',
+          items: [
+            '35+ yıl lojistik tecrübesi',
+            'Şeffaf fiyatlandırma',
+            'Tek panel ile tüm kargo süreçlerini yönetme',
+            'Güçlü e-ticaret entegrasyonları',
+            'Global kargo ortaklıkları',
+          ],
+        },
+        difference: {
+          title: 'Bizim Farkımız',
+          text: 'AdorelGo, akıllı sistemi sayesinde kullanıcıların ihtiyacına göre en doğru kargo seçeneğini otomatik olarak belirler. Fiyat, hız, güvenilirlik ve teslimat süresi gibi kriterleri analiz ederek size en uygun çözümü sunar.',
+        },
+        future: {
+          title: 'Geleceğe Bakış',
+          text: 'AdorelGo olarak, lojistik sektöründe dijital dönüşümün öncüsü olmayı hedefliyoruz. Yapay zeka destekli rota optimizasyonu, otomatik gümrük süreçleri ve genişleyen global ağımız ile kullanıcılarımıza her geçen gün daha iyi bir deneyim sunmak için çalışıyoruz.',
+        },
+        cta: {
+          text: 'Hemen Başla',
+          url: 'https://app.adorelgo.com',
+        },
+        breadcrumbLabel: 'Anasayfa',
+        seoTitle: 'Hakkımızda | AdorelGo',
+        seoDescription: 'AdorelGo hakkında bilgi edinin. Misyonumuz, vizyonumuz ve ekibimiz.',
+      }
+    : {
+        hero: {
+          title: 'About Us',
+          subtitle: 'Get to know AdorelGo better',
+        },
+        intro: 'AdorelGo is a logistics technology platform developed to simplify domestic and international shipping processes for e-commerce businesses and individual users.',
+        whatWeDo: {
+          title: 'What We Do',
+          items: [
+            'We manage domestic and international shipments from a single panel.',
+            'We compare rates from different carriers and present the best option.',
+            'We automate order processes with e-commerce integrations.',
+            'We simplify micro-export operations.',
+            'We provide door pickup and door delivery services.',
+          ],
+        },
+        vision: {
+          title: 'Our Vision',
+          text: 'To make shipping processes accessible to everyone.',
+        },
+        mission: {
+          title: 'Our Mission',
+          text: 'To reduce time, cost, and operational burden in our users’ shipping processes.',
+        },
+        whyUs: {
+          title: 'Why AdorelGo?',
+          items: [
+            '35+ years of logistics experience',
+            'Transparent pricing',
+            'Manage all shipping processes from a single panel',
+            'Strong e-commerce integrations',
+            'Global shipping partnerships',
+          ],
+        },
+        difference: {
+          title: 'What Makes Us Different',
+          text: 'Thanks to its smart system, AdorelGo automatically determines the most suitable shipping option based on the user’s needs. By analyzing criteria such as price, speed, reliability, and delivery time, it offers the best solution for you.',
+        },
+        future: {
+          title: 'Looking Ahead',
+          text: 'At AdorelGo, we aim to be a pioneer of digital transformation in the logistics sector. With AI-supported route optimization, automated customs processes, and our expanding global network, we work every day to provide a better experience for our users.',
+        },
+        cta: {
+          text: 'Get Started',
+          url: 'https://app.adorelgo.com',
+        },
+        breadcrumbLabel: 'Home',
+        seoTitle: 'About Us | AdorelGo',
+        seoDescription: 'Learn more about AdorelGo. Our mission, vision, and approach to logistics technology.',
+      }
+);
 
 const AboutUs: React.FC = () => {
-  const [data, setData] = useState(getDefault());
+  const { currentLang } = useLanguage();
+  const defaults = getDefault(currentLang);
+  const [data, setData] = useState(defaults);
 
   useEffect(() => {
-    contentAPI.getAbout().then(res => {
-      setData(deepMerge(getDefault(), res.data ?? res));
+    setData(defaults);
+    contentAPI.getAbout(currentLang).then(res => {
+      setData(deepMerge(defaults, res.data ?? res));
     }).catch(() => {});
-  }, []);
+  }, [currentLang]);
 
   return (
     <div className="flex flex-col min-h-screen overflow-x-hidden">
-      <SEO page="hakkimizda" />
+      <SEO page="hakkimizda" customTitle={defaults.seoTitle} customDescription={defaults.seoDescription} />
       <Navbar />
       <main className="flex-grow pt-20">
         {/* Hero Header */}
@@ -89,7 +149,7 @@ const AboutUs: React.FC = () => {
           </div>
           <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
             <nav className="flex items-center gap-2 text-sm opacity-60 mb-6">
-              <Link to="/" className="hover:opacity-100">Anasayfa</Link>
+              <Link to="/" className="hover:opacity-100">{defaults.breadcrumbLabel}</Link>
               <span>/</span>
               <span>{data.hero.title}</span>
             </nav>

@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import SEO from '../components/SEO';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { API_BASE_URL } from '../api-config';
+import { useLanguage } from '../contexts/LanguageContext';
 
 function deepMerge(defaults: any, override: any): any {
   if (override === null || override === undefined) return defaults;
@@ -21,60 +22,112 @@ function deepMerge(defaults: any, override: any): any {
   return result;
 }
 
-const DEFAULT = {
-  hero: {
-    title: 'Gümrük & Evrak Rehberi',
-    subtitle: 'Gümrük artık korku değil, rahatlama. Bilmen gereken kadarını bil, gerisini sisteme bırak.',
-  },
-  intro: {
-    title: 'Gümrük = Korku Değil Rahatlama',
-    text: 'Karmaşık evraklar, yanlış ürünler, eksik bilgiler… Sistem gerekli olanı sana sorar, gerisini biz takip ederiz. Sen sadece ürün bilgilerini doğru gir.',
-  },
-  documents: {
-    title: 'Hangi Evraklar Gerekli?',
-    items: [
-      { icon: 'fa-file-invoice', title: 'Ticari Fatura (Commercial Invoice)', desc: 'Gönderilen ürünlerin listesi, değeri ve miktarını gösterir. Sistem bu formu otomatik oluşturur.' },
-      { icon: 'fa-file-lines', title: 'Ambalaj Listesi (Packing List)', desc: 'Paketin içeriğini detaylandıran belgedir. Ticari gönderimler için zorunludur.' },
-      { icon: 'fa-passport', title: 'Kimlik / Pasaport Fotokopisi', desc: 'Bazı ülkelere gönderimde gönderici kimlik bilgisi istenebilir. Sistem seni bilgilendirir.' },
-      { icon: 'fa-certificate', title: 'Menşe Şahadetnamesi', desc: 'Ürünün üretildiği ülkeyi belgeler. Özellikle ticari gönderimler için bazı ülkeler talep eder.' },
-    ],
-  },
-  systemHelp: {
-    title: 'Sistem Seni Nasıl Yönlendirir?',
-    items: [
-      { icon: 'fa-magnifying-glass', title: 'Ürün Kontrolü', desc: 'Girdiğin ürünün hedef ülkeye girip giremeyeceğini sistem otomatik kontrol eder.' },
-      { icon: 'fa-file-circle-check', title: 'Otomatik Form', desc: 'Gümrük beyan formları sistem tarafından otomatik doldurulur, hata riski en aza iner.' },
-      { icon: 'fa-bell', title: 'Anlık Bildirim', desc: 'Kargon gümrükte bekletilirse anında bildirim alırsın, süreci biz takip ederiz.' },
-    ],
-  },
-  faq: {
-    title: 'Gümrük Hakkında Sık Sorulan Sorular',
-    items: [
-      { q: 'Her ülkeye her ürünü gönderebilir miyim?', a: 'Hayır. Bazı ülkelerin yasak ve kısıtlı ürün listeleri vardır. Sistem gönderdiğin ürünü kontrol eder ve seni uyarır.' },
-      { q: 'Gümrük vergisini kim öder?', a: 'Genellikle alıcı öder. Ancak bazı gönderim tiplerinde vergiyi gönderici üstlenebilir. Bunu sistem sana sunar.' },
-      { q: 'Beyan değerini düşük yazarsam ne olur?', a: 'Yanlış beyan ciddi yaptırımlar ve kargo iadesiyle sonuçlanabilir. Doğru değer girmek hem yasal hem de senin yararına.' },
-      { q: 'Gümrükte sorun çıkarsa ne yapacağım?', a: 'Biz seni bilgilendiririz ve süreci sizin adınıza takip ederiz. Ekstra ücretsiz destek verilir.' },
-    ],
-  },
-  cta: {
-    title: 'Gümrüğü Bize Bırak',
-    subtitle: 'Sisteme gir, ürün bilgilerini gir, gerisini biz halledelim.',
-    buttonText: 'Hemen Başla',
-    buttonUrl: 'https://app.adorelgo.com',
-  },
-};
+const getCustomsGuideDefaults = (lang: 'tr' | 'en') => (
+  lang === 'tr'
+    ? {
+        breadcrumbHome: 'Anasayfa',
+        breadcrumbParent: 'Yurtdışı Kargo',
+        hero: {
+          title: 'Gümrük & Evrak Rehberi',
+          subtitle: 'Gümrük artık korku değil, rahatlama. Bilmen gereken kadarını bil, gerisini sisteme bırak.',
+        },
+        intro: {
+          title: 'Gümrük = Korku Değil Rahatlama',
+          text: 'Karmaşık evraklar, yanlış ürünler, eksik bilgiler… Sistem gerekli olanı sana sorar, gerisini biz takip ederiz. Sen sadece ürün bilgilerini doğru gir.',
+        },
+        documents: {
+          title: 'Hangi Evraklar Gerekli?',
+          items: [
+            { icon: 'fa-file-invoice', title: 'Ticari Fatura (Commercial Invoice)', desc: 'Gönderilen ürünlerin listesi, değeri ve miktarını gösterir. Sistem bu formu otomatik oluşturur.' },
+            { icon: 'fa-file-lines', title: 'Ambalaj Listesi (Packing List)', desc: 'Paketin içeriğini detaylandıran belgedir. Ticari gönderimler için zorunludur.' },
+            { icon: 'fa-passport', title: 'Kimlik / Pasaport Fotokopisi', desc: 'Bazı ülkelere gönderimde gönderici kimlik bilgisi istenebilir. Sistem seni bilgilendirir.' },
+            { icon: 'fa-certificate', title: 'Menşe Şahadetnamesi', desc: 'Ürünün üretildiği ülkeyi belgeler. Özellikle ticari gönderimler için bazı ülkeler talep eder.' },
+          ],
+        },
+        systemHelp: {
+          title: 'Sistem Seni Nasıl Yönlendirir?',
+          items: [
+            { icon: 'fa-magnifying-glass', title: 'Ürün Kontrolü', desc: 'Girdiğin ürünün hedef ülkeye girip giremeyeceğini sistem otomatik kontrol eder.' },
+            { icon: 'fa-file-circle-check', title: 'Otomatik Form', desc: 'Gümrük beyan formları sistem tarafından otomatik doldurulur, hata riski en aza iner.' },
+            { icon: 'fa-bell', title: 'Anlık Bildirim', desc: 'Kargon gümrükte bekletilirse anında bildirim alırsın, süreci biz takip ederiz.' },
+          ],
+        },
+        faq: {
+          title: 'Gümrük Hakkında Sık Sorulan Sorular',
+          items: [
+            { q: 'Her ülkeye her ürünü gönderebilir miyim?', a: 'Hayır. Bazı ülkelerin yasak ve kısıtlı ürün listeleri vardır. Sistem gönderdiğin ürünü kontrol eder ve seni uyarır.' },
+            { q: 'Gümrük vergisini kim öder?', a: 'Genellikle alıcı öder. Ancak bazı gönderim tiplerinde vergiyi gönderici üstlenebilir. Bunu sistem sana sunar.' },
+            { q: 'Beyan değerini düşük yazarsam ne olur?', a: 'Yanlış beyan ciddi yaptırımlar ve kargo iadesiyle sonuçlanabilir. Doğru değer girmek hem yasal hem de senin yararına.' },
+            { q: 'Gümrükte sorun çıkarsa ne yapacağım?', a: 'Biz seni bilgilendiririz ve süreci sizin adınıza takip ederiz. Ekstra ücretsiz destek verilir.' },
+          ],
+        },
+        cta: {
+          title: 'Gümrüğü Bize Bırak',
+          subtitle: 'Sisteme gir, ürün bilgilerini gir, gerisini biz halledelim.',
+          buttonText: 'Hemen Başla',
+          buttonUrl: 'https://app.adorelgo.com',
+        },
+      }
+    : {
+        breadcrumbHome: 'Home',
+        breadcrumbParent: 'International Shipping',
+        hero: {
+          title: 'Customs & Documents Guide',
+          subtitle: 'Customs is no longer something to fear. Learn what you need to know and leave the rest to the system.',
+        },
+        intro: {
+          title: 'Customs Should Feel Simple',
+          text: 'Complex paperwork, incorrect items, missing details... The system asks only for what is necessary and we handle the rest. You just enter your product information correctly.',
+        },
+        documents: {
+          title: 'Which Documents Are Required?',
+          items: [
+            { icon: 'fa-file-invoice', title: 'Commercial Invoice', desc: 'Shows the list, value, and quantity of the shipped items. The system creates this form automatically.' },
+            { icon: 'fa-file-lines', title: 'Packing List', desc: 'A document that details the contents of the package. It is mandatory for commercial shipments.' },
+            { icon: 'fa-passport', title: 'ID / Passport Copy', desc: 'Some countries may request sender identification details. The system informs you when needed.' },
+            { icon: 'fa-certificate', title: 'Certificate of Origin', desc: 'Documents the country where the product was manufactured. Some countries request it especially for commercial shipments.' },
+          ],
+        },
+        systemHelp: {
+          title: 'How Does the System Guide You?',
+          items: [
+            { icon: 'fa-magnifying-glass', title: 'Product Check', desc: 'The system automatically checks whether the item you entered can be shipped to the destination country.' },
+            { icon: 'fa-file-circle-check', title: 'Automatic Forms', desc: 'Customs declaration forms are filled in automatically by the system to minimize errors.' },
+            { icon: 'fa-bell', title: 'Instant Notifications', desc: 'If your shipment is held at customs, you receive an instant notification and we follow the process for you.' },
+          ],
+        },
+        faq: {
+          title: 'Frequently Asked Questions About Customs',
+          items: [
+            { q: 'Can I send every product to every country?', a: 'No. Some countries have prohibited and restricted item lists. The system checks your item and warns you if needed.' },
+            { q: 'Who pays customs duty?', a: 'Usually the receiver pays. In some shipment types, the sender may choose to cover the duty.' },
+            { q: 'What happens if I declare a lower value?', a: 'Incorrect declarations can lead to serious penalties and returned shipments. Entering the correct value is both legal and beneficial for you.' },
+            { q: 'What should I do if there is a customs issue?', a: 'We inform you and follow the process on your behalf. Additional support is provided when needed.' },
+          ],
+        },
+        cta: {
+          title: 'Leave Customs to Us',
+          subtitle: 'Enter your shipment and product details, and let us take care of the rest.',
+          buttonText: 'Get Started',
+          buttonUrl: 'https://app.adorelgo.com',
+        },
+      }
+);
 
 const docColors = ['bg-blue-500', 'bg-green-500', 'bg-orange-500', 'bg-purple-500'];
 const sysColors = ['bg-blue-500', 'bg-green-500', 'bg-orange-500'];
 
 const CustomsGuidePage: React.FC = () => {
-  const [data, setData] = useState<any>(DEFAULT);
+  const { currentLang } = useLanguage();
+  const defaults = getCustomsGuideDefaults(currentLang);
+  const [data, setData] = useState<any>(defaults);
 
   useEffect(() => {
-    axios.get(`${API_BASE_URL}/content/page/gumruk-evrak-rehberi`)
-      .then(res => { if (res.data) setData(deepMerge(DEFAULT, res.data)); })
+    setData(defaults);
+    axios.get(`${API_BASE_URL}/content/page/gumruk-evrak-rehberi?lang=${currentLang}`)
+      .then(res => { if (res.data) setData(deepMerge(defaults, res.data)); })
       .catch(() => {});
-  }, []);
+  }, [currentLang]);
 
   return (
     <div className="flex flex-col min-h-screen overflow-x-hidden">
@@ -89,9 +142,9 @@ const CustomsGuidePage: React.FC = () => {
           </div>
           <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
             <nav className="flex items-center gap-2 text-sm opacity-60 mb-6">
-              <Link to="/" className="hover:opacity-100">Anasayfa</Link>
+              <Link to="/" className="hover:opacity-100">{defaults.breadcrumbHome}</Link>
               <span>/</span>
-              <Link to="/yurtdisi-kargo" className="hover:opacity-100">Yurtdışı Kargo</Link>
+              <Link to="/yurtdisi-kargo" className="hover:opacity-100">{defaults.breadcrumbParent}</Link>
               <span>/</span>
               <span>{data.hero.title}</span>
             </nav>
