@@ -66,7 +66,7 @@ const IntlShippingPrices: React.FC = () => {
                         )}
                     </div>
                 </section>
-                <section className="py-20 bg-gradient-to-r from-[#102477] to-[#1a3a9e] text-white">
+                <section className="py-6 bg-gradient-to-r from-[#102477] to-[#1a3a9e] text-white">
                     <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
                         <h2 className="text-3xl lg:text-4xl font-bold mb-4 tracking-tight">En uygun yurtdışı kargo fiyatını bulun</h2>
                         <p className="text-white/70 text-lg max-w-2xl mx-auto leading-relaxed mb-8">Ücretsiz üye olun, gönderi bilgilerinizi girin ve tüm fiyatları anında karşılaştırın.</p>

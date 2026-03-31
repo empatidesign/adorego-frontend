@@ -134,7 +134,7 @@ const DoorToDoorPage: React.FC = () => {
         </section>
 
         {/* CTA */}
-        <section className="py-20 bg-gradient-to-r from-[#102477] to-[#1a3a9e] text-white text-center">
+        <section className="py-6 bg-gradient-to-r from-[#102477] to-[#1a3a9e] text-white text-center">
           <div className="max-w-2xl mx-auto px-6">
             <h2 className="text-3xl font-bold mb-4">{data.cta.title}</h2>
             <p className="text-white/70 text-lg mb-8">{data.cta.subtitle}</p>

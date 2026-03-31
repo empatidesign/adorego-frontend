@@ -7,8 +7,8 @@ const HomeCTA: React.FC = () => {
   const { currentLang } = useLanguage();
 
   const getDefault = (lang: string) => ({
-    title: lang === 'tr' ? 'Hemen gönderine başla' : 'Start shipping now',
-    subtitle: lang === 'tr' ? 'Kargonu oluştur, dünyaya satış yap' : 'Create your shipment, sell to the world',
+    title: lang === 'tr' ? 'Sorun mu var? Kararsız mı kaldın?' : 'Have questions? Not sure yet?',
+    subtitle: lang === 'tr' ? 'Destek ekibimiz yardımcı olsun.' : 'Let our support team help you.',
     buttonText: lang === 'tr' ? 'Ücretsiz Üye Ol' : 'Sign Up Free',
     buttonLink: 'https://app.adorelgo.com',
   });
@@ -16,26 +16,26 @@ const HomeCTA: React.FC = () => {
   const [data, setData] = useState<any>(getDefault(currentLang));
 
   useEffect(() => {
+    setData(getDefault(currentLang));
     axios.get(`${API_BASE_URL}/content/home-cta?lang=${currentLang}`)
       .then(res => {
         if (res.data?.title) setData(res.data);
-        else setData(getDefault(currentLang));
       })
-      .catch(() => setData(getDefault(currentLang)));
+      .catch(() => {});
   }, [currentLang]);
 
   return (
-    <section className="py-8 md:py-20 bg-gradient-to-r from-[#102477] to-[#1a3a9e] relative overflow-hidden">
+    <section className="py-8 md:py-6 bg-gradient-to-r from-[#102477] to-[#1a3a9e] relative overflow-hidden">
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#4DB848] rounded-full blur-[120px] -mr-48 -mt-48"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-400 rounded-full blur-[120px] -ml-48 -mb-48"></div>
       </div>
       <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center relative z-10">
         <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4 tracking-tight">
-          {currentLang === 'tr' ? 'Sorun mu var? Kararsız mı kaldın?' : 'Have questions? Not sure yet?'}
+          {data.title}
         </h2>
         <p className="text-white/70 text-lg mb-10 font-medium">
-          {currentLang === 'tr' ? 'Destek ekibimiz yardımcı olsun.' : 'Let our support team help you.'}
+          {data.subtitle}
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a

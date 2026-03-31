@@ -17,11 +17,16 @@ const SolutionsCta: React.FC = () => {
   const [ctaLink, setCtaLink] = useState(defaultCtaLink);
 
   useEffect(() => {
+    const defDesc = currentLang === 'tr' ? 'Yurtiçi, yurtdışı ve tahsilatlı tüm gönderimler tek panelde' : 'All domestic, international and cash-on-delivery shipments in one panel';
+    const defText = currentLang === 'tr' ? 'Gönderi Oluştur' : 'Create Shipment';
+    setSubDescription(defDesc);
+    setCtaText(defText);
+    setCtaLink(defaultCtaLink);
     axios.get(`${API_BASE_URL}/content/solutions?lang=${currentLang}`)
       .then(res => {
         if (res.data) {
-          setSubDescription(res.data.subDescription || defaultSubDescription);
-          setCtaText(res.data.ctaButtonText || defaultCtaText);
+          setSubDescription(res.data.subDescription || defDesc);
+          setCtaText(res.data.ctaButtonText || defText);
           setCtaLink(res.data.ctaButtonLink || defaultCtaLink);
         }
       })

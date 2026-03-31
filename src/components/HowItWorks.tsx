@@ -43,87 +43,63 @@ const StepIcon = ({ type }: { type: string }) => {
   return <>{icons[type] || icons.signup}</>;
 };
 
+const getDefaultContent = (lang: string) => ({
+  badge: lang === 'tr' ? 'SÜREÇ' : 'PROCESS',
+  title: lang === 'tr' ? 'Yurtdışına' : 'How to',
+  titleHighlight: lang === 'tr' ? 'Nasıl Gönderirim?' : 'Send Internationally?',
+  steps: [
+    {
+      id: 1, iconType: "signup",
+      title: lang === 'tr' ? "Ücretsiz Üye Ol" : "Sign Up for Free",
+      description: lang === 'tr' ? "adorelgo.com'a ücretsiz üye ol, hemen gönderim yapmaya başla." : "Sign up for free at adorelgo.com and start shipping right away.",
+      color: "bg-blue-500", image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=400&h=400&fit=crop", order: 0
+    },
+    {
+      id: 2, iconType: "upload",
+      title: lang === 'tr' ? "Belgelerini Yükle" : "Upload Your Documents",
+      description: lang === 'tr' ? "Gönderim için gerekli belgelerini sisteme yükle. Hızlı ve güvenli." : "Upload the required documents for shipping. Fast and secure.",
+      color: "bg-[#4DB848]", image: "https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=400&h=400&fit=crop", order: 1
+    },
+    {
+      id: 3, iconType: "create",
+      title: lang === 'tr' ? "Gönderini Oluştur" : "Create Your Shipment",
+      description: lang === 'tr' ? "Paket bilgilerini gir, alıcı adresini ekle ve gönderini oluştur." : "Enter package details, add recipient address and create your shipment.",
+      color: "bg-blue-500", image: "https://images.unsplash.com/photo-1586528116493-a029325540fa?w=400&h=400&fit=crop", order: 2
+    },
+    {
+      id: 4, iconType: "pickup",
+      title: lang === 'tr' ? "Kapından Alalım" : "We Pick Up from Your Door",
+      description: lang === 'tr' ? "Gönderin adresinden alınır, alıcının kapısına teslim edilir. Tüm süreç tek panelden takip edilir." : "Your shipment is picked up from your address and delivered to the recipient's door.",
+      color: "bg-[#4DB848]", image: "https://images.unsplash.com/photo-1553413077-190dd305871c?w=400&h=400&fit=crop", order: 3
+    }
+  ],
+  buttons: [
+    { id: 1, text: lang === 'tr' ? 'Nasıl Gönderirim?' : 'How to Send?', link: '/nasil-gonderirim', style: 'secondary', icon: 'fa-arrow-right', order: 0 },
+    { id: 2, text: lang === 'tr' ? 'Ücretsiz Üye Ol' : 'Sign Up Free', link: 'https://app.adorelgo.com', style: 'primary', icon: '', order: 1, external: true }
+  ]
+});
+
 const HowItWorks: React.FC = () => {
   const { currentLang } = useLanguage();
   const navigate = useNavigate();
-  const [content, setContent] = useState<any>({
-    badge: currentLang === 'tr' ? 'SÜREÇ' : 'PROCESS',
-    title: currentLang === 'tr' ? 'Yurtdışına' : 'How to',
-    titleHighlight: currentLang === 'tr' ? 'Nasıl Gönderirim?' : 'Send Internationally?',
-    steps: [
-      {
-        id: 1,
-        iconType: "signup",
-        title: currentLang === 'tr' ? "Ücretsiz Üye Ol" : "Sign Up for Free",
-        description: currentLang === 'tr' ? "adorelgo.com'a ücretsiz üye ol, hemen gönderim yapmaya başla." : "Sign up for free at adorelgo.com and start shipping right away.",
-        color: "bg-blue-500",
-        image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=400&h=400&fit=crop",
-        order: 0
-      },
-      {
-        id: 2,
-        iconType: "upload",
-        title: currentLang === 'tr' ? "Belgelerini Yükle" : "Upload Your Documents",
-        description: currentLang === 'tr' ? "Gönderim için gerekli belgelerini sisteme yükle. Hızlı ve güvenli." : "Upload the required documents for shipping. Fast and secure.",
-        color: "bg-[#4DB848]",
-        image: "https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=400&h=400&fit=crop",
-        order: 1
-      },
-      {
-        id: 3,
-        iconType: "create",
-        title: currentLang === 'tr' ? "Gönderini Oluştur" : "Create Your Shipment",
-        description: currentLang === 'tr' ? "Paket bilgilerini gir, alıcı adresini ekle ve gönderini oluştur." : "Enter package details, add recipient address and create your shipment.",
-        color: "bg-blue-500",
-        image: "https://images.unsplash.com/photo-1586528116493-a029325540fa?w=400&h=400&fit=crop",
-        order: 2
-      },
-      {
-        id: 4,
-        iconType: "pickup",
-        title: currentLang === 'tr' ? "Kapından Alalım" : "We Pick Up from Your Door",
-        description: currentLang === 'tr' ? "Gönderin adresinden alınır, alıcının kapısına teslim edilir. Tüm süreç tek panelden takip edilir." : "Your shipment is picked up from your address and delivered to the recipient's door.",
-        color: "bg-[#4DB848]",
-        image: "https://images.unsplash.com/photo-1553413077-190dd305871c?w=400&h=400&fit=crop",
-        order: 3
-      }
-    ],
-    buttons: [
-      {
-        id: 1,
-        text: currentLang === 'tr' ? 'Nasıl Gönderirim?' : 'How to Send?',
-        link: '/nasil-gonderirim',
-        style: 'secondary',
-        icon: 'fa-arrow-right',
-        order: 0
-      },
-      {
-        id: 2,
-        text: currentLang === 'tr' ? 'Ücretsiz Üye Ol' : 'Sign Up Free',
-        link: 'https://app.adorelgo.com',
-        style: 'primary',
-        icon: '',
-        order: 1,
-        external: true
-      }
-    ]
-  });
+  const [content, setContent] = useState<any>(() => getDefaultContent(currentLang));
 
   useEffect(() => {
+    setContent(getDefaultContent(currentLang));
     axios.get(`${API_BASE_URL}/content/howitworks?lang=${currentLang}`)
       .then(res => {
         if (res.data && res.data.steps && res.data.steps.length > 0) {
           setContent((prev: any) => ({ ...prev, ...res.data }));
         }
       })
-      .catch(err => console.error('HowItWorks content yüklenemedi:', err));
+      .catch(() => {});
   }, [currentLang]);
 
   return (
-    <section id="nasil-calisir" className="py-8 md:py-12 bg-white">
+    <section id="nasil-calisir" className="py-8 md:py-12 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="mb-16 text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold text-[#102477] tracking-tight">
+          <h2 className="inline-block text-3xl lg:text-4xl font-bold text-[#102477] tracking-tight bg-gray-100 px-8 py-3 rounded-2xl">
             {content.title} <span className="text-[#4DB848]">{content.titleHighlight}</span>
           </h2>
         </div>

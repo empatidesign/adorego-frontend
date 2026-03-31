@@ -28,6 +28,7 @@ const Features: React.FC = () => {
   const getDefaultCta = (lang: string) => {
     if (lang === 'tr') {
       return {
+        bottomText: 'Kargo firması seçmezsin sonuç seçersin.',
         title: 'Yurtdışına Açılmanın En Kolay Yolu.',
         subtitle: 'Hemen kayıt olun, ilk gönderinizde AdorelGo farkını yaşayın.',
         buttonText: 'ÜCRETSİZ KAYIT',
@@ -36,6 +37,7 @@ const Features: React.FC = () => {
       };
     } else {
       return {
+        bottomText: "You don't choose a carrier, you choose results.",
         title: 'The Easiest Way to Go International.',
         subtitle: 'Sign up now and experience the AdorelGo difference with your first shipment.',
         buttonText: 'FREE SIGN UP',
@@ -123,10 +125,10 @@ const Features: React.FC = () => {
   }, [currentLang]);
 
   return (
-    <section className="pb-8 md:pb-12 pt-0 -mt-10 relative overflow-hidden bg-white">
+    <section className="pb-8 md:pb-12 pt-10 relative overflow-hidden bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="mb-8 text-center">
-          <h2 className="text-4xl lg:text-5xl font-bold text-[#102477] mb-4 tracking-tight">
+          <h2 className="inline-block text-3xl lg:text-4xl font-bold text-[#102477] mb-4 tracking-tight bg-gray-100 px-8 py-3 rounded-2xl">
             {header.title}
           </h2>
           <p className="text-lg text-gray-700 mx-auto font-normal whitespace-nowrap">
@@ -165,9 +167,8 @@ const Features: React.FC = () => {
         </div>
 
         <div className="mt-10 text-center">
-          <p className="text-2xl lg:text-3xl font-bold text-[#102477]">
-            Kargo firması seçmezsin{' '}
-            <span className="text-[#4DB848]">sonuç seçersin.</span>
+          <p className="inline-block text-3xl lg:text-4xl font-bold text-[#102477] bg-gray-100 px-8 py-3 rounded-2xl">
+            {cta.bottomText || (currentLang === 'tr' ? 'Kargo firması seçmezsin sonuç seçersin.' : "You don't choose a carrier, you choose results.")}
           </p>
         </div>
 

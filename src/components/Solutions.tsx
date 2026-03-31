@@ -116,6 +116,7 @@ const Solutions: React.FC = () => {
   const [content, setContent] = useState<any>(getDefaultContent());
 
   useEffect(() => {
+    setContent(getDefaultContent());
     axios.get(`${API_BASE_URL}/content/solutions?lang=${currentLang}`)
       .then(res => {
         if (res.data && res.data.services) setContent(res.data);
@@ -134,7 +135,7 @@ const Solutions: React.FC = () => {
           >
             {content.badge}
           </span>
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4 tracking-tight leading-tight">
+          <h2 className="inline-block text-3xl lg:text-4xl font-bold mb-4 tracking-tight leading-tight bg-gray-100 px-8 py-3 rounded-2xl">
             <span style={{ color: content.titleColor || '#102477' }}>
               {content.title}
             </span>{' '}

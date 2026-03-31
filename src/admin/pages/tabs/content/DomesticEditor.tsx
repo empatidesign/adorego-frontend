@@ -1,13 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { contentAPI } from '../../../services/api';
 import { useEditor, Loader, Card, SaveBtn, Label, Input, Textarea, AddBtn, RemoveBtn, ImageUpload, SeoCard } from './shared';
 
-const DEFAULT_DOMESTIC = {
+const LangToggle: React.FC<{ lang: string; onChange: (l: string) => void }> = ({ lang, onChange }) => (
+  <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl p-1 w-fit">
+    {['tr', 'en'].map(l => (
+      <button key={l} onClick={() => onChange(l)}
+        className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors ${lang === l ? 'bg-blue-600 text-white' : 'text-gray-500 hover:text-gray-700'}`}>
+        {l === 'tr' ? '🇹🇷 Türkçe' : '🇬🇧 English'}
+      </button>
+    ))}
+  </div>
+);
+
+const getDefaultDomestic = (lang: string) => ({
   hero: {
-    title: 'Yurtiçi Kargo',
-    subtitle: 'En uygun fiyatla, en hızlı şekilde yurtiçi gönderim',
+    title: lang === 'tr' ? 'Yurtiçi Kargo' : 'Domestic Shipping',
+    subtitle: lang === 'tr' ? 'En uygun fiyatla, en hızlı şekilde yurtiçi gönderim' : 'The fastest domestic shipping at the best price',
   },
-  kargoTypes: [
+  kargoTypes: lang === 'tr' ? [
     {
       id: '1', title: 'Alıcı Ödemeli Lojistik', subtitle: 'Büyük Paketleri Cepten Ödeme Alıcı Ödesin',
       description: 'Mobilya, beyaz eşya, ağır ürünler için ideal çözüm. Yüksek maliyetli gönderimlerde cebinden ödeme yapmazsın.',
@@ -18,37 +29,56 @@ const DEFAULT_DOMESTIC = {
       description: 'Gönderini kapıda ödemeli gönder. Ürün bedeli teslimat sırasında alıcıdan tahsil edilir.',
       highlight: 'Alıcı, teslimat sırasında nakit veya kredi kartı ile ödeme yapabilir.', icon: 'fa-money-bill-wave', color: 'bg-green-500',
     },
+  ] : [
+    {
+      id: '1', title: 'Recipient-Paid Logistics', subtitle: 'Let the Recipient Pay for Large Packages',
+      description: 'The ideal solution for furniture, appliances, and heavy items. You don\'t pay out of pocket for high-cost shipments.',
+      highlight: 'You make the sale and leave the shipping cost to the recipient.', icon: 'fa-hand-holding-dollar', color: 'bg-blue-500',
+    },
+    {
+      id: '2', title: 'Cash on Delivery', subtitle: 'Collect Payment at Delivery',
+      description: 'Send your package with cash on delivery. The product price is collected from the recipient at delivery.',
+      highlight: 'The recipient can pay by cash or credit card at delivery.', icon: 'fa-money-bill-wave', color: 'bg-green-500',
+    },
   ],
   specialPricing: {
-    title: 'Yurtdışı Gönderenlere Özel Yurtiçi Fiyatlar',
-    description: 'Yurtdışı gönderi yapan kullanıcılar, yurtiçi kargolarında otomatik olarak daha uygun fiyatlar görür.',
-    note: 'Başvuru yok. Pazarlık yok. Sistem kendisi uygular.',
+    title: lang === 'tr' ? 'Yurtdışı Gönderenlere Özel Yurtiçi Fiyatlar' : 'Special Domestic Prices for International Shippers',
+    description: lang === 'tr' ? 'Yurtdışı gönderi yapan kullanıcılar, yurtiçi kargolarında otomatik olarak daha uygun fiyatlar görür.' : 'Users who ship internationally automatically see better prices on their domestic shipments.',
+    note: lang === 'tr' ? 'Başvuru yok. Pazarlık yok. Sistem kendisi uygular.' : 'No application. No negotiation. The system applies it automatically.',
   },
-  advantages: [
+  advantages: lang === 'tr' ? [
     { id: '1', title: 'Otomatik En Ucuz Yurtiçi Seçimi', description: 'Yurtiçi gönderilerde kargo firması seçmezsin. Sistem en uygun fiyatlı seçeneği otomatik belirler.', note: 'PTT / Sürat / diğerleri — Arkada çalışır, önde fiyat görünür.', icon: 'fa-robot', color: 'bg-blue-500' },
     { id: '2', title: 'Yurtiçi + Yurtdışı Aynı Gün Avantajı', description: 'Aynı gün hem yurtdışı hem yurtiçi gönderim yapanlar, yurtiçi gönderilerde ekstra avantaj görür.', note: '"Zaten açmışken bir tane daha" etkisi.', icon: 'fa-calendar-check', color: 'bg-green-500' },
     { id: '3', title: 'Günlük Gönderiler İçin Stabil Fiyat', description: 'Her gün gönderim yapan satıcılar için yurtiçi fiyatlar daha stabil ve öngörülebilir olur.', note: 'Bugün kaç çıkacak derdi yok.', icon: 'fa-chart-line', color: 'bg-purple-500' },
+  ] : [
+    { id: '1', title: 'Automatic Cheapest Domestic Selection', description: 'You don\'t choose a carrier for domestic shipments. The system automatically selects the most affordable option.', note: 'PTT / Sürat / others — Works in the background, price shows in front.', icon: 'fa-robot', color: 'bg-blue-500' },
+    { id: '2', title: 'Domestic + International Same Day Advantage', description: 'Those who ship both internationally and domestically on the same day get extra advantages on domestic shipments.', note: '"While I\'m at it" effect.', icon: 'fa-calendar-check', color: 'bg-green-500' },
+    { id: '3', title: 'Stable Price for Daily Shipments', description: 'For sellers who ship every day, domestic prices become more stable and predictable.', note: 'No worrying about what today\'s rate will be.', icon: 'fa-chart-line', color: 'bg-purple-500' },
   ],
   support: {
-    title: 'Öncelikli Destek',
-    description: 'Yurtdışı + yurtiçi aktif kullanıcıların destek talepleri öncelikli olarak ele alınır.',
+    title: lang === 'tr' ? 'Öncelikli Destek' : 'Priority Support',
+    description: lang === 'tr' ? 'Yurtdışı + yurtiçi aktif kullanıcıların destek talepleri öncelikli olarak ele alınır.' : 'Support requests from active international + domestic users are handled with priority.',
   },
   fromAbroad: {
-    title: 'Yurtdışından',
-    titleHighlight: "Türkiye'ye Kargo",
-    subtitle: "Yurtdışındaki adresinden, Türkiye'deki adrese kargo gönderebilirsin.",
-    cards: [
+    title: lang === 'tr' ? 'Yurtdışından' : 'From Abroad',
+    titleHighlight: lang === 'tr' ? "Türkiye'ye Kargo" : 'to Turkey',
+    subtitle: lang === 'tr' ? "Yurtdışındaki adresinden, Türkiye'deki adrese kargo gönderebilirsin." : "You can ship from your address abroad to an address in Turkey.",
+    cards: lang === 'tr' ? [
       { id: '1', title: "Yurtdışından Türkiye'ye Gönder", description: "Yurtdışındaki adresinden, Türkiye'deki adrese kargo gönderebilirsin.", icon: 'fa-globe', color: 'bg-blue-500' },
       { id: '2', title: 'Kapıdan Alım – Kapıya Teslim', description: "Gönderi yurtdışındaki adresten alınır, Türkiye'de alıcının kapısına teslim edilir.", icon: 'fa-truck', color: 'bg-green-500' },
       { id: '3', title: 'Fiyatı Baştan Gör', description: 'Gönderim öncesinde net fiyatı görürsün. Sonradan sürpriz masraf çıkmaz.', icon: 'fa-receipt', color: 'bg-purple-500' },
+    ] : [
+      { id: '1', title: "Ship from Abroad to Turkey", description: "You can ship from your address abroad to an address in Turkey.", icon: 'fa-globe', color: 'bg-blue-500' },
+      { id: '2', title: 'Door Pickup – Door Delivery', description: "The shipment is picked up from the address abroad and delivered to the recipient's door in Turkey.", icon: 'fa-truck', color: 'bg-green-500' },
+      { id: '3', title: 'See the Price Upfront', description: 'You see the exact price before shipping. No surprise costs afterwards.', icon: 'fa-receipt', color: 'bg-purple-500' },
     ],
-    ctaText: 'Hemen Başla',
+    ctaText: lang === 'tr' ? 'Hemen Başla' : 'Get Started',
     ctaLink: 'https://app.adorelgo.com',
   },
-};
+});
 
-const DomesticEditor: React.FC = () => {
-  const dom = useEditor(() => contentAPI.getDomestic(), d => contentAPI.updateDomestic(d), DEFAULT_DOMESTIC);
+const DomesticEditorInner: React.FC<{ lang: string }> = ({ lang }) => {
+  const dom = useEditor(() => contentAPI.getDomestic(lang), d => contentAPI.updateDomestic(d, lang), getDefaultDomestic(lang));
 
   if (dom.loading) return <Loader />;
 
@@ -65,7 +95,7 @@ const DomesticEditor: React.FC = () => {
       {/* KARGO TİPLERİ */}
       <Card title="Kargo Tipleri (Alıcı Ödemeli / Kapıda Ödemeli)" action={
         <AddBtn onClick={() => dom.set('kargoTypes', [...(Array.isArray(dom.data?.kargoTypes) ? dom.data.kargoTypes : []), {
-          id: String(Date.now()), title: 'Yeni Kargo', subtitle: '', description: '', highlight: '', icon: 'fa-box', color: 'bg-blue-500'
+          id: String(Date.now()), title: lang === 'tr' ? 'Yeni Kargo' : 'New Shipping Type', subtitle: '', description: '', highlight: '', icon: 'fa-box', color: 'bg-blue-500'
         }])} />
       }>
         <div className="space-y-4">
@@ -98,7 +128,7 @@ const DomesticEditor: React.FC = () => {
       {/* AVANTAJLAR */}
       <Card title="Avantajlar (3'lü Grid)" action={
         <AddBtn onClick={() => dom.set('advantages', [...(Array.isArray(dom.data?.advantages) ? dom.data.advantages : []), {
-          id: String(Date.now()), title: 'Yeni Avantaj', description: '', note: '', icon: 'fa-star', color: 'bg-blue-500'
+          id: String(Date.now()), title: lang === 'tr' ? 'Yeni Avantaj' : 'New Advantage', description: '', note: '', icon: 'fa-star', color: 'bg-blue-500'
         }])} />
       }>
         <div className="space-y-3">
@@ -127,7 +157,7 @@ const DomesticEditor: React.FC = () => {
       {/* YURTDIŞINDAN TÜRKİYE'YE */}
       <Card title="Yurtdışından Türkiye'ye Kargo" action={
         <AddBtn onClick={() => dom.set('fromAbroad.cards', [...(Array.isArray(dom.data?.fromAbroad?.cards) ? dom.data.fromAbroad.cards : []), {
-          id: String(Date.now()), title: 'Yeni Kart', description: '', icon: 'fa-box', color: 'bg-blue-500'
+          id: String(Date.now()), title: lang === 'tr' ? 'Yeni Kart' : 'New Card', description: '', icon: 'fa-box', color: 'bg-blue-500'
         }])} />
       }>
         <div className="grid grid-cols-2 gap-2">
@@ -154,9 +184,21 @@ const DomesticEditor: React.FC = () => {
         <SaveBtn onSave={dom.handleSave} saving={dom.saving} success={dom.success} error={dom.error} />
       </Card>
 
-
       <SeoCard slug="yurtici-kargo" defaultSeo={{ metaTitle: "Yurtiçi Kargo | AdorelGo", metaDescription: "Türkiye içi kargo gönderimi. Hızlı, güvenli ve uygun fiyatlı yurtiçi kargo çözümleri.", keywords: "yurtiçi kargo, türkiye kargo, hızlı kargo", canonical: "https://adorelgo.com/yurtici-kargo" }} />
 
+    </div>
+  );
+};
+
+const DomesticEditor: React.FC = () => {
+  const [lang, setLang] = useState('tr');
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-gray-400">Seçili dil için içerik yüklenip kaydedilir.</p>
+        <LangToggle lang={lang} onChange={setLang} />
+      </div>
+      <DomesticEditorInner key={lang} lang={lang} />
     </div>
   );
 };

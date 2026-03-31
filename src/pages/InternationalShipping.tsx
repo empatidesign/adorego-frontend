@@ -27,52 +27,55 @@ const getDefault = (lang: string) => ({
     title: lang === 'tr' ? 'Yurtdışı Kargo' : 'International Shipping',
     subtitle: lang === 'tr' ? 'Dünyaya gönderim yapmanın en kolay ve güvenilir yolu' : 'The easiest and most reliable way to ship worldwide',
   },
-  kargoTypes: [
-    {
-      id: '1', title: 'Ekonomik Kargo', subtitle: 'Uygun Fiyatlı Yurtdışı Gönderim',
-      description: 'Acil olmayan gönderiler için en düşük maliyetli yurtdışı kargo seçeneği.',
-      highlight: 'Ekonomik Kargo ile yurtdışı gönderi yapanlar, yurtiçi kargolarında daha avantajlı fiyatlar görür.',
-      icon: 'fa-coins', color: 'bg-blue-500',
-    },
-    {
-      id: '2', title: 'Express Kargo', subtitle: 'Zaman senin için önemliyse',
-      description: 'Yurtdışı gönderini en hızlı şekilde ulaştıran seçenek.',
-      highlight: 'Zamanı öncelikleyen, değerli ve acil gönderiler için idealdir.',
-      icon: 'fa-bolt', color: 'bg-green-500',
-    },
+  kargoTypes: lang === 'tr' ? [
+    { id: '1', title: 'Ekonomik Kargo', subtitle: 'Uygun Fiyatlı Yurtdışı Gönderim', description: 'Acil olmayan gönderiler için en düşük maliyetli yurtdışı kargo seçeneği.', highlight: 'Ekonomik Kargo ile yurtdışı gönderi yapanlar, yurtiçi kargolarında daha avantajlı fiyatlar görür.', icon: 'fa-coins', color: 'bg-blue-500' },
+    { id: '2', title: 'Express Kargo', subtitle: 'Zaman senin için önemliyse', description: 'Yurtdışı gönderini en hızlı şekilde ulaştıran seçenek.', highlight: 'Zamanı öncelikleyen, değerli ve acil gönderiler için idealdir.', icon: 'fa-bolt', color: 'bg-green-500' },
+  ] : [
+    { id: '1', title: 'Economy Shipping', subtitle: 'Affordable International Shipping', description: 'The most cost-effective international shipping option for non-urgent shipments.', highlight: 'Those who ship internationally with Economy Shipping get more advantageous prices on domestic shipments.', icon: 'fa-coins', color: 'bg-blue-500' },
+    { id: '2', title: 'Express Shipping', subtitle: 'When time matters to you', description: 'The fastest option to deliver your international shipment.', highlight: 'Ideal for time-sensitive, valuable and urgent shipments.', icon: 'fa-bolt', color: 'bg-green-500' },
   ],
   doorToDoor: {
-    title: 'Kapıdan Alım – Kapıya Teslim',
-    description: 'Yurtdışına satış yapanlar için kapıdan alım – kapıya teslim, uygun fiyatlı ve sorunsuz kargo çözümleri.',
+    title: lang === 'tr' ? 'Kapıdan Alım – Kapıya Teslim' : 'Door Pickup – Door Delivery',
+    description: lang === 'tr' ? 'Yurtdışına satış yapanlar için kapıdan alım – kapıya teslim, uygun fiyatlı ve sorunsuz kargo çözümleri.' : 'Door-to-door pickup and delivery for international sellers — affordable and hassle-free shipping solutions.',
   },
   firstTimers: {
-    title: 'İlk Kez Yurtdışına',
-    titleHighlight: 'Gönderenler',
-    subtitle: 'Daha önce hiç yurtdışına göndermeyenler rahatça kullanabilir.',
-    cards: [
+    title: lang === 'tr' ? 'İlk Kez Yurtdışına' : 'Shipping Internationally',
+    titleHighlight: lang === 'tr' ? 'Gönderenler' : 'for the First Time',
+    subtitle: lang === 'tr' ? 'Daha önce hiç yurtdışına göndermeyenler rahatça kullanabilir.' : 'Even those who have never shipped internationally before can use it with ease.',
+    cards: lang === 'tr' ? [
       { id: '1', title: 'İlk gönderim en kolayıdır.', description: 'İlk kez gönderiyorsan, sistem seni adım adım yönlendirir.', icon: 'fa-play', color: 'bg-blue-500' },
       { id: '2', title: 'Gümrük & Evrak = Korku Değil Rahatlama', description: 'Bilmen gereken kadarını bil, gerisini sisteme bırak. Karmaşık evraklar, yanlış ürünler, eksik bilgiler… Sistem gerekli olanı sana sorar, gerisini biz takip ederiz.', icon: 'fa-file-shield', color: 'bg-green-500' },
-      { id: '3', title: 'Yurtdışı İade & Geri Gönderim', description: 'Teslim edilemeyen yurtdışı gönderilerde iade ve geri gönderim süreci kontrol altındadır. İade veya geri dönüş durumları panelden takip edilir. Gönderin yolda kalırsa, süreci biz yönetiriz.', icon: 'fa-rotate-left', color: 'bg-purple-500' },
+      { id: '3', title: 'Yurtdışı İade & Geri Gönderim', description: 'Teslim edilemeyen yurtdışı gönderilerde iade ve geri gönderim süreci kontrol altındadır. İade veya geri dönüş durumları panelden takip edilir.', icon: 'fa-rotate-left', color: 'bg-purple-500' },
+    ] : [
+      { id: '1', title: 'Your first shipment is the easiest.', description: "If it's your first time shipping, the system guides you step by step.", icon: 'fa-play', color: 'bg-blue-500' },
+      { id: '2', title: 'Customs & Documents = Relief, Not Fear', description: "Know only what you need to know, leave the rest to the system. Complex documents, wrong products, missing info… The system asks what's needed, we handle the rest.", icon: 'fa-file-shield', color: 'bg-green-500' },
+      { id: '3', title: 'International Returns & Reshipping', description: 'For undelivered international shipments, the return and reshipping process is under control. Return or bounce-back situations are tracked from the panel.', icon: 'fa-rotate-left', color: 'bg-purple-500' },
     ],
   },
   microExport: {
-    title: 'Mikro İhracat',
-    titleHighlight: 'Satış Amaçlı Gönderimler',
-    description: 'Yurtdışına ürün satışı yapıyorsan, kargonu mikro ihracata uygun olarak gönder.',
-    bullets: ['Büyük firma olman gerekmez.', 'Küçük adetli satışlar için de mikro ihracat yapılabilir.'],
+    title: lang === 'tr' ? 'Mikro İhracat' : 'Micro Export',
+    titleHighlight: lang === 'tr' ? 'Satış Amaçlı Gönderimler' : 'Sales-Purpose Shipments',
+    description: lang === 'tr' ? 'Yurtdışına ürün satışı yapıyorsan, kargonu mikro ihracata uygun olarak gönder.' : "If you're selling products internationally, ship your cargo under micro export.",
+    bullets: lang === 'tr'
+      ? ['Büyük firma olman gerekmez.', 'Küçük adetli satışlar için de mikro ihracat yapılabilir.']
+      : ['You don\'t need to be a large company.', 'Micro export is also possible for small-quantity sales.'],
     image: '',
   },
   whichShipping: {
-    title: 'Hangi Gönderim',
-    titleHighlight: 'Bana Uygun?',
-    subtitle: 'Kararsızsan sorun değil. Sistem, gönderinin aciliyet ve önceliğine göre en uygun gönderimi seçer.',
-    options: [
+    title: lang === 'tr' ? 'Hangi Gönderim' : 'Which Shipping',
+    titleHighlight: lang === 'tr' ? 'Bana Uygun?' : 'is Right for Me?',
+    subtitle: lang === 'tr' ? 'Kararsızsan sorun değil. Sistem, gönderinin aciliyet ve önceliğine göre en uygun gönderimi seçer.' : "No problem if you're undecided. The system selects the most suitable shipping based on urgency and priority.",
+    options: lang === 'tr' ? [
       { id: '1', label: 'Fiyat Öncelikliyse', title: 'Ekonomik Kargo', icon: 'fa-coins', color: 'bg-blue-500' },
       { id: '2', label: 'Hız Öncelikliyse', title: 'Express Kargo', icon: 'fa-bolt', color: 'bg-green-500' },
       { id: '3', label: 'Satış Amaçlıysa', title: 'Mikro İhracat Gönderimi', icon: 'fa-store', color: 'bg-orange-500' },
+    ] : [
+      { id: '1', label: 'If Price is Priority', title: 'Economy Shipping', icon: 'fa-coins', color: 'bg-blue-500' },
+      { id: '2', label: 'If Speed is Priority', title: 'Express Shipping', icon: 'fa-bolt', color: 'bg-green-500' },
+      { id: '3', label: 'If For Sales Purpose', title: 'Micro Export Shipment', icon: 'fa-store', color: 'bg-orange-500' },
     ],
-    bottomText: 'Seçmek zorunda değilsin. İhtiyacını söyle, gerisini bize bırak.',
-    ctaText: 'Hemen Başla',
+    bottomText: lang === 'tr' ? 'Seçmek zorunda değilsin. İhtiyacını söyle, gerisini bize bırak.' : "You don't have to choose. Tell us your needs, leave the rest to us.",
+    ctaText: lang === 'tr' ? 'Hemen Başla' : 'Get Started',
     ctaLink: 'https://app.adorelgo.com',
   },
 });
@@ -82,12 +85,12 @@ const InternationalShipping: React.FC = () => {
   const [data, setData] = useState<any>(getDefault(currentLang));
 
   useEffect(() => {
+    setData(getDefault(currentLang));
     axios.get(`${API_BASE_URL}/content/international?lang=${currentLang}`)
       .then(res => {
         if (res.data && res.data.hero) setData(deepMerge(getDefault(currentLang), res.data));
-        else setData(getDefault(currentLang));
       })
-      .catch(() => setData(getDefault(currentLang)));
+      .catch(() => {});
   }, [currentLang]);
 
   const imgUrl = (url: string) => url ? (url.startsWith('http') ? url : `${API_BASE_URL}${url}`) : '';

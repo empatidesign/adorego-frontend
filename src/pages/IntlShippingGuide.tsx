@@ -65,7 +65,7 @@ const IntlShippingGuide: React.FC = () => {
                         )}
                     </div>
                 </section>
-                <section className="py-20 bg-gradient-to-r from-[#102477] to-[#1a3a9e] text-white">
+                <section className="py-6 bg-gradient-to-r from-[#102477] to-[#1a3a9e] text-white">
                     <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
                         <h2 className="text-3xl font-bold tracking-tight mb-4">En Kolay Yurtdışı Kargo Yöntemi</h2>
                         <p className="text-white/70 text-lg max-w-2xl mx-auto mb-8">AdorelGo ile yurtdışı kargo göndermek hiç bu kadar kolay olmamıştı.</p>

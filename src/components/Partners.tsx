@@ -13,6 +13,17 @@ const Partners: React.FC = () => {
     { value: '%80', label: lang === 'tr' ? 'aktif kullanım' : 'active usage' },
   ];
 
+  const getDefaultSocialProof = (lang: string) => ({
+    title: lang === 'tr' ? 'E-ticaret satıcıları tarafından' : 'Actively used by',
+    highlightedTitle: lang === 'tr' ? 'aktif olarak kullanılmaktadır' : 'e-commerce sellers',
+    testimonials: [
+      { quote: lang === 'tr' ? '"Fiyat ve hız konusunda en iyi çözüm."' : '"The best solution for price and speed."', author: lang === 'tr' ? '— E-ticaret satıcısı' : '— E-commerce seller' },
+      { quote: lang === 'tr' ? '"Tek panelden tüm kargoları yönetiyoruz."' : '"We manage all shipments from a single panel."', author: lang === 'tr' ? '— Mağaza sahibi' : '— Store owner' },
+    ],
+    ctaText: lang === 'tr' ? 'Sen de gönderine başla' : 'Start shipping now',
+    ctaLink: 'https://app.adorelgo.com',
+  });
+
   const [statsTitle, setStatsTitle] = useState(currentLang === 'tr' ? 'Binlerce satıcı' : 'Thousands of sellers');
   const [statsHighlight, setStatsHighlight] = useState(currentLang === 'tr' ? 'AdorelGo ile gönderiyor' : 'ship with AdorelGo');
   const [stats, setStats] = useState<any[]>(getDefaultStats(currentLang));
@@ -23,18 +34,14 @@ const Partners: React.FC = () => {
     { name: "UPS", logo: "", color: "bg-gradient-to-br from-yellow-600 to-yellow-700" },
     { name: "TNT", logo: "", color: "bg-gradient-to-br from-orange-500 to-red-600" }
   ]);
-  const [socialProof, setSocialProof] = useState<any>({
-    title: currentLang === 'tr' ? 'E-ticaret satıcıları tarafından' : 'Actively used by',
-    highlightedTitle: currentLang === 'tr' ? 'aktif olarak kullanılmaktadır' : 'e-commerce sellers',
-    testimonials: [
-      { quote: currentLang === 'tr' ? '"Fiyat ve hız konusunda en iyi çözüm."' : '"The best solution for price and speed."', author: currentLang === 'tr' ? '— E-ticaret satıcısı' : '— E-commerce seller' },
-      { quote: currentLang === 'tr' ? '"Tek panelden tüm kargoları yönetiyoruz."' : '"We manage all shipments from a single panel."', author: currentLang === 'tr' ? '— Mağaza sahibi' : '— Store owner' },
-    ],
-    ctaText: currentLang === 'tr' ? 'Sen de gönderine başla' : 'Start shipping now',
-    ctaLink: 'https://app.adorelgo.com',
-  });
+  const [socialProof, setSocialProof] = useState<any>(() => getDefaultSocialProof(currentLang));
 
   useEffect(() => {
+    setStatsTitle(currentLang === 'tr' ? 'Binlerce satıcı' : 'Thousands of sellers');
+    setStatsHighlight(currentLang === 'tr' ? 'AdorelGo ile gönderiyor' : 'ship with AdorelGo');
+    setStats(getDefaultStats(currentLang));
+    setSocialProof(getDefaultSocialProof(currentLang));
+
     axios.get(`${API_BASE_URL}/content/partners?lang=${currentLang}`)
       .then(res => {
         const raw = res.data;
@@ -77,7 +84,7 @@ const Partners: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-center gap-4 mb-10">
             <div className="h-px w-16 bg-gradient-to-r from-transparent to-gray-200" />
-            <p className="text-center text-3xl lg:text-4xl font-bold tracking-tight leading-tight">
+            <p className="inline-block text-center text-3xl lg:text-4xl font-bold tracking-tight leading-tight bg-gray-100 px-8 py-3 rounded-2xl">
               <span style={{ color: '#102477' }}>{currentLang === 'tr' ? "Dünyanın en güçlü kargo firmalarıyla" : "We work with the world's most powerful"}</span>
               {' '}<span style={{ color: '#4DB848' }}>{currentLang === 'tr' ? "çalışıyoruz" : "cargo companies"}</span>
             </p>
@@ -88,8 +95,8 @@ const Partners: React.FC = () => {
               <div key={i} className="flex flex-col items-center text-center group">
                 {carrier.logo ? (
                   <div className="h-20 w-full flex items-center justify-center mb-3">
-                    <img 
-                      src={carrier.logo} 
+                    <img
+                      src={carrier.logo.startsWith('http') ? carrier.logo : `${API_BASE_URL}${carrier.logo}`}
                       alt={carrier.name}
                       className="max-h-16 w-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300"
                       onError={(e) => {
@@ -116,9 +123,9 @@ const Partners: React.FC = () => {
       </div>
 
       {/* Sayısal Kutular - Binlerce Satıcı */}
-      <div className="pb-12 md:pb-16 pt-6 bg-white">
+      <div className="pb-12 md:pb-16 pt-24 bg-white">
         <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold text-[#102477] mb-4 tracking-tight">
+          <h2 className="inline-block text-3xl lg:text-4xl font-bold text-[#102477] mb-4 tracking-tight bg-gray-100 px-8 py-3 rounded-2xl">
             {statsTitle}{' '}
             <span className="text-[#4DB848]">{statsHighlight}</span>
           </h2>
@@ -134,13 +141,13 @@ const Partners: React.FC = () => {
       </div>
 
       {/* Marketplace Section */}
-      <div className="pb-12 pt-4 overflow-hidden">
+      <div className="pb-12 pt-16 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-center gap-4 mb-10">
             <div className="h-px w-16 bg-gradient-to-r from-transparent to-gray-200" />
-            <p className="text-center text-3xl lg:text-4xl font-bold tracking-tight leading-tight">
-              <span style={{ color: '#102477' }}>E-Ticaret</span>
-              {' '}<span style={{ color: '#4DB848' }}>Entegrasyonları</span>
+            <p className="inline-block text-center text-3xl lg:text-4xl font-bold tracking-tight leading-tight bg-gray-100 px-8 py-3 rounded-2xl">
+              <span style={{ color: '#102477' }}>{currentLang === 'tr' ? 'E-Ticaret' : 'E-Commerce'}</span>
+              {' '}<span style={{ color: '#4DB848' }}>{currentLang === 'tr' ? 'Entegrasyonları' : 'Integrations'}</span>
             </p>
             <div className="h-px w-16 bg-gradient-to-l from-transparent to-gray-200" />
           </div>
@@ -166,7 +173,7 @@ const Partners: React.FC = () => {
       {/* Sosyal Kanıt + CTA */}
       <div className="py-6 md:py-20 bg-slate-50">
         <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
-          <h3 className="text-2xl lg:text-3xl font-bold text-[#102477] mb-4 tracking-tight">
+          <h3 className="inline-block text-3xl lg:text-4xl font-bold text-[#102477] mb-4 tracking-tight bg-gray-100 px-8 py-3 rounded-2xl">
             {socialProof.title}
             {' '}<span className="text-[#4DB848]">{socialProof.highlightedTitle}</span>
           </h3>

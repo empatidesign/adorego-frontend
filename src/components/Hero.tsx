@@ -4,37 +4,36 @@ import axios from 'axios';
 import { useLanguage } from '../contexts/LanguageContext';
 import { API_BASE_URL } from '../api-config';
 
+const getDefaultHero = (lang: string) => ({
+  title: lang === 'tr' ? "Kazanç\nYurtdışında.\nEn Uygun Kargo Bizde." : "Profit\nAbroad.\nBest Shipping Rates Here.",
+  subtitle: lang === 'tr' ? "Yurtdışına kargo gönderimi yapan e-ticaret siteleri için kapıdan alım, mikro ihracat ve hızlı teslimat çözümleri AdorelGo'da." : "Door-to-door pickup, micro export, and fast delivery solutions for e-commerce sites shipping internationally with AdorelGo.",
+  image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop",
+  buttons: [
+    { text: lang === 'tr' ? "Ücretsiz Üye Ol" : "Free Sign Up", icon: "fa-user-plus", style: "success" }
+  ],
+  badges: [
+    { text: lang === 'tr' ? "BAŞVURU GEREKMEZ" : "NO APPLICATION REQUIRED", icon: "fa-check", color: "blue" },
+    { text: lang === 'tr' ? "SABİT FİYAT GARANTİSİ" : "FIXED PRICE GUARANTEE", icon: "fa-check", color: "green" }
+  ],
+  stats: [
+    { value: "220+", label: lang === 'tr' ? "GLOBAL ÜLKE AĞI" : "GLOBAL NETWORK", icon: "fa-globe-africa" },
+    { value: lang === 'tr' ? "35 Yıl" : "35 Years", label: lang === 'tr' ? "SEKTÖREL TECRÜBE" : "INDUSTRY EXPERIENCE", icon: "fa-award" }
+  ]
+});
+
 const Hero: React.FC = () => {
   const { currentLang } = useLanguage();
-  const [content, setContent] = useState<any>({
-    title: currentLang === 'tr' ? "Kazanç\nYurtdışında.\nEn Uygun Kargo Bizde." : "Profit\nAbroad.\nBest Shipping Rates Here.",
-    subtitle: currentLang === 'tr' ? "Yurtdışına kargo gönderimi yapan e-ticaret siteleri için kapıdan alım, mikro ihracat ve hızlı teslimat çözümleri AdorelGo'da." : "Door-to-door pickup, micro export, and fast delivery solutions for e-commerce sites shipping internationally with AdorelGo.",
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop",
-    buttons: [
-      { text: currentLang === 'tr' ? "Ücretsiz Üye Ol" : "Free Sign Up", icon: "fa-user-plus", style: "success" }
-    ],
-    badges: [
-      { text: currentLang === 'tr' ? "BAŞVURU GEREKMEZ" : "NO APPLICATION REQUIRED", icon: "fa-check", color: "blue" },
-      { text: currentLang === 'tr' ? "SABİT FİYAT GARANTİSİ" : "FIXED PRICE GUARANTEE", icon: "fa-check", color: "green" }
-    ],
-    stats: [
-      { value: "220+", label: currentLang === 'tr' ? "GLOBAL ÜLKE AĞI" : "GLOBAL NETWORK", icon: "fa-globe-africa" },
-      { value: currentLang === 'tr' ? "35 Yıl" : "35 Years", label: currentLang === 'tr' ? "SEKTÖREL TECRÜBE" : "INDUSTRY EXPERIENCE", icon: "fa-award" }
-    ]
-  });
+  const [content, setContent] = useState<any>(() => getDefaultHero(currentLang));
 
   useEffect(() => {
+    setContent(getDefaultHero(currentLang));
     axios.get(`${API_BASE_URL}/content/hero?lang=${currentLang}`)
       .then(res => {
-        console.log('Hero API Response:', res.data);
         if (res.data && Object.keys(res.data).length > 0) {
           setContent((prev: any) => ({ ...prev, ...res.data }));
         }
       })
-      .catch(err => {
-        console.error('Hero content yüklenemedi:', err);
-        // Hata durumunda default değerler zaten yüklü
-      });
+      .catch(() => {});
   }, [currentLang]);
 
   const titleLines = content?.title?.split('\n') || [];

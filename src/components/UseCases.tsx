@@ -43,7 +43,7 @@ const UseCases: React.FC = () => {
     <section className="pb-8 md:pb-24 pt-5 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl lg:text-4xl font-bold tracking-tight">
+          <h2 className="inline-block text-3xl lg:text-4xl font-bold tracking-tight bg-gray-100 px-8 py-3 rounded-2xl">
             <span className="text-[#102477]">{data.title} </span>
             <span className="text-[#4DB848]">{data.highlightedTitle}</span>
           </h2>

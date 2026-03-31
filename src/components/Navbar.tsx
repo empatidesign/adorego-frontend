@@ -297,18 +297,30 @@ const Navbar: React.FC = () => {
             </div>
           </div>
 
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden inline-flex items-center justify-center p-2 rounded-md text-slate-700 hover:text-[#102477] hover:bg-slate-100 focus:outline-none transition-colors"
-          >
-            <span className="sr-only">Menüyü aç</span>
-            {isOpen ? (
-              <i className="fas fa-times text-xl"></i>
-            ) : (
-              <i className="fas fa-bars text-xl"></i>
-            )}
-          </button>
+          {/* Mobile: CTA + hamburger */}
+          <div className="lg:hidden flex items-center gap-2">
+            {ctaButtons.filter((btn: any) => btn.style === 'primary').map((button: any) => (
+              <button
+                key={button.id}
+                onClick={() => handleLinkClick(button.link)}
+                className="bg-[#4DB848] text-white px-4 py-2 rounded-[10px] text-[12px] font-bold flex items-center gap-1.5 whitespace-nowrap"
+              >
+                <UserPlusIcon />
+                {button.label}
+              </button>
+            ))}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-slate-700 hover:text-[#102477] hover:bg-slate-100 focus:outline-none transition-colors"
+            >
+              <span className="sr-only">Menüyü aç</span>
+              {isOpen ? (
+                <i className="fas fa-times text-xl"></i>
+              ) : (
+                <i className="fas fa-bars text-xl"></i>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Mobile menu */}
@@ -354,21 +366,7 @@ const Navbar: React.FC = () => {
               ))}
 
               <div className="pt-3 border-t border-slate-200 space-y-2">
-                {ctaButtons.map((button: any) => (
-                  <button
-                    key={button.id}
-                    onClick={() => handleLinkClick(button.link)}
-                    className={`w-full text-[13px] font-bold tracking-[0.02em] transition-colors flex items-center justify-center gap-2 py-2.5 ${button.style === 'primary'
-                      ? 'bg-[#4DB848] text-white rounded-[10px] hover:bg-[#3da339]'
-                      : 'text-slate-500 hover:text-[#102477]'
-                      }`}
-                  >
-                    {button.style === 'primary' ? <UserPlusIcon /> : (button.icon && <i className={`fas ${button.icon}`}></i>)}
-                    {button.label}
-                  </button>
-                ))}
-
-                <div className="flex items-center gap-2 justify-center pt-2">
+                <div className="flex items-center gap-2 justify-center">
                   <button
                     onClick={() => setLanguage('tr')}
                     className={`text-[11px] font-bold px-4 py-2 rounded-[6px] transition-all flex-1 ${language === 'tr'

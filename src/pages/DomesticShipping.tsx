@@ -126,7 +126,7 @@ const DomesticShipping: React.FC = () => {
         </section>
 
         {/* Özel Fiyatlar Bandı */}
-        <section className="py-20 bg-gradient-to-r from-[#102477] to-[#1a3a9e] text-white">
+        <section className="py-6 bg-gradient-to-r from-[#102477] to-[#1a3a9e] text-white">
           <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
             <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-8">
               <i className="fas fa-tags text-[#4DB848] text-2xl"></i>
