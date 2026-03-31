@@ -17,6 +17,14 @@ const normalizeMapUrl = (value?: string) => {
     return extracted === LEGACY_CONTACT_MAP_URL ? DEFAULT_CONTACT_MAP_URL : extracted;
 };
 
+const normalizeWhatsAppNumber = (value?: string) => {
+    const digits = (value || '').replace(/\D/g, '');
+    if (!digits) return '905521691097';
+    if (digits.startsWith('90')) return digits;
+    if (digits.startsWith('0')) return `9${digits}`;
+    return digits;
+};
+
 function deepMerge(defaults: any, override: any): any {
     if (override === null || override === undefined) return defaults;
     if (Array.isArray(defaults)) return Array.isArray(override) && override.length > 0 ? override : defaults;
@@ -46,11 +54,11 @@ const getDefaultContactContent = (lang: 'tr' | 'en') => (
             formButton: 'Gönder',
             contactInfoTitle: 'İletişim bilgileri',
             companyName: 'AdorelGo Global Operasyon Merkezi',
-            companyFullName: 'ADOREL LOJİSTİK KARGO TELEKOMÜNİKASYON BİLİŞİM YAZILIM İÇ VE DIŞ TİCARET A.Ş.',
+            companyFullName: 'ADOREL LOJISTIK KARGO TELEKOMUNIKASYON BILISIM YAZILIM IC VE DIS TICARET A.Ş',
             addressLabel: 'Adres',
-            addressValue: 'Bahçelievler Mah 232.Sok No 6 Gölbaşı - Ankara - Türkiye',
+            addressValue: 'Bahçelievler Mah 232.Sok No 6 Gölbaşı -Ankara-Türkiye',
             phoneLabel: 'Telefon',
-            phoneValue: '+90 312 320 26 26 – 533 13 13',
+            phoneValue: '+90 312 3202626 – 533 13 13',
             emailLabel: 'E-posta',
             emailValue: 'info@adorelgo.com',
             websiteLabel: 'Web',
@@ -59,7 +67,7 @@ const getDefaultContactContent = (lang: 'tr' | 'en') => (
             workingHoursValue: 'Pazartesi - Cuma: 09:00 - 18:00',
             quickSupportTitle: 'Hızlı destek hattı',
             quickSupportDesc: 'Her türlü sorunuz için WhatsApp üzerinden bize anında ulaşabilirsiniz.',
-            whatsappNumber: '905331313',
+            whatsappNumber: '05521691097',
         }
         : {
             pageTitle: 'Contact',
@@ -73,12 +81,12 @@ const getDefaultContactContent = (lang: 'tr' | 'en') => (
             formMessageLabel: 'Your message',
             formButton: 'Send',
             contactInfoTitle: 'Contact information',
-            companyName: 'AdorelGo Global Operations Center',
-            companyFullName: 'ADOREL LOGISTICS CARGO TELECOMMUNICATIONS INFORMATICS SOFTWARE IMPORT EXPORT TRADE INC.',
+            companyName: 'AdorelGo Global Operasyon Merkezi',
+            companyFullName: 'ADOREL LOJISTIK KARGO TELEKOMUNIKASYON BILISIM YAZILIM IC VE DIS TICARET A.Ş',
             addressLabel: 'Address',
-            addressValue: 'Bahcelievler Mah 232. Sok No 6 Golbasi - Ankara - Turkiye',
+            addressValue: 'Bahçelievler Mah 232.Sok No 6 Gölbaşı -Ankara-Türkiye',
             phoneLabel: 'Phone',
-            phoneValue: '+90 312 320 26 26 – 533 13 13',
+            phoneValue: '+90 312 3202626 – 533 13 13',
             emailLabel: 'Email',
             emailValue: 'info@adorelgo.com',
             websiteLabel: 'Web',
@@ -87,7 +95,7 @@ const getDefaultContactContent = (lang: 'tr' | 'en') => (
             workingHoursValue: 'Monday - Friday: 09:00 - 18:00',
             quickSupportTitle: 'Quick support line',
             quickSupportDesc: 'You can instantly reach us via WhatsApp for any questions.',
-            whatsappNumber: '905331313',
+            whatsappNumber: '05521691097',
         }
 );
 
@@ -334,7 +342,7 @@ const Contact = () => {
                                         {content.quickSupportDesc}
                                     </p>
                                     <a
-                                        href={`https://wa.me/${content.whatsappNumber?.replace(/\D/g, '')}`}
+                                        href={`https://wa.me/${normalizeWhatsAppNumber(content.whatsappNumber)}`}
                                         target="_blank"
                                         rel="noreferrer"
                                         className="inline-flex items-center gap-2 bg-white text-green-600 px-5 py-2.5 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-sm"

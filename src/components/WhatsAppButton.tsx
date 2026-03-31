@@ -3,18 +3,24 @@ import axios from 'axios';
 import { API_BASE_URL } from '../api-config';
 import { useLanguage } from '../contexts/LanguageContext';
 
+const normalizeWhatsAppNumber = (value?: string) => {
+    const digits = (value || '').replace(/\D/g, '');
+    if (!digits) return '905521691097';
+    if (digits.startsWith('90')) return digits;
+    if (digits.startsWith('0')) return `9${digits}`;
+    return digits;
+};
+
 const WhatsAppButton: React.FC = () => {
     const { currentLang } = useLanguage();
-    const [whatsappNumber, setWhatsappNumber] = useState('905331313');
+    const [whatsappNumber, setWhatsappNumber] = useState('905521691097');
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
-        // WhatsApp numarasını site ayarlarından çek
-        axios.get(`${API_BASE_URL}/content/settings/contact?lang=${currentLang}`)
+        axios.get(`${API_BASE_URL}/content/contact?lang=${currentLang}`)
             .then(res => {
-                if (res.data && res.data.whatsapp) {
-                    // Numaradaki boşlukları ve karakterleri temizle
-                    const cleanNumber = res.data.whatsapp.replace(/\D/g, '');
+                if (res.data && res.data.whatsappNumber) {
+                    const cleanNumber = normalizeWhatsAppNumber(res.data.whatsappNumber);
                     setWhatsappNumber(cleanNumber);
                 }
             })
@@ -37,8 +43,7 @@ const WhatsAppButton: React.FC = () => {
 
     const handleWhatsAppClick = () => {
         if (!whatsappNumber) {
-            // Varsayılan bir numara veya hata mesajı
-            window.open(`https://wa.me/905331313`, '_blank');
+            window.open('https://wa.me/905521691097', '_blank');
             return;
         }
         window.open(`https://wa.me/${whatsappNumber}`, '_blank');

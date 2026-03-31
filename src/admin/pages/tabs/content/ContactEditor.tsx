@@ -33,11 +33,11 @@ const getDefaultContact = (lang: 'tr' | 'en') => (
         formButton: 'Gönder',
         contactInfoTitle: 'İletişim bilgileri',
         companyName: 'AdorelGo Global Operasyon Merkezi',
-        companyFullName: 'ADOREL LOJİSTİK KARGO TELEKOMÜNİKASYON BİLİŞİM YAZILIM İÇ VE DIŞ TİCARET A.Ş.',
+        companyFullName: 'ADOREL LOJISTIK KARGO TELEKOMUNIKASYON BILISIM YAZILIM IC VE DIS TICARET A.Ş',
         addressLabel: 'Adres',
-        addressValue: 'Bahçelievler Mah 232.Sok No 6 Gölbaşı - Ankara - Türkiye',
+        addressValue: 'Bahçelievler Mah 232.Sok No 6 Gölbaşı -Ankara-Türkiye',
         phoneLabel: 'Telefon',
-        phoneValue: '+90 312 320 26 26 – 533 13 13',
+        phoneValue: '+90 312 3202626 – 533 13 13',
         emailLabel: 'E-posta',
         emailValue: 'info@adorelgo.com',
         websiteLabel: 'Web',
@@ -46,7 +46,7 @@ const getDefaultContact = (lang: 'tr' | 'en') => (
         workingHoursValue: 'Pazartesi - Cuma: 09:00 - 18:00',
         quickSupportTitle: 'Hızlı destek hattı',
         quickSupportDesc: 'Her türlü sorunuz için WhatsApp üzerinden bize anında ulaşabilirsiniz.',
-        whatsappNumber: '905331313',
+        whatsappNumber: '05521691097',
       }
     : {
         pageTitle: 'Contact',
@@ -60,12 +60,12 @@ const getDefaultContact = (lang: 'tr' | 'en') => (
         formMessageLabel: 'Your message',
         formButton: 'Send',
         contactInfoTitle: 'Contact information',
-        companyName: 'AdorelGo Global Operations Center',
-        companyFullName: 'ADOREL LOGISTICS CARGO TELECOMMUNICATIONS INFORMATICS SOFTWARE IMPORT EXPORT TRADE INC.',
+        companyName: 'AdorelGo Global Operasyon Merkezi',
+        companyFullName: 'ADOREL LOJISTIK KARGO TELEKOMUNIKASYON BILISIM YAZILIM IC VE DIS TICARET A.Ş',
         addressLabel: 'Address',
-        addressValue: 'Bahcelievler Mah 232. Sok No 6 Golbasi - Ankara - Turkiye',
+        addressValue: 'Bahçelievler Mah 232.Sok No 6 Gölbaşı -Ankara-Türkiye',
         phoneLabel: 'Phone',
-        phoneValue: '+90 312 320 26 26 – 533 13 13',
+        phoneValue: '+90 312 3202626 – 533 13 13',
         emailLabel: 'Email',
         emailValue: 'info@adorelgo.com',
         websiteLabel: 'Web',
@@ -74,7 +74,7 @@ const getDefaultContact = (lang: 'tr' | 'en') => (
         workingHoursValue: 'Monday - Friday: 09:00 - 18:00',
         quickSupportTitle: 'Quick support line',
         quickSupportDesc: 'You can instantly reach us via WhatsApp for any questions.',
-        whatsappNumber: '905331313',
+        whatsappNumber: '05521691097',
       }
 );
 
@@ -144,7 +144,7 @@ const ContactEditorInner: React.FC<{ lang: 'tr' | 'en' }> = ({ lang }) => {
       <Card title="WhatsApp Destek Kartı (Yeşil Kart)">
         <div><Label text="Başlık" /><Input value={contact.data?.quickSupportTitle} onChange={v => contact.set('quickSupportTitle', v)} /></div>
         <div><Label text="Açıklama" /><Textarea value={contact.data?.quickSupportDesc} onChange={v => contact.set('quickSupportDesc', v)} rows={2} /></div>
-        <div><Label text="WhatsApp Numarası" /><Input value={contact.data?.whatsappNumber} onChange={v => contact.set('whatsappNumber', v)} placeholder="+905551234567" /></div>
+        <div><Label text="WhatsApp Numarası" /><Input value={contact.data?.whatsappNumber} onChange={v => contact.set('whatsappNumber', v)} placeholder="05521691097" /></div>
         <SaveBtn onSave={contact.handleSave} saving={contact.saving} success={contact.success} error={contact.error} />
       </Card>
 
