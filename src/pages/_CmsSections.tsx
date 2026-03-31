@@ -18,13 +18,24 @@ export const CmsSections: React.FC<{ sections: any[] }> = ({ sections }) => (
                 )}
                 {section.type === 'card-grid' && (
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {section.cards?.map((card: any, i: number) => (
-                            <div key={i} className="bg-slate-50 border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
-                                {card.icon && <div className="w-12 h-12 bg-[#102477]/10 rounded-lg flex items-center justify-center mb-4"><i className={`fas ${card.icon} text-[#102477] text-xl`}></i></div>}
-                                <h3 className="text-lg font-bold text-[#102477] mb-2">{card.title}</h3>
-                                <p className="text-gray-600 text-sm">{card.description}</p>
-                            </div>
-                        ))}
+                        {section.cards?.map((card: any, i: number) => {
+                            const colors = [
+                                { bg: 'bg-[#4DB848]', text: 'text-white' },
+                                { bg: 'bg-[#102477]', text: 'text-white' },
+                                { bg: 'bg-orange-500', text: 'text-white' },
+                                { bg: 'bg-purple-500', text: 'text-white' },
+                                { bg: 'bg-blue-400', text: 'text-white' },
+                                { bg: 'bg-emerald-500', text: 'text-white' },
+                            ];
+                            const c = colors[i % colors.length];
+                            return (
+                                <div key={i} className="bg-white border border-gray-100 rounded-2xl p-6 hover:shadow-lg transition-all flex flex-col items-center text-center">
+                                    {card.icon && <div className={`w-12 h-12 ${c.bg} rounded-xl flex items-center justify-center mb-4`}><i className={`fas ${card.icon} ${c.text} text-xl`}></i></div>}
+                                    <h3 className="text-lg font-bold text-[#102477] mb-2">{card.title}</h3>
+                                    <p className="text-gray-600 text-sm">{card.description}</p>
+                                </div>
+                            );
+                        })}
                     </div>
                 )}
             </div>

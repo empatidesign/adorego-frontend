@@ -28,13 +28,16 @@ const DEFAULT_CONTENT = {
     formNameLabel: 'Adınız soyadınız', formEmailLabel: 'E-posta adresiniz',
     formSubjectLabel: 'Konu', formMessageLabel: 'Mesajınız', formButton: 'Gönder',
     contactInfoTitle: 'İletişim bilgileri',
-    addressLabel: 'Adres', addressValue: 'İstanbul, Türkiye',
-    phoneLabel: 'Telefon', phoneValue: '',
+    companyName: 'AdoreGo Global Operasyon Merkezi',
+    companyFullName: 'ADOREL LOJİSTİK KARGO TELEKOMÜNİKASYON BİLİŞİM YAZILIM İÇ VE DIŞ TİCARET A.Ş.',
+    addressLabel: 'Adres', addressValue: 'Bahçelievler Mah 232.Sok No 6 Gölbaşı - Ankara - Türkiye',
+    phoneLabel: 'Telefon', phoneValue: '+90 312 320 26 26 – 533 13 13',
     emailLabel: 'E-posta', emailValue: 'info@adorelgo.com',
+    websiteLabel: 'Web', websiteValue: 'www.adorelgo.com',
     workingHoursLabel: 'Çalışma saatleri', workingHoursValue: 'Pazartesi - Cuma: 09:00 - 18:00',
     quickSupportTitle: 'Hızlı destek hattı',
     quickSupportDesc: 'Her türlü sorunuz için WhatsApp üzerinden bize anında ulaşabilirsiniz.',
-    whatsappNumber: '',
+    whatsappNumber: '905331313',
 };
 
 const Contact = () => {
@@ -87,8 +90,8 @@ const Contact = () => {
                     className="text-white relative flex items-center"
                     style={{
                         background: 'linear-gradient(to right, #0051ba, #003d99)',
-                        paddingTop: '100px',
-                        paddingBottom: '60px'
+                        paddingTop: '28px',
+                        paddingBottom: '24px'
                     }}
                 >
                     <div className="max-w-7xl mx-auto px-6 w-full">
@@ -206,31 +209,65 @@ const Contact = () => {
                             <div className="lg:col-span-4 space-y-6">
                                 {/* Contact Information Card */}
                                 <div className="bg-white rounded-xl shadow-sm p-6">
-                                    <h3 className="text-xl font-bold text-gray-800 mb-6">{content.contactInfoTitle}</h3>
+                                    <h3 className="text-xl font-bold text-gray-800 mb-1">{content.companyName || content.contactInfoTitle}</h3>
+                                    {content.companyFullName && <p className="text-xs text-gray-500 mb-6 leading-relaxed">{content.companyFullName}</p>}
 
                                     <div className="space-y-5">
                                         {/* Address */}
-                                        <div>
-                                            <h4 className="text-xs font-semibold text-gray-500 mb-1">{content.addressLabel}</h4>
-                                            <p className="text-gray-800 text-sm">{content.addressValue}</p>
+                                        <div className="flex gap-3">
+                                            <div className="w-8 h-8 bg-[#102477]/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                <i className="fas fa-location-dot text-[#102477] text-sm"></i>
+                                            </div>
+                                            <div>
+                                                <h4 className="text-xs font-semibold text-gray-500 mb-1">{content.addressLabel}</h4>
+                                                <p className="text-gray-800 text-sm">{content.addressValue}</p>
+                                            </div>
                                         </div>
 
                                         {/* Phone */}
-                                        <div>
-                                            <h4 className="text-xs font-semibold text-gray-500 mb-1">{content.phoneLabel}</h4>
-                                            <p className="text-gray-800 text-sm font-medium">{content.phoneValue}</p>
+                                        <div className="flex gap-3">
+                                            <div className="w-8 h-8 bg-[#4DB848]/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                <i className="fas fa-phone text-[#4DB848] text-sm"></i>
+                                            </div>
+                                            <div>
+                                                <h4 className="text-xs font-semibold text-gray-500 mb-1">{content.phoneLabel}</h4>
+                                                <p className="text-gray-800 text-sm font-medium">{content.phoneValue}</p>
+                                            </div>
                                         </div>
 
                                         {/* Email */}
-                                        <div>
-                                            <h4 className="text-xs font-semibold text-gray-500 mb-1">{content.emailLabel}</h4>
-                                            <p className="text-gray-800 text-sm font-medium break-all">{content.emailValue}</p>
+                                        <div className="flex gap-3">
+                                            <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                <i className="fas fa-envelope text-orange-500 text-sm"></i>
+                                            </div>
+                                            <div>
+                                                <h4 className="text-xs font-semibold text-gray-500 mb-1">{content.emailLabel}</h4>
+                                                <p className="text-gray-800 text-sm font-medium break-all">{content.emailValue}</p>
+                                            </div>
                                         </div>
 
+                                        {/* Website */}
+                                        {content.websiteValue && (
+                                            <div className="flex gap-3">
+                                                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                    <i className="fas fa-globe text-purple-500 text-sm"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 className="text-xs font-semibold text-gray-500 mb-1">{content.websiteLabel || 'Web'}</h4>
+                                                    <p className="text-gray-800 text-sm font-medium">{content.websiteValue}</p>
+                                                </div>
+                                            </div>
+                                        )}
+
                                         {/* Working Hours */}
-                                        <div>
-                                            <h4 className="text-xs font-semibold text-gray-500 mb-1">{content.workingHoursLabel}</h4>
-                                            <p className="text-gray-800 text-sm">{content.workingHoursValue}</p>
+                                        <div className="flex gap-3">
+                                            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                <i className="fas fa-clock text-blue-500 text-sm"></i>
+                                            </div>
+                                            <div>
+                                                <h4 className="text-xs font-semibold text-gray-500 mb-1">{content.workingHoursLabel}</h4>
+                                                <p className="text-gray-800 text-sm">{content.workingHoursValue}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

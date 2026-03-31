@@ -89,18 +89,17 @@ const Footer: React.FC = () => {
             { n: "Yurtdışı Kargo", h: "/yurtdisi-kargo" },
             { n: "Yurtiçi Kargo", h: "/yurtici-kargo" },
             { n: "Yurtdışından Türkiye'ye Kargo", h: "/yurtdisindan-turkiye" },
-            { n: "Alıcı Ödemeli Lojistik", h: "/yurtici-kargo#alici-odemeli" },
-            { n: "Kapıda Ödemeli Kargo", h: "/yurtici-kargo#kapida-odemeli" }
+            { n: "Alıcı Ödemeli Lojistik", h: "/yurtici-kargo#alici-odemeli" }
           ]
         },
         {
           title: "Nasıl Gönderirim?",
           links: [
-            { n: "Nasıl Gönderirim?", h: "/yurtdisi-kargo#nasil-gonderirim" },
-            { n: "Kapıdan Alım – Kapıya Teslim", h: "/yurtdisi-kargo#kapidan-alim" },
-            { n: "İlk Kez Yurtdışına Gönderenler", h: "/yurtdisi-kargo#ilk-kez" },
-            { n: "Gümrük & Evrak Rehberi", h: "/yurtdisi-kargo#gumruk-evrak" },
-            { n: "Yurtdışı İade & Geri Gönderim", h: "/yurtdisi-kargo#iade-geri" }
+            { n: "Nasıl Gönderirim?", h: "/nasil-gonderirim" },
+            { n: "Kapıdan Alım – Kapıya Teslim", h: "/kapidan-alim-kapiya-teslimat" },
+            { n: "İlk Kez Yurtdışına Gönderenler", h: "/ilk-kez-yurtdisina-gondermek" },
+            { n: "Gümrük & Evrak Rehberi", h: "/gumruk-evrak-rehberi" },
+            { n: "Yurtdışı İade & Geri Gönderim", h: "/yurtdisi-iade-geri-gonderi" }
           ]
         },
         {
@@ -263,27 +262,6 @@ const Footer: React.FC = () => {
 
       <footer className="bg-white text-[#102477] pt-12 pb-12 border-t border-slate-100" role="contentinfo">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <section className="bg-slate-50 p-8 rounded-[10px] mb-16 flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="text-center md:text-left">
-              <h4 className="font-bold text-[#102477] text-lg mb-2">{cta.title}</h4>
-              <p className="text-slate-500 text-sm font-medium">{cta.subtitle}</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => cta.button1Link?.startsWith('http') ? window.open(cta.button1Link, '_blank') : navigate(cta.button1Link)}
-                className="bg-[#102477] text-white px-8 py-3 rounded-[10px] font-bold text-sm flex items-center gap-2 hover:bg-black transition-colors"
-              >
-                <i className="fas fa-comment-dots" aria-hidden="true"></i> {cta.button1Text}
-              </button>
-              <button
-                onClick={() => cta.button2Link?.startsWith('http') ? window.open(cta.button2Link, '_blank') : navigate(cta.button2Link)}
-                className="bg-[#4DB848] text-white px-8 py-3 rounded-[10px] font-bold text-sm hover:bg-[#3da339] transition-colors shadow-lg shadow-green-500/10"
-              >
-                {cta.button2Text}
-              </button>
-            </div>
-          </section>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12 border-b border-slate-50 pb-12">
             <div className="lg:col-span-1">
               <div className="flex-shrink-0 flex items-center mb-6">

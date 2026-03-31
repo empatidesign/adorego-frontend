@@ -99,7 +99,7 @@ const InternationalShipping: React.FC = () => {
       <main className="flex-grow pt-20">
 
         {/* Hero */}
-        <section className="text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #102477 0%, #1a3a9e 50%, #102477 100%)', paddingTop: '100px', paddingBottom: '80px' }}>
+        <section id="nasil-gonderirim" className="text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #102477 0%, #1a3a9e 50%, #102477 100%)', paddingTop: '28px', paddingBottom: '24px' }}>
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 right-0 w-96 h-96 bg-[#4DB848] rounded-full blur-[120px] -mr-48 -mt-48"></div>
           </div>
@@ -119,7 +119,7 @@ const InternationalShipping: React.FC = () => {
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
               {(data.kargoTypes || []).map((k: any) => (
-                <div key={k.id} className="bg-slate-50 rounded-2xl p-10 border border-gray-100 hover:shadow-lg transition-all">
+                <div key={k.id} className="bg-slate-50 rounded-2xl p-10 border border-gray-100 hover:shadow-lg transition-all flex flex-col items-center text-center">
                   <div className={`w-14 h-14 ${k.color || 'bg-blue-500'} rounded-xl flex items-center justify-center mb-6`}>
                     <i className={`fas ${k.icon} text-white text-xl`}></i>
                   </div>
@@ -138,7 +138,7 @@ const InternationalShipping: React.FC = () => {
         </section>
 
         {/* Kapıdan Alım */}
-        <section className="py-20 bg-gradient-to-r from-[#102477] to-[#1a3a9e] text-white">
+        <section id="kapidan-alim" className="py-20 bg-gradient-to-r from-[#102477] to-[#1a3a9e] text-white">
           <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
             <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-8">
               <i className="fas fa-truck text-[#4DB848] text-2xl"></i>
@@ -149,7 +149,7 @@ const InternationalShipping: React.FC = () => {
         </section>
 
         {/* İlk Kez Gönderenler */}
-        <section className="py-20 bg-white">
+        <section id="ilk-kez" className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="text-center mb-14">
               <h2 className="text-3xl lg:text-4xl font-bold text-[#102477] tracking-tight mb-3">
@@ -159,7 +159,7 @@ const InternationalShipping: React.FC = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {(data.firstTimers?.cards || []).map((c: any) => (
-                <div key={c.id} className="bg-slate-50 rounded-2xl p-8 border border-gray-100 hover:shadow-lg transition-all">
+                <div key={c.id} id={c.id === '2' ? 'gumruk-evrak' : c.id === '3' ? 'iade-geri' : undefined} className="bg-slate-50 rounded-2xl p-8 border border-gray-100 hover:shadow-lg transition-all flex flex-col items-center text-center">
                   <div className={`w-12 h-12 ${c.color || 'bg-blue-500'} rounded-xl flex items-center justify-center mb-5`}>
                     <i className={`fas ${c.icon} text-white text-lg`}></i>
                   </div>

@@ -45,7 +45,7 @@ const USAShipping: React.FC = () => {
             <SEO page="amerikaya-kargo" customTitle="Amerika'ya Kargo Gönderimi | AdorelGo" customDescription="Amerika'ya kargo kaç TL? Nasıl gönderilir? Ortalama 2-5 gün teslim, farklı kargo firmaları tek panelde." />
             <Navbar />
             <main className="flex-grow pt-20">
-                <section className="text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #102477 0%, #1a3a9e 50%, #102477 100%)', paddingTop: '100px', paddingBottom: '80px' }}>
+                <section className="text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #102477 0%, #1a3a9e 50%, #102477 100%)', paddingTop: '28px', paddingBottom: '24px' }}>
                     <div className="absolute inset-0 opacity-10"><div className="absolute top-0 right-0 w-96 h-96 bg-[#4DB848] rounded-full blur-[120px] -mr-48 -mt-48"></div></div>
                     <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
                         <nav className="flex items-center gap-2 text-sm opacity-60 mb-6"><Link to="/" className="hover:opacity-100">Anasayfa</Link><span>/</span><span>{title}</span></nav>

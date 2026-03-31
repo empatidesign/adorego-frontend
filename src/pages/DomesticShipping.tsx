@@ -87,7 +87,7 @@ const DomesticShipping: React.FC = () => {
       <main className="flex-grow pt-20">
 
         {/* Hero */}
-        <section className="text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #102477 0%, #1a3a9e 50%, #102477 100%)', paddingTop: '100px', paddingBottom: '80px' }}>
+        <section className="text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #102477 0%, #1a3a9e 50%, #102477 100%)', paddingTop: '28px', paddingBottom: '24px' }}>
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 right-0 w-96 h-96 bg-[#4DB848] rounded-full blur-[120px] -mr-48 -mt-48"></div>
           </div>
@@ -107,7 +107,7 @@ const DomesticShipping: React.FC = () => {
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
               {(data.kargoTypes || []).map((k: any) => (
-                <div key={k.id} className="bg-slate-50 rounded-2xl p-10 border border-gray-100 hover:shadow-lg transition-all">
+                <div key={k.id} className="bg-slate-50 rounded-2xl p-10 border border-gray-100 hover:shadow-lg transition-all flex flex-col items-center text-center">
                   <div className={`w-14 h-14 ${k.color || 'bg-blue-500'} rounded-xl flex items-center justify-center mb-6`}>
                     <i className={`fas ${k.icon} text-white text-xl`}></i>
                   </div>
@@ -142,7 +142,7 @@ const DomesticShipping: React.FC = () => {
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {(data.advantages || []).map((a: any) => (
-                <div key={a.id} className="bg-slate-50 rounded-2xl p-8 border border-gray-100 hover:shadow-lg transition-all">
+                <div key={a.id} className="bg-slate-50 rounded-2xl p-8 border border-gray-100 hover:shadow-lg transition-all flex flex-col items-center text-center">
                   <div className={`w-12 h-12 ${a.color || 'bg-blue-500'} rounded-xl flex items-center justify-center mb-5`}>
                     <i className={`fas ${a.icon} text-white text-lg`}></i>
                   </div>

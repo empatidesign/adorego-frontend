@@ -5,7 +5,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 const WhatsAppButton: React.FC = () => {
     const { currentLang } = useLanguage();
-    const [whatsappNumber, setWhatsappNumber] = useState('');
+    const [whatsappNumber, setWhatsappNumber] = useState('905331313');
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
@@ -38,7 +38,7 @@ const WhatsAppButton: React.FC = () => {
     const handleWhatsAppClick = () => {
         if (!whatsappNumber) {
             // Varsayılan bir numara veya hata mesajı
-            window.open(`https://wa.me/905320000000`, '_blank');
+            window.open(`https://wa.me/905331313`, '_blank');
             return;
         }
         window.open(`https://wa.me/${whatsappNumber}`, '_blank');

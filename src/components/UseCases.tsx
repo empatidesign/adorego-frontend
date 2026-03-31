@@ -50,7 +50,7 @@ const UseCases: React.FC = () => {
         </div>
         <div className="flex flex-wrap justify-center gap-6">
           {(data.items || []).map((item: any, idx: number) => (
-            <div key={item.id || idx} className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 duration-300">
+            <div key={item.id || idx} className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 duration-300 flex flex-col items-center text-center">
               <div className={`w-14 h-14 ${item.color || 'bg-blue-500'} rounded-xl flex items-center justify-center mb-6 text-white`}>
                 <i className={`fas ${item.icon || 'fa-box'} text-xl`}></i>
               </div>

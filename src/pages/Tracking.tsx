@@ -116,8 +116,8 @@ const Tracking: React.FC = () => {
                     className="text-white relative flex items-center"
                     style={{
                         background: 'linear-gradient(to right, #0051ba, #003d99)',
-                        paddingTop: '100px',
-                        paddingBottom: '60px'
+                        paddingTop: '28px',
+                        paddingBottom: '24px'
                     }}
                 >
                     <div className="max-w-7xl mx-auto px-6 w-full">

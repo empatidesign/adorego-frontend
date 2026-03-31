@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useLanguage } from '../contexts/LanguageContext';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { API_BASE_URL } from '../api-config';
 
 const Logo: React.FC<{ className?: string; src?: string; brandName?: string }> = ({
@@ -66,6 +66,7 @@ const defaultMenuItems = [
 const Navbar: React.FC = () => {
   const { language, setLanguage } = useLanguage();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -78,7 +79,7 @@ const Navbar: React.FC = () => {
     brandName: "AdorelGo",
     menuItems: [],
     ctaButtons: [
-      { id: "2", label: "Üye Ol / Giriş", link: "#", style: "primary" },
+      { id: "2", label: "Üye Ol / Giriş", link: "https://app.adorelgo.com/", style: "primary" },
     ]
   });
 
@@ -200,7 +201,13 @@ const Navbar: React.FC = () => {
           {/* Logo */}
           <div
             className="flex-shrink-0 cursor-pointer"
-            onClick={() => navigate('/')}
+            onClick={() => {
+              if (location.pathname === '/') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              } else {
+                navigate('/');
+              }
+            }}
           >
             <Logo
               className="h-9"

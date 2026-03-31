@@ -202,7 +202,7 @@ const TargetAudience: React.FC = () => {
               return (
                 <div 
                   key={idx} 
-                  className="bg-white p-8 rounded-[16px] shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-100 hover:border-slate-200 hover:-translate-y-2 group"
+                  className="bg-white p-8 rounded-[16px] shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-100 hover:border-slate-200 hover:-translate-y-2 group flex flex-col items-center text-center"
                 >
                   <div className={`w-14 h-14 ${color} rounded-[12px] flex items-center justify-center mb-6 shadow-md group-hover:scale-110 transition-transform duration-300`}>
                     <i className={`fas ${icon} text-white text-xl`}></i>

@@ -29,7 +29,7 @@ const EtsyIntegration: React.FC = () => {
             <SEO page="etsy-entegrasyonu" />
             <Navbar />
             <main className="flex-grow pt-20">
-                <section className="text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #102477 0%, #1a3a9e 50%, #102477 100%)', paddingTop: '100px', paddingBottom: '80px' }}>
+                <section className="text-white relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #102477 0%, #1a3a9e 50%, #102477 100%)', paddingTop: '28px', paddingBottom: '24px' }}>
                     <div className="absolute inset-0 opacity-10"><div className="absolute top-0 right-0 w-96 h-96 bg-[#4DB848] rounded-full blur-[120px] -mr-48 -mt-48"></div></div>
                     <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
                         <nav className="flex items-center gap-2 text-sm opacity-60 mb-6"><Link to="/" className="hover:opacity-100">Anasayfa</Link><span>/</span><span>{title}</span></nav>
@@ -41,13 +41,16 @@ const EtsyIntegration: React.FC = () => {
                     <div className="max-w-5xl mx-auto px-6 lg:px-8">
                         {sections && sections.length > 0 ? <CmsSections sections={sections} /> : (
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                {defaultFeatures.map((f, i) => (
+                                {defaultFeatures.map((f, i) => {
+                                    const colors = ['bg-[#4DB848]', 'bg-[#102477]', 'bg-orange-500'];
+                                    return (
                                     <div key={i} className="bg-slate-50 rounded-2xl p-8 border border-gray-100 text-center hover:shadow-lg transition-all">
-                                        <div className="w-14 h-14 bg-[#102477] rounded-xl flex items-center justify-center mx-auto mb-6"><i className={`fas ${f.icon} text-white text-xl`}></i></div>
+                                        <div className={`w-14 h-14 ${colors[i % colors.length]} rounded-xl flex items-center justify-center mx-auto mb-6`}><i className={`fas ${f.icon} text-white text-xl`}></i></div>
                                         <h3 className="font-bold text-[#102477] text-lg mb-3">{f.title}</h3>
                                         <p className="text-gray-600 text-sm leading-relaxed">{f.desc}</p>
                                     </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         )}
                     </div>

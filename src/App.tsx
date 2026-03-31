@@ -49,6 +49,10 @@ import EtsyIntegration from './pages/EtsyIntegration';
 import AmazonIntegration from './pages/AmazonIntegration';
 import WooCommerceIntegration from './pages/WooCommerceIntegration';
 import CustomAPIIntegration from './pages/CustomAPIIntegration';
+import DoorToDoorPage from './pages/DoorToDoorPage';
+import FirstTimeAbroadPage from './pages/FirstTimeAbroadPage';
+import CustomsGuidePage from './pages/CustomsGuidePage';
+import ReturnShippingPage from './pages/ReturnShippingPage';
 import WhatsAppButton from './components/WhatsAppButton';
 import ScrollToTop from './components/ScrollToTop';
 
@@ -128,6 +132,10 @@ const App: React.FC = () => {
           <Route path="/amazon-entegrasyonu" element={<AmazonIntegration />} />
           <Route path="/woocommerce-entegrasyonu" element={<WooCommerceIntegration />} />
           <Route path="/ozel-site-api" element={<CustomAPIIntegration />} />
+          <Route path="/kapidan-alim-kapiya-teslimat" element={<DoorToDoorPage />} />
+          <Route path="/ilk-kez-yurtdisina-gondermek" element={<FirstTimeAbroadPage />} />
+          <Route path="/gumruk-evrak-rehberi" element={<CustomsGuidePage />} />
+          <Route path="/yurtdisi-iade-geri-gonderi" element={<ReturnShippingPage />} />
 
           {/* Blog */}
           <Route path="/blog" element={<Blog />} />
