@@ -3,6 +3,20 @@ import { contentAPI } from '../../../services/api';
 import { Loader, Card, Label, Input, Textarea, SaveBtn, AddBtn, RemoveBtn } from './shared';
 import RichEditor from '../../../components/RichEditor';
 
+const LangToggle: React.FC<{ lang: string; onChange: (l: 'tr' | 'en') => void }> = ({ lang, onChange }) => (
+  <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl p-1 w-fit">
+    {(['tr', 'en'] as const).map(l => (
+      <button
+        key={l}
+        onClick={() => onChange(l)}
+        className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors ${lang === l ? 'bg-blue-600 text-white' : 'text-gray-500 hover:text-gray-700'}`}
+      >
+        {l === 'tr' ? '🇹🇷 Türkçe' : '🇬🇧 English'}
+      </button>
+    ))}
+  </div>
+);
+
 const ICON_LIST = [
   'fa-star','fa-heart','fa-check','fa-check-circle','fa-globe','fa-truck','fa-box','fa-box-open',
   'fa-shipping-fast','fa-plane','fa-map-marker-alt','fa-map','fa-clock','fa-calendar','fa-bell',
@@ -172,7 +186,19 @@ interface SeoData {
   canonical?: string;
 }
 
-const GenericPageEditor: React.FC<{ slug: string; defaultTitle: string; defaultSections?: Section[]; defaultDescription?: string; defaultSeo?: SeoData }> = ({ slug, defaultTitle, defaultSections, defaultDescription, defaultSeo }) => {
+type Lang = 'tr' | 'en';
+type LocalizedValue<T> = T | ((lang: Lang) => T);
+
+const resolveValue = <T,>(value: LocalizedValue<T> | undefined, lang: Lang): T | undefined => {
+  if (typeof value === 'function') {
+    return (value as (lang: Lang) => T)(lang);
+  }
+
+  return value;
+};
+
+const GenericPageEditor: React.FC<{ slug: string; defaultTitle: LocalizedValue<string>; defaultSections?: LocalizedValue<Section[]>; defaultDescription?: LocalizedValue<string>; defaultSeo?: LocalizedValue<SeoData> }> = ({ slug, defaultTitle, defaultSections, defaultDescription, defaultSeo }) => {
+  const [lang, setLang] = useState<Lang>('tr');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [sections, setSections] = useState<Section[]>([]);
@@ -184,18 +210,23 @@ const GenericPageEditor: React.FC<{ slug: string; defaultTitle: string; defaultS
 
   useEffect(() => {
     setLoading(true);
+    const resolvedDefaultTitle = resolveValue(defaultTitle, lang) ?? '';
+    const resolvedDefaultDescription = resolveValue(defaultDescription, lang) ?? '';
+    const resolvedDefaultSections = resolveValue(defaultSections, lang) ?? [];
+    const resolvedDefaultSeo = resolveValue(defaultSeo, lang) ?? {};
+
     Promise.all([
-      contentAPI.getContentPage(slug).catch(() => null),
-      contentAPI.getSeo(slug).catch(() => null),
+      contentAPI.getContentPage(slug, lang).catch(() => null),
+      contentAPI.getSeo(slug, lang).catch(() => null),
     ]).then(([pageData, seoData]: any[]) => {
-      setTitle(pageData?.title || defaultTitle);
-      setDescription(pageData?.description || defaultDescription || '');
+      setTitle(pageData?.title || resolvedDefaultTitle);
+      setDescription(pageData?.description || resolvedDefaultDescription);
       const hasSections = Array.isArray(pageData?.sections) && pageData.sections.length > 0;
-      setSections(hasSections ? pageData.sections : (defaultSections ?? []));
+      setSections(hasSections ? pageData.sections : resolvedDefaultSections);
       const hasSeo = seoData && Object.keys(seoData).length > 0;
-      setSeo(hasSeo ? seoData : (defaultSeo ?? {}));
+      setSeo(hasSeo ? seoData : resolvedDefaultSeo);
     }).finally(() => setLoading(false));
-  }, [slug]);
+  }, [slug, lang, defaultTitle, defaultDescription, defaultSections, defaultSeo]);
 
   const handleSave = async () => {
     setSaving(true);
@@ -203,8 +234,8 @@ const GenericPageEditor: React.FC<{ slug: string; defaultTitle: string; defaultS
     setSuccess(false);
     try {
       await Promise.all([
-        contentAPI.updateContentPage(slug, { title, description, sections }),
-        contentAPI.updateSeo(slug, seo),
+        contentAPI.updateContentPage(slug, { title, description, sections }, lang),
+        contentAPI.updateSeo(slug, seo, lang),
       ]);
       setSuccess(true);
       setTimeout(() => setSuccess(false), 2500);
@@ -243,10 +274,17 @@ const GenericPageEditor: React.FC<{ slug: string; defaultTitle: string; defaultS
 
   if (loading) return <Loader />;
 
+  const resolvedDefaultTitle = resolveValue(defaultTitle, lang) ?? '';
+
   return (
     <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-gray-400">Seçili dil için içerik ve SEO yüklenip kaydedilir.</p>
+        <LangToggle lang={lang} onChange={setLang} />
+      </div>
+
       <Card title="Sayfa Bilgileri">
-        <div><Label text="Başlık" /><Input value={title} onChange={setTitle} placeholder={defaultTitle} /></div>
+        <div><Label text="Başlık" /><Input value={title} onChange={setTitle} placeholder={resolvedDefaultTitle} /></div>
         <div><Label text="Kısa Açıklama" /><Textarea value={description} onChange={setDescription} rows={2} placeholder="Sayfanın kısa açıklaması (opsiyonel)" /></div>
       </Card>
 

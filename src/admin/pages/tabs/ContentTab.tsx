@@ -27,6 +27,56 @@ import NavbarEditor from './content/NavbarEditor';
 import FooterEditor from './content/FooterEditor';
 import GenericPageEditor from './content/GenericPageEditor';
 
+const getReceiverPaymentDefaults = (lang: 'tr' | 'en') => {
+  if (lang === 'en') {
+    return {
+      title: 'Receiver Payment Shipping',
+      description: 'Let the receiver pay the shipping fee while you simply send the shipment.',
+      sections: [
+        { type: 'heading', content: 'What Is Receiver Payment Shipping? How Does It Work?' },
+        { type: 'text', content: '<p>Receiver payment shipping means the shipping fee is paid by the recipient instead of the sender.</p>' },
+        {
+          type: 'card-grid',
+          cards: [
+            { icon: 'fa-wallet', title: 'Ship without paying upfront', description: 'You do not pay the shipping fee. The entire cost is paid by the receiver.' },
+            { icon: 'fa-money-bill-wave', title: 'Cash collection at delivery', description: 'The receiver pays the shipping fee in cash when the shipment is delivered.' },
+            { icon: 'fa-box', title: 'Sell first, leave shipping to the receiver', description: 'Complete your sale and reflect the shipping cost to the receiver.' },
+          ],
+        },
+      ],
+      seo: {
+        metaTitle: 'What Is Receiver Payment Shipping? How Does It Work? | AdorelGo',
+        metaDescription: 'What is receiver payment shipping and how does it work? Manage receiver-paid shipments easily with AdorelGo.',
+        keywords: 'receiver payment shipping, receiver pays shipping fee, collect shipping fee on delivery',
+        canonical: 'https://adorelgo.com/alici-odemeli-kargo',
+      },
+    };
+  }
+
+  return {
+    title: 'Alıcı Ödemeli Kargo',
+    description: 'Gönderi ücretini alıcı ödesin, siz sadece gönderin.',
+    sections: [
+      { type: 'heading', content: 'Alıcı Ödemeli Kargo Nedir? Nasıl Çalışır?' },
+      { type: 'text', content: '<p>Alıcı ödemeli kargo, gönderi ücretinin gönderen tarafından değil, alıcı tarafından ödenmesi anlamına gelir.</p>' },
+      {
+        type: 'card-grid',
+        cards: [
+          { icon: 'fa-wallet', title: 'Cepten ödeme yapmadan gönderim', description: 'Kargo ücretini siz ödemezsiniz. Tüm masraf alıcıya aittir.' },
+          { icon: 'fa-money-bill-wave', title: 'Kapıda nakit tahsilat', description: 'Alıcı, teslimat anında kargo ücretini nakit olarak öder.' },
+          { icon: 'fa-box', title: 'Satışı yap, ödemeyi alıcıya bırak', description: 'Ürününüzü satın, kargo maliyetini alıcıya yansıtın.' },
+        ],
+      },
+    ],
+    seo: {
+      metaTitle: 'Alıcı Ödemeli Kargo Nedir? Nasıl Çalışır? | AdorelGo',
+      metaDescription: 'Alıcı ödemeli kargo nedir ve nasıl çalışır? AdorelGo ile alıcı ödemeli gönderileri kolayca yönetin.',
+      keywords: 'alıcı ödemeli kargo, alıcı kargo ücretini öder, kapıda kargo ücreti tahsilatı',
+      canonical: 'https://adorelgo.com/alici-odemeli-kargo',
+    },
+  };
+};
+
 // Özel editörleri olan sayfalar
 const PAGE_EDITORS: Record<string, React.FC> = {
   home: HomeEditor,
@@ -229,9 +279,10 @@ const ContentTab: React.FC<{ selectedPage: string }> = ({ selectedPage }) => {
     <GenericPageEditor
       key={selectedPage}
       slug={generic[0]}
-      defaultTitle={generic[1]}
-      defaultSections={DEFAULT_SECTIONS_MAP[selectedPage]}
-      defaultSeo={DEFAULT_SEO_MAP[selectedPage]}
+      defaultTitle={selectedPage === 'alici-odemeli-kargo' ? (lang => getReceiverPaymentDefaults(lang).title) : generic[1]}
+      defaultDescription={selectedPage === 'alici-odemeli-kargo' ? (lang => getReceiverPaymentDefaults(lang).description) : undefined}
+      defaultSections={selectedPage === 'alici-odemeli-kargo' ? (lang => getReceiverPaymentDefaults(lang).sections) : DEFAULT_SECTIONS_MAP[selectedPage]}
+      defaultSeo={selectedPage === 'alici-odemeli-kargo' ? (lang => getReceiverPaymentDefaults(lang).seo) : DEFAULT_SEO_MAP[selectedPage]}
     />
   );
 

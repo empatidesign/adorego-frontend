@@ -4,7 +4,18 @@ import axios from 'axios';
 import { useLanguage } from '../contexts/LanguageContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import SEO from '../components/SEO';
 import { API_BASE_URL } from '../api-config';
+
+const DEFAULT_CONTACT_MAP_URL = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d245.294717533184!2d32.82214850442983!3d39.76911265077443!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14d345e33d97fc47%3A0xd4b2a2f7ce3c8e2b!2sAdorel!5e1!3m2!1sen!2str!4v1774722441289!5m2!1sen!2str';
+const LEGACY_CONTACT_MAP_URL = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3010.2266489!2d28.9784!3d41.0082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDAwJzI5LjUiTiAyOMKwNTgnNDIuMiJF!5e0!3m2!1str!2str!4v1234567890';
+
+const normalizeMapUrl = (value?: string) => {
+    if (!value) return DEFAULT_CONTACT_MAP_URL;
+    const iframeMatch = value.match(/src="([^"]+)"/i);
+    const extracted = iframeMatch?.[1] || value.trim();
+    return extracted === LEGACY_CONTACT_MAP_URL ? DEFAULT_CONTACT_MAP_URL : extracted;
+};
 
 function deepMerge(defaults: any, override: any): any {
     if (override === null || override === undefined) return defaults;
@@ -20,29 +31,69 @@ function deepMerge(defaults: any, override: any): any {
     return result;
 }
 
-const DEFAULT_CONTENT = {
-    pageTitle: 'İletişim', breadcrumb: 'İletişim',
-    mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d245.294717533184!2d32.82214850442983!3d39.76911265077443!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14d345e33d97fc47%3A0xd4b2a2f7ce3c8e2b!2sAdorel!5e1!3m2!1sen!2str!4v1774722441289!5m2!1sen!2str',
-    sendMessageTitle: 'Bize mesaj gönderin',
-    sendMessageDesc: 'Aşağıdaki formu doldurarak bizimle hızlıca iletişime geçebilirsiniz.',
-    formNameLabel: 'Adınız soyadınız', formEmailLabel: 'E-posta adresiniz',
-    formSubjectLabel: 'Konu', formMessageLabel: 'Mesajınız', formButton: 'Gönder',
-    contactInfoTitle: 'İletişim bilgileri',
-    companyName: 'AdorelGo Global Operasyon Merkezi',
-    companyFullName: 'ADOREL LOJİSTİK KARGO TELEKOMÜNİKASYON BİLİŞİM YAZILIM İÇ VE DIŞ TİCARET A.Ş.',
-    addressLabel: 'Adres', addressValue: 'Bahçelievler Mah 232.Sok No 6 Gölbaşı - Ankara - Türkiye',
-    phoneLabel: 'Telefon', phoneValue: '+90 312 320 26 26 – 533 13 13',
-    emailLabel: 'E-posta', emailValue: 'info@adorelgo.com',
-    websiteLabel: 'Web', websiteValue: 'www.adorelgo.com',
-    workingHoursLabel: 'Çalışma saatleri', workingHoursValue: 'Pazartesi - Cuma: 09:00 - 18:00',
-    quickSupportTitle: 'Hızlı destek hattı',
-    quickSupportDesc: 'Her türlü sorunuz için WhatsApp üzerinden bize anında ulaşabilirsiniz.',
-    whatsappNumber: '905331313',
-};
+const getDefaultContactContent = (lang: 'tr' | 'en') => (
+    lang === 'tr'
+        ? {
+            pageTitle: 'İletişim',
+            breadcrumb: 'İletişim',
+            mapUrl: DEFAULT_CONTACT_MAP_URL,
+            sendMessageTitle: 'Bize mesaj gönderin',
+            sendMessageDesc: 'Aşağıdaki formu doldurarak bizimle hızlıca iletişime geçebilirsiniz.',
+            formNameLabel: 'Adınız soyadınız',
+            formEmailLabel: 'E-posta adresiniz',
+            formSubjectLabel: 'Konu',
+            formMessageLabel: 'Mesajınız',
+            formButton: 'Gönder',
+            contactInfoTitle: 'İletişim bilgileri',
+            companyName: 'AdorelGo Global Operasyon Merkezi',
+            companyFullName: 'ADOREL LOJİSTİK KARGO TELEKOMÜNİKASYON BİLİŞİM YAZILIM İÇ VE DIŞ TİCARET A.Ş.',
+            addressLabel: 'Adres',
+            addressValue: 'Bahçelievler Mah 232.Sok No 6 Gölbaşı - Ankara - Türkiye',
+            phoneLabel: 'Telefon',
+            phoneValue: '+90 312 320 26 26 – 533 13 13',
+            emailLabel: 'E-posta',
+            emailValue: 'info@adorelgo.com',
+            websiteLabel: 'Web',
+            websiteValue: 'www.adorelgo.com',
+            workingHoursLabel: 'Çalışma saatleri',
+            workingHoursValue: 'Pazartesi - Cuma: 09:00 - 18:00',
+            quickSupportTitle: 'Hızlı destek hattı',
+            quickSupportDesc: 'Her türlü sorunuz için WhatsApp üzerinden bize anında ulaşabilirsiniz.',
+            whatsappNumber: '905331313',
+        }
+        : {
+            pageTitle: 'Contact',
+            breadcrumb: 'Contact',
+            mapUrl: DEFAULT_CONTACT_MAP_URL,
+            sendMessageTitle: 'Send us a message',
+            sendMessageDesc: 'You can quickly get in touch with us by filling out the form below.',
+            formNameLabel: 'Your full name',
+            formEmailLabel: 'Your email address',
+            formSubjectLabel: 'Subject',
+            formMessageLabel: 'Your message',
+            formButton: 'Send',
+            contactInfoTitle: 'Contact information',
+            companyName: 'AdorelGo Global Operations Center',
+            companyFullName: 'ADOREL LOGISTICS CARGO TELECOMMUNICATIONS INFORMATICS SOFTWARE IMPORT EXPORT TRADE INC.',
+            addressLabel: 'Address',
+            addressValue: 'Bahcelievler Mah 232. Sok No 6 Golbasi - Ankara - Turkiye',
+            phoneLabel: 'Phone',
+            phoneValue: '+90 312 320 26 26 – 533 13 13',
+            emailLabel: 'Email',
+            emailValue: 'info@adorelgo.com',
+            websiteLabel: 'Web',
+            websiteValue: 'www.adorelgo.com',
+            workingHoursLabel: 'Working hours',
+            workingHoursValue: 'Monday - Friday: 09:00 - 18:00',
+            quickSupportTitle: 'Quick support line',
+            quickSupportDesc: 'You can instantly reach us via WhatsApp for any questions.',
+            whatsappNumber: '905331313',
+        }
+);
 
 const Contact = () => {
     const { language } = useLanguage();
-    const [content, setContent] = useState<any>(DEFAULT_CONTENT);
+    const [content, setContent] = useState<any>(() => getDefaultContactContent(language));
     const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState({
         name: '',
@@ -57,10 +108,13 @@ const Contact = () => {
     }, [language]);
 
     const loadContent = async () => {
+        const defaults = getDefaultContactContent(language);
+        setContent(defaults);
         try {
             const response = await axios.get(`${API_BASE_URL}/content/contact?lang=${language}`);
             if (response.data && Object.keys(response.data).length > 0) {
-                setContent(deepMerge(DEFAULT_CONTENT, response.data));
+                const merged = deepMerge(defaults, response.data);
+                setContent({ ...merged, mapUrl: normalizeMapUrl(merged.mapUrl) });
             }
         } catch (error) {
             console.error('İçerik yüklenemedi:', error);
@@ -83,6 +137,7 @@ const Contact = () => {
 
     return (
         <div className="min-h-screen bg-gray-50">
+            <SEO page="iletisim" />
             <Navbar />
             <main className="flex-grow pt-20">
                 {/* Compact Professional Header */}

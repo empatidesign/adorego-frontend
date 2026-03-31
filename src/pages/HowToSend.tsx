@@ -7,33 +7,74 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { Link } from 'react-router-dom';
 import { API_BASE_URL } from '../api-config';
 
+const getDefaultHowToSendContent = (lang: 'tr' | 'en') => (
+    lang === 'tr'
+        ? {
+            badge: 'REHBER',
+            title: 'Nasıl Gönderirim?',
+            description: 'Yurtdışı kargo gönderimi için adım adım rehberimiz.',
+            introText: 'Adorelgo ile yurtdışına kargo göndermek hiç bu kadar kolay olmamıştı. Aşağıdaki adımları takip ederek dakikalar içinde gönderinizi oluşturabilirsiniz.',
+            sectionTitle: 'Adım Adım Gönderim',
+            ctaText: 'Hemen Gönderi Oluştur',
+            steps: [
+                { title: 'Üye Ol & Giriş Yap', content: 'adorelgo.com üzerinden ücretsiz hesabını oluştur ve panele giriş yap. Kayıt işlemi birkaç dakika sürer.' },
+                { title: 'Gönderi Oluştur', content: 'Alıcı bilgilerini, paket ağırlığını ve içeriğini gir. Sistem sana uygun kargo seçeneklerini gösterir.' },
+                { title: 'Ödeme Yap', content: 'Beğendiğin kargo seçeneğini seç ve ödemeyi tamamla. Tüm fiyatlar önceden nettir, gizli ücret yoktur.' },
+                { title: 'Kargonu Teslim Et', content: 'En yakın kargo şubesine götür ya da kapıdan alım seçeneğini kullan. Kuryemiz adresine gelir.' },
+                { title: 'Takip Et', content: 'Kargo yola çıktıktan itibaren her adımı panelden ve e-posta bildirimleriyle takip edebilirsin.' },
+                { title: 'Teslim Edildi', content: 'Alıcı kargosunu teslim aldığında sen de bildirim alırsın. Gönderi tamamlanmış olur.' },
+            ]
+        }
+        : {
+            badge: 'GUIDE',
+            title: 'How to Send?',
+            description: 'Our step-by-step guide for international shipping.',
+            introText: 'International shipping has never been easier with Adorelgo. Follow the steps below to create your shipment within minutes.',
+            sectionTitle: 'Step-by-Step Shipping',
+            ctaText: 'Create Shipment Now',
+            steps: [
+                { title: 'Sign Up & Log In', content: 'Create your free account on adorelgo.com and log in to the panel. Registration only takes a few minutes.' },
+                { title: 'Create Your Shipment', content: 'Enter recipient details, package weight and shipment contents. The system shows the best shipping options for you.' },
+                { title: 'Make Payment', content: 'Choose the shipping option you like and complete payment. All prices are shown upfront with no hidden fees.' },
+                { title: 'Hand Over Your Package', content: 'Drop it off at the nearest branch or use door pickup. Our courier can come to your address.' },
+                { title: 'Track It', content: 'After the shipment is on the way, you can follow every step from the panel and email notifications.' },
+                { title: 'Delivered', content: 'You are notified once the recipient receives the shipment. Your delivery process is then complete.' },
+            ]
+        }
+);
+
+const normalizeHowToSendContent = (data: any, lang: 'tr' | 'en') => {
+    const defaults = getDefaultHowToSendContent(lang);
+    const steps = Array.isArray(data?.steps) && data.steps.length > 0
+        ? data.steps.map((step: any, idx: number) => ({
+            ...step,
+            title: step?.title || defaults.steps[idx]?.title || '',
+            content: step?.content || step?.description || defaults.steps[idx]?.content || '',
+        }))
+        : defaults.steps;
+
+    return {
+        ...defaults,
+        ...data,
+        description: data?.description || data?.subtitle || defaults.description,
+        introText: data?.introText || defaults.introText,
+        sectionTitle: data?.sectionTitle || defaults.sectionTitle,
+        ctaText: data?.ctaText || defaults.ctaText,
+        steps,
+    };
+};
+
 const HowToSend: React.FC = () => {
     const { currentLang } = useLanguage();
     const [loading, setLoading] = useState(true);
-    const [content, setContent] = useState<any>({
-        badge: currentLang === 'tr' ? 'REHBER' : 'GUIDE',
-        title: currentLang === 'tr' ? 'Nasıl Gönderirim?' : 'How to Send?',
-        description: currentLang === 'tr' ? 'Yurtdışı kargo gönderimi için adım adım rehberimiz.' : 'Our step-by-step guide for international shipping.',
-        introText: currentLang === 'tr' ? 'Adorelgo ile yurtdışına kargo göndermek hiç bu kadar kolay olmamıştı. Aşağıdaki adımları takip ederek dakikalar içinde gönderinizi oluşturabilirsiniz.' : 'International shipping has never been easier with Adorelgo. You can create your shipment in minutes by following the steps below.',
-        steps: [
-            { title: 'Üye Ol & Giriş Yap', content: 'adorelgo.com üzerinden ücretsiz hesabını oluştur ve panele giriş yap. Kayıt işlemi birkaç dakika sürer.' },
-            { title: 'Gönderi Oluştur', content: 'Alıcı bilgilerini, paket ağırlığını ve içeriğini gir. Sistem sana uygun kargo seçeneklerini gösterir.' },
-            { title: 'Ödeme Yap', content: 'Beğendiğin kargo seçeneğini seç ve ödemeyi tamamla. Tüm fiyatlar önceden nettir, gizli ücret yoktur.' },
-            { title: 'Kargonu Teslim Et', content: 'En yakın kargo şubesine götür ya da kapıdan alım seçeneğini kullan. Kuryemiz adresine gelir.' },
-            { title: 'Takip Et', content: 'Kargo yola çıktıktan itibaren her adımı panelden ve e-posta bildirimleriyle takip edebilirsin.' },
-            { title: 'Teslim Edildi', content: 'Alıcı kargosunu teslim aldığında sen de bildirim alırsın. Gönderi tamamlanmış olur.' },
-        ]
-    });
+    const [content, setContent] = useState<any>(() => getDefaultHowToSendContent(currentLang));
 
     useEffect(() => {
+        setLoading(true);
+        setContent(getDefaultHowToSendContent(currentLang));
         axios.get(`${API_BASE_URL}/content/howtosend?lang=${currentLang}`)
             .then(res => {
-                if (res.data && Object.keys(res.data).length > 0) {
-                    setContent({
-                        ...content,
-                        ...res.data
-                    });
-                }
+                setContent(normalizeHowToSendContent(res.data, currentLang));
             })
             .catch(err => console.error('HowToSend content yüklenemedi:', err))
             .finally(() => setLoading(false));
@@ -41,7 +82,7 @@ const HowToSend: React.FC = () => {
 
     return (
         <div className="flex flex-col min-h-screen bg-white">
-            <SEO page="how-to-send" />
+            <SEO page="nasil-gonderirim" />
             <Navbar />
             <main className="flex-grow pt-20">
                 {/* Compact Professional Header */}
@@ -64,7 +105,7 @@ const HowToSend: React.FC = () => {
                 <div className="py-20 bg-slate-50">
                     <div className="max-w-4xl mx-auto px-6 lg:px-8">
                         <div className="text-center mb-14">
-                            <h2 className="text-3xl lg:text-4xl font-bold text-[#102477] tracking-tight mb-3">Adım Adım Gönderim</h2>
+                            <h2 className="text-3xl lg:text-4xl font-bold text-[#102477] tracking-tight mb-3">{content.sectionTitle}</h2>
                             <p className="text-gray-500 text-lg">{content.introText}</p>
                         </div>
                         <div className="relative">
@@ -84,7 +125,7 @@ const HowToSend: React.FC = () => {
                                             <h3 className="text-lg font-bold text-[#102477] mb-2 group-hover:text-[#4DB848] transition-colors duration-300">
                                                 {step.title}
                                             </h3>
-                                            <p className="text-gray-600 text-sm leading-relaxed">{step.content}</p>
+                                            <p className="text-gray-600 text-sm leading-relaxed">{step.content || step.description}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -95,7 +136,7 @@ const HowToSend: React.FC = () => {
                         <div className="mt-14 text-center">
                             <a href="https://app.adorelgo.com" target="_blank" rel="noopener noreferrer"
                                 className="inline-flex items-center gap-3 bg-[#4DB848] text-white font-bold px-10 py-4 rounded-xl hover:bg-[#3da03a] transition-all hover:-translate-y-1 shadow-lg text-base">
-                                Hemen Gönderi Oluştur
+                                {content.ctaText}
                                 <i className="fas fa-arrow-right"></i>
                             </a>
                         </div>

@@ -284,23 +284,23 @@ interface SeoDefaults {
   canonical?: string;
 }
 
-export const SeoCard: React.FC<{ slug: string; defaultSeo?: SeoDefaults }> = ({ slug, defaultSeo }) => {
+export const SeoCard: React.FC<{ slug: string; defaultSeo?: SeoDefaults; lang?: string }> = ({ slug, defaultSeo, lang = 'tr' }) => {
   const [seo, setSeo] = useState<SeoDefaults>({});
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    contentAPI.getSeo(slug).then((data: any) => {
+    contentAPI.getSeo(slug, lang).then((data: any) => {
       const hasSeo = data && Object.keys(data).length > 0;
       setSeo(hasSeo ? data : (defaultSeo ?? {}));
     }).catch(() => setSeo(defaultSeo ?? {}));
-  }, [slug]);
+  }, [slug, lang, defaultSeo]);
 
   const handleSave = async () => {
     setSaving(true); setError(''); setSuccess(false);
     try {
-      await contentAPI.updateSeo(slug, seo);
+      await contentAPI.updateSeo(slug, seo, lang);
       setSuccess(true);
       setTimeout(() => setSuccess(false), 2500);
     } catch (e: any) {
