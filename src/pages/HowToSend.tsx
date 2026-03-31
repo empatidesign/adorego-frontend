@@ -75,7 +75,7 @@ const HowToSend: React.FC = () => {
                                     <div key={idx} className="relative flex gap-6 group">
                                         {/* Step number bubble */}
                                         <div className="relative z-10 flex-shrink-0">
-                                            <div className="w-12 h-12 rounded-2xl bg-[#102477] text-white flex items-center justify-center font-bold text-lg shadow-lg group-hover:bg-[#4DB848] transition-colors duration-300">
+                                            <div className="w-12 h-12 rounded-2xl bg-[#4DB848] text-white flex items-center justify-center font-bold text-lg shadow-lg group-hover:bg-[#102477] transition-colors duration-300">
                                                 {idx + 1}
                                             </div>
                                         </div>

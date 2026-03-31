@@ -28,7 +28,7 @@ const DEFAULT_CONTENT = {
     formNameLabel: 'Adınız soyadınız', formEmailLabel: 'E-posta adresiniz',
     formSubjectLabel: 'Konu', formMessageLabel: 'Mesajınız', formButton: 'Gönder',
     contactInfoTitle: 'İletişim bilgileri',
-    companyName: 'AdoreGo Global Operasyon Merkezi',
+    companyName: 'AdorelGo Global Operasyon Merkezi',
     companyFullName: 'ADOREL LOJİSTİK KARGO TELEKOMÜNİKASYON BİLİŞİM YAZILIM İÇ VE DIŞ TİCARET A.Ş.',
     addressLabel: 'Adres', addressValue: 'Bahçelievler Mah 232.Sok No 6 Gölbaşı - Ankara - Türkiye',
     phoneLabel: 'Telefon', phoneValue: '+90 312 320 26 26 – 533 13 13',
