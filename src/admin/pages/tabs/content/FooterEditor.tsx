@@ -2,8 +2,85 @@ import React from 'react';
 import { contentAPI } from '../../../services/api';
 import { useEditor, Loader, Card, SaveBtn, Label, Input, AddBtn, RemoveBtn, ImageUpload } from './shared';
 
+const DEFAULT_FOOTER = {
+  cta: {
+    title: 'Sorun mu var? Kararsız mı kaldın?',
+    subtitle: 'Destek ekibimiz yardımcı olsun.',
+    button1Text: 'İletişime Geç',
+    button1Link: '/iletisim',
+    button2Text: 'Ücretsiz Üye Ol',
+    button2Link: 'https://app.adorelgo.com',
+  },
+  bottomSection: {
+    logoUrl: '',
+    tagline: 'Yeni Nesil Akıllı Lojistik Teknolojileri Platformu',
+    socialLinks: [
+      { platform: 'instagram', url: '#', icon: 'fa-instagram' },
+      { platform: 'linkedin', url: '#', icon: 'fa-linkedin-in' },
+    ],
+    corporateTitle: 'Kurumsal',
+    corporateLinks: [
+      { name: 'Hakkımızda', url: '/hakkimizda' },
+      { name: 'İletişim', url: '/iletisim' },
+      { name: 'Destek', url: '/iletisim' },
+      { name: 'KVKK Aydınlatma Metni', url: '/kvkk' },
+    ],
+    copyrightText: '© 2024 AdorelGo. Site kargo firması vitrini değil, teknoloji lojistik platformudur.',
+    paymentMethods: [],
+  },
+  sections: [
+    {
+      title: 'Hizmetlerimiz',
+      links: [
+        { n: 'Yurtdışı Kargo', h: '/yurtdisi-kargo' },
+        { n: 'Yurtiçi Kargo', h: '/yurtici-kargo' },
+        { n: "Yurtdışından Türkiye'ye Kargo", h: '/yurtdisindan-turkiye' },
+        { n: 'Alıcı Ödemeli Lojistik', h: '/yurtici-kargo#alici-odemeli' },
+      ],
+    },
+    {
+      title: 'Nasıl Gönderirim?',
+      links: [
+        { n: 'Nasıl Gönderirim?', h: '/nasil-gonderirim' },
+        { n: 'Kapıdan Alım – Kapıya Teslim', h: '/kapidan-alim-kapiya-teslimat' },
+        { n: 'İlk Kez Yurtdışına Gönderenler', h: '/ilk-kez-yurtdisina-gondermek' },
+        { n: 'Gümrük & Evrak Rehberi', h: '/gumruk-evrak-rehberi' },
+        { n: 'Yurtdışı İade & Geri Gönderim', h: '/yurtdisi-iade-geri-gonderi' },
+      ],
+    },
+    {
+      title: 'Gönderi & Araçlar',
+      links: [
+        { n: 'Gönderi Oluştur', h: '/iletisim' },
+        { n: 'Gönderi Takip', h: '/gonderi-takibi' },
+        { n: "Almanya'ya Kargo", h: '/almanyaya-kargo' },
+        { n: "Amerika'ya Kargo", h: '/amerikaya-kargo' },
+        { n: 'Yurtdışı Kargo Fiyatları', h: '/yurtdisi-kargo-fiyatlari' },
+      ],
+    },
+    {
+      title: 'Kaynaklar',
+      links: [
+        { n: 'Blog', h: '/blog' },
+        { n: 'Sıkça Sorulan Sorular', h: '/sikca-sorulan-sorular' },
+        { n: 'Yurtdışı Gönderim Rehberi', h: '/yurtdisi-gonderim-rehberi' },
+      ],
+    },
+    {
+      title: 'Entegrasyonlar',
+      links: [
+        { n: 'Shopify Entegrasyonu', h: '/shopify-entegrasyonu' },
+        { n: 'Etsy Entegrasyonu', h: '/etsy-entegrasyonu' },
+        { n: 'Amazon Entegrasyonu', h: '/amazon-entegrasyonu' },
+        { n: 'WooCommerce', h: '/woocommerce-entegrasyonu' },
+        { n: 'Özel Site Entegrasyonu (API)', h: '/ozel-site-api' },
+      ],
+    },
+  ],
+};
+
 const FooterEditor: React.FC = () => {
-  const footer = useEditor(() => contentAPI.getFooter(), d => contentAPI.updateFooter(d));
+  const footer = useEditor(() => contentAPI.getFooter(), d => contentAPI.updateFooter(d), DEFAULT_FOOTER);
 
   if (footer.loading) return <Loader />;
 
