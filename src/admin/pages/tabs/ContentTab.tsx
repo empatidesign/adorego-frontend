@@ -12,6 +12,10 @@ import { SHOPIFY_ENTEGRASYONU_DEFAULT_SECTIONS } from './content/defaults/shopif
 import { WOOCOMMERCE_ENTEGRASYONU_DEFAULT_SECTIONS } from './content/defaults/woocommerce-entegrasyonu';
 import { OZEL_SITE_API_DEFAULT_SECTIONS } from './content/defaults/ozel-site-api';
 import InternationalEditor from './content/InternationalEditor';
+import DoorToDoorEditor from './content/DoorToDoorEditor';
+import FirstTimeAbroadEditor from './content/FirstTimeAbroadEditor';
+import CustomsGuideEditor from './content/CustomsGuideEditor';
+import ReturnShippingEditor from './content/ReturnShippingEditor';
 import DomesticEditor from './content/DomesticEditor';
 import PricingEditor from './content/PricingEditor';
 import TrackingEditor from './content/TrackingEditor';
@@ -36,14 +40,14 @@ const PAGE_EDITORS: Record<string, React.FC> = {
   navbar: NavbarEditor,
   footer: FooterEditor,
   'content-pages': ContentPagesEditor,
+  'kapidan-alim-kapiya-teslimat': DoorToDoorEditor,
+  'ilk-kez-yurtdisina-gondermek': FirstTimeAbroadEditor,
+  'gumruk-evrak-rehberi': CustomsGuideEditor,
+  'yurtdisi-iade-geri-gonderi': ReturnShippingEditor,
 };
 
 // Generic editörle yönetilen sayfalar: { id: [slug, defaultTitle] }
 const GENERIC_PAGES: Record<string, [string, string]> = {
-  'destek': ['destek', 'Destek'],
-  'gizlilik-politikasi': ['gizlilik-politikasi', 'Gizlilik Politikası'],
-  'kullanim-sartlari': ['kullanim-sartlari', 'Kullanım Şartları'],
-  'kvkk-aydinlatma': ['kvkk-aydinlatma', 'KVKK Aydınlatma'],
   'kvkk': ['kvkk', 'KVKK'],
   'yurtdisindan-turkiye': ['yurtdisindan-turkiye', 'Yurtdışından Türkiye\'ye'],
   'sikca-sorulan-sorular': ['sikca-sorulan-sorular', 'Sıkça Sorulan Sorular'],
@@ -159,6 +163,30 @@ const DEFAULT_SEO_MAP: Record<string, { metaTitle: string; metaDescription: stri
     metaDescription: 'Yurtdışına kargo nasıl gönderilir? Adım adım rehber, gerekli belgeler ve ipuçları.',
     keywords: 'yurtdışı gönderim rehberi, uluslararası kargo rehberi, yurtdışına paket gönderme',
     canonical: 'https://adorelgo.com/yurtdisi-gonderim-rehberi',
+  },
+  'kapidan-alim-kapiya-teslimat': {
+    metaTitle: 'Kapıdan Alım – Kapıya Teslim | AdorelGo',
+    metaDescription: 'Kargonuzu kapınızdan alıyoruz, alıcının kapısına kadar teslim ediyoruz. Randevu alın, bekleyin.',
+    keywords: 'kapıdan alım kapıya teslim, kargo kapıdan alım, kuryeli kargo gönderme',
+    canonical: 'https://adorelgo.com/kapidan-alim-kapiya-teslimat',
+  },
+  'ilk-kez-yurtdisina-gondermek': {
+    metaTitle: 'İlk Kez Yurtdışına Göndermek | AdorelGo',
+    metaDescription: 'Daha önce hiç yurtdışına göndermediniz mi? Adım adım rehberimizle ilk gönderiminizi kolayca yapın.',
+    keywords: 'ilk kez yurtdışına gönderme, yurtdışı kargo nasıl gönderilir, yeni başlayanlar için kargo',
+    canonical: 'https://adorelgo.com/ilk-kez-yurtdisina-gondermek',
+  },
+  'gumruk-evrak-rehberi': {
+    metaTitle: 'Gümrük & Evrak Rehberi | AdorelGo',
+    metaDescription: 'Yurtdışı kargoda gümrük işlemleri ve gerekli evraklar. Sistem otomatik halleder, siz sadece gönderin.',
+    keywords: 'gümrük evrak rehberi, yurtdışı gümrük işlemleri, kargo gümrük belgesi',
+    canonical: 'https://adorelgo.com/gumruk-evrak-rehberi',
+  },
+  'yurtdisi-iade-geri-gonderi': {
+    metaTitle: 'Yurtdışı İade & Geri Gönderim | AdorelGo',
+    metaDescription: 'Teslim edilemeyen veya iade edilen yurtdışı kargolarınızı kolayca yönetin. Süreç takibi panelden.',
+    keywords: 'yurtdışı iade kargo, geri gönderim, kargo iade süreci, teslim edilemeyen kargo',
+    canonical: 'https://adorelgo.com/yurtdisi-iade-geri-gonderi',
   },
   'shopify-entegrasyonu': {
     metaTitle: 'Shopify Kargo Entegrasyonu | AdorelGo',

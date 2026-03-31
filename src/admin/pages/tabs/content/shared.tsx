@@ -92,6 +92,74 @@ export const ImageUpload: React.FC<{
   );
 };
 
+// ── IconPicker ───────────────────────────────────────────────
+
+const ICON_LIST = [
+  'fa-box', 'fa-box-open', 'fa-truck', 'fa-truck-fast', 'fa-plane', 'fa-ship',
+  'fa-globe', 'fa-map-location-dot', 'fa-location-dot', 'fa-map-pin',
+  'fa-check', 'fa-circle-check', 'fa-list-check', 'fa-clipboard-check',
+  'fa-star', 'fa-heart', 'fa-thumbs-up', 'fa-award',
+  'fa-shield-halved', 'fa-shield-check', 'fa-lock', 'fa-key',
+  'fa-bell', 'fa-bell-ring', 'fa-envelope', 'fa-phone', 'fa-headset',
+  'fa-user', 'fa-user-plus', 'fa-user-check', 'fa-users',
+  'fa-clock', 'fa-clock-rotate-left', 'fa-calendar-check', 'fa-hourglass-half',
+  'fa-file', 'fa-file-alt', 'fa-file-invoice', 'fa-file-lines', 'fa-file-circle-check', 'fa-file-shield',
+  'fa-passport', 'fa-certificate', 'fa-id-card',
+  'fa-credit-card', 'fa-hand-holding-dollar', 'fa-money-bill-wave', 'fa-coins',
+  'fa-magnifying-glass', 'fa-search', 'fa-eye',
+  'fa-rotate-left', 'fa-rotate-right', 'fa-arrows-rotate',
+  'fa-ban', 'fa-xmark', 'fa-user-xmark', 'fa-house-circle-xmark',
+  'fa-play', 'fa-rocket', 'fa-bolt', 'fa-fire',
+  'fa-store', 'fa-building', 'fa-warehouse', 'fa-industry',
+  'fa-tag', 'fa-tags', 'fa-barcode', 'fa-qrcode',
+  'fa-wrench', 'fa-gear', 'fa-sliders',
+  'fa-chart-line', 'fa-chart-bar', 'fa-arrow-trend-up',
+  'fa-headphones', 'fa-comment', 'fa-comments',
+  'fa-house', 'fa-building-columns', 'fa-city',
+];
+
+export const IconPicker: React.FC<{
+  value: string;
+  onChange: (v: string) => void;
+}> = ({ value, onChange }) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="space-y-1">
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-2 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white hover:border-blue-400 transition-colors"
+      >
+        {value ? (
+          <>
+            <i className={`fas ${value} text-blue-600 w-4`}></i>
+            <span className="text-gray-700 font-mono text-xs">{value}</span>
+          </>
+        ) : (
+          <span className="text-gray-400">İkon seç...</span>
+        )}
+        <i className="fas fa-chevron-down ml-auto text-gray-400 text-xs"></i>
+      </button>
+      {open && (
+        <div className="border border-gray-200 rounded-lg p-3 bg-white shadow-lg max-h-56 overflow-y-auto grid grid-cols-8 gap-1.5">
+          {ICON_LIST.map(icon => (
+            <button
+              key={icon}
+              type="button"
+              title={icon}
+              onClick={() => { onChange(icon); setOpen(false); }}
+              className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-blue-50 ${value === icon ? 'bg-blue-100 ring-1 ring-blue-400' : ''}`}
+            >
+              <i className={`fas ${icon} text-sm ${value === icon ? 'text-blue-600' : 'text-gray-600'}`}></i>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 // ── UI ──────────────────────────────────────────────────────
 
 export const Label: React.FC<{ text: string }> = ({ text }) => (
